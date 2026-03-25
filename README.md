@@ -13,7 +13,8 @@ A Claude Code plugin for lean project management: phased execution, codebase map
 | `mpf:plan-tasks` | Generate task-level plans for a phase |
 | `mpf:execute` | Execute a phase plan with atomic commits |
 | `mpf:verify` | Verify phase completion against acceptance criteria |
-| `mpf:status` | Show current project status |
+| `mpf:status` | Show current project status (with Linear counts, git status, sync health) |
+| `mpf:sync-linear` | Compare local project state with Linear tickets; report and fix discrepancies |
 
 ## Installation
 
