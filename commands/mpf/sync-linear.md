@@ -5,7 +5,7 @@ description: >
   orphan tickets, status mismatches, and missing traceability. Optionally fixes
   discrepancies by updating Linear or local docs.
   Run any time to audit project-tracker alignment.
-allowed-tools: Read, Write, Edit, Grep, Glob, Bash
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash, mcp__claude_ai_Linear__*
 ---
 
 # mpf:sync-linear

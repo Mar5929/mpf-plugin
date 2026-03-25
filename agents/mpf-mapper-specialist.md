@@ -8,6 +8,8 @@ tools:
   - Grep
   - Glob
   - Write
+  - TaskUpdate
+  - SendMessage
 ---
 
 # mpf-mapper-specialist

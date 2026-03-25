@@ -101,6 +101,7 @@ docs/
   technical-specs/
     TECHNICAL_SPEC.md                 # Technical design document
     DATA_MODEL.md                     # Database schema
+    DATA_LINEAGE.md                   # Data flow mapping (pipeline/ETL projects)
     code-atlas.md                     # Codebase context memory
     high-level-architecture.md        # System overview and components
     architecture/
@@ -143,7 +144,7 @@ docs/
   | Feature completed | Update tracker ticket to Done |
   | Code added/modified | Update `docs/technical-specs/code-atlas.md` + relevant `docs/technical-specs/code-modules/` file |
   | Function/class added/changed | Update relevant `docs/technical-specs/code-modules/` file |
-  | Requirements change | Update `docs/requirements/requirements.md` + `docs/traceability-matrix.md` |
+  | Requirements change | Update PRD (if applicable) + `docs/traceability-matrix.md` |
   | End of session | Append session log entry to `docs/PROJECT_STATUS.md` |
   | Phase transition | Update current phase + phase history in `docs/PROJECT_STATUS.md` + update `docs/roadmap.md` status |
   | Phase completed | Update `docs/PROJECT_STATUS.md` progress + `docs/roadmap.md` status |
@@ -588,7 +589,7 @@ Initialize with a "Project Bootstrap" entry listing all created documentation fi
 # Task {NN}: {Title}
 
 **Requirement:** REQ-{XXX} (the requirement ID(s) this task implements)
-**Linear Ticket:** {ticket ID} (if Linear is configured, otherwise omit)
+**Linear Ticket:** {ticket ID or "N/A" if Linear is not configured}
 
 ## Files
 - `path/to/file1.ts` (create)
@@ -706,7 +707,7 @@ One section per phase:
 - Read `CLAUDE.md`, then docs in priority order
 - If migration: note original source location
 - Summary of what `docs/` contains
-- Directive to start with `BL-001`
+- If using in-repo tracking, direct Claude to start with the first backlog item (`BL-001`). If using an external tracker, direct Claude to start with the first ticket ID from the tracker.
 - Keep concise: bootstrap prompt, not full spec
 
 ---
@@ -729,6 +730,8 @@ One section per phase:
 ## DATA_LINEAGE.md
 
 **Purpose:** Maps data flow from source systems through transformations to destination systems. Used for data pipeline and ETL projects.
+
+**Location:** `docs/technical-specs/DATA_LINEAGE.md`
 
 **When to use:** Only for Data pipeline / ETL projects where the user opts in during Round 4.
 
@@ -793,16 +796,18 @@ Default matrix (adapt based on which docs/workflows are enabled):
 | CHANGELOG.md | Claude (auto) | - |
 | TECHNICAL_SPEC.md | Shared | Claude drafts sections, user reviews before finalizing |
 | DATA_MODEL.md | User (decides) | Claude proposes changes, user must confirm before any schema modification |
-| traceability-matrix.md | Claude (auto) | Phase reassignments: user approval needed |
+| traceability-matrix.md | Claude (auto) | Phase reassignments: user approval needed | *(external tracker only)* |
+| BACKLOG.md | Claude (auto) | Priority changes: user approval needed | *(in-repo tracking only)* |
+| requirements.md | Shared | Claude updates status, user approves scope changes | *(in-repo tracking only)* |
 | decisions.md | Shared | Claude records decisions from conversation, user confirms status |
 | PRD / Requirements | User (decides) | Claude flags contradictions but does not modify |
-| Tracker ticket status | Claude (auto) | Follows ticket lifecycle protocol |
+| Tracker ticket status | Claude (auto) | Follows ticket lifecycle protocol | *(external tracker only)* |
 | Git commits | Claude (auto) | Follows git protocol; force pushes: never |
 | Git branching | Claude (auto) | Branch deletion: user approval needed |
 | Dependency upgrades | User (decides) | Claude flags outdated deps, user approves upgrades |
 | Security/auth changes | User (decides) | Claude always asks first |
 
-Only include rows for enabled workflows. For example, if no external tracker, omit the tracker row. If no decisions.md, omit that row.
+Only include rows for enabled workflows. Rows marked *(external tracker only)* should only appear if the project uses an external tracker (e.g., Linear). Rows marked *(in-repo tracking only)* should only appear if the project uses in-repo tracking. If no decisions.md, omit that row.
 
 ### Section 4: Active Work Items
 Table with columns: `ID | Title | Status | Assignee | Blockers`
@@ -943,7 +948,7 @@ If any box is unchecked, either complete the update or explicitly flag it as rem
 | Feature completed | Update tracker ticket to Done |
 | Code added/modified | Update docs/technical-specs/code-atlas.md + relevant docs/technical-specs/code-modules/ file |
 | Function/class added/changed | Update relevant docs/technical-specs/code-modules/ file |
-| Requirements change | Update docs/requirements/requirements.md + docs/traceability-matrix.md |
+| Requirements change | Update PRD (if applicable) + docs/traceability-matrix.md |
 | Task completed | Mark done in task file + update phase overview.md |
 
 ## Maintenance Rules
@@ -978,7 +983,7 @@ If any box is unchecked, either complete the update or explicitly flag it as rem
 | Function/class added/changed | Update relevant docs/technical-specs/code-modules/ file |
 | Architecture decision made | Add entry to docs/decisions.md |
 | Phase completed | Update docs/PROJECT_STATUS.md progress + docs/roadmap.md status |
-| Requirements change | Update docs/requirements/requirements.md + docs/traceability-matrix.md |
+| Requirements change | Update docs/traceability-matrix.md (external tracker) or docs/requirements/requirements.md (in-repo) |
 | Task completed | Mark done in task file + update phase overview.md |
 ```
 
@@ -1043,9 +1048,9 @@ When creating an implementation plan for a phase:
 3. Read the PRD sections referenced in the matrix for domain context
 4. Read docs/technical-specs/TECHNICAL_SPEC.md and relevant design specs for architectural decisions
 5. Read docs/technical-specs/code-atlas.md for current codebase state
-6. Invoke brainstorming skill if the phase involves design uncertainty
-7. Invoke writing-plans skill to create the implementation plan
-8. Execute via subagent-driven-development skill
+6. Use `mpf:plan-tasks` to create the implementation plan
+7. Execute via `mpf:execute`
+8. Verify via `mpf:verify`
 ```
 
 ---

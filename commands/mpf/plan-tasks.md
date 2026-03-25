@@ -4,7 +4,7 @@ description: >
   Break a phase into granular executable tasks. Spawns mpf-planner to create task files,
   then mpf-checker to verify coverage. Usage: mpf:plan-tasks <phase_number>
   Run after mpf:plan-phases, before mpf:execute.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
 ---
 
 # mpf:plan-tasks
@@ -37,7 +37,9 @@ If the phase already has task files in its `tasks/` directory, ask the user: "Ph
 
 ### Step 2: Linear Ticket Creation (if configured)
 
-Check CLAUDE.md for Linear configuration. If Linear is enabled:
+Check CLAUDE.md for Linear configuration. **If Linear is not configured for this project, skip this step entirely and pass `linear_ticket_mapping: 'N/A'` to the planner agent in Step 3.**
+
+If Linear is enabled:
 
 1. Read the phase overview for requirements covered
 2. For each requirement, create a Linear ticket (or check if one already exists)

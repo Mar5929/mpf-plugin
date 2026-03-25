@@ -30,15 +30,15 @@ You are the project architect, documentation manager, and onboarding interviewer
 
 Before starting the interview, check the project root for existing scaffolding:
 
-1. Check for `CLAUDE.md` at the project root
+1. Check for `CLAUDE.md` at the project root (this is the primary indicator)
 2. Check for `.claude/rules/` directory
 3. Check for `docs/PROJECT_STATUS.md`
 4. Check for `docs/technical-specs/` directory
 5. Check for `docs/requirements/` directory
 
-**If none found: Init mode.** Proceed to Phase 1 as normal.
+**If `CLAUDE.md` does not exist at the project root: Init mode.** Proceed to Phase 1 as normal. The presence of a `docs/` directory alone (e.g., from `mpf:map-codebase`) does NOT indicate existing scaffolding.
 
-**If any found: Evolve mode.** Read the existing CLAUDE.md and PROJECT_STATUS.md (if present) to understand current state, then present the evolve menu:
+**If `CLAUDE.md` exists: Evolve mode.** Read the existing CLAUDE.md and PROJECT_STATUS.md (if present) to understand current state, then present the evolve menu:
 
 > "I see this project already has scaffolding. Here's what I found:
 >
@@ -57,7 +57,10 @@ Before starting the interview, check the project root for existing scaffolding:
 ### Evolve: Upgrade Tier
 
 When upgrading tiers:
-1. Diff current docs against target tier's doc list
+1. Diff current docs against target tier's doc list. Explicit diffs by upgrade path:
+   - **Light to Standard adds:** `docs/technical-specs/code-atlas.md`, `docs/CHANGELOG.md`, `docs/decisions.md`, `docs/technical-specs/TECHNICAL_SPEC.md`, `.claude/rules/document-updates.md`, `.claude/rules/session-protocol.md`, `.claude/rules/coding-standards.md`. CLAUDE.md sections added: 4 (Update Protocol), 8 (Tracking), 9 (Git Protocol), 10 (Clarification Protocol). PROJECT_STATUS.md expanded to full 7-section format.
+   - **Light to Full adds:** Everything in Light-to-Standard, plus: `docs/technical-specs/DATA_MODEL.md`, `GETTING_STARTED.md`, tracker-specific docs (`docs/traceability-matrix.md` or `docs/requirements/requirements.md` + `docs/BACKLOG.md`), `.claude/rules/traceability.md`. CLAUDE.md sections added: 4, 6 (Tech Stack), 8, 9, 10, 11 (Context Window), 13 (References).
+   - **Standard to Full adds:** `docs/technical-specs/DATA_MODEL.md`, `GETTING_STARTED.md`, tracker-specific docs, `.claude/rules/traceability.md`. CLAUDE.md sections added: 6 (Tech Stack), 11 (Context Window), 13 (References).
 2. Show exactly which files will be created and which CLAUDE.md sections will be added
 3. Run a **focused mini-interview** covering only the rounds relevant to the new tier that weren't covered by the current tier (e.g., Light to Standard means asking R2, R3, and R4 only)
 4. Present a creation summary (same as Phase 3) showing only the new/modified files
@@ -79,10 +82,12 @@ This is a significant change. Walk through it carefully:
 1. Confirm the user wants to switch (e.g., from in-repo backlog to external tracker)
 2. Ask the necessary questions for the new approach (which tracker, team/project details)
 3. Explain what will change: which docs are replaced, how commit messages change, what happens to existing backlog items
-4. Generate the new tracking docs (e.g., docs/traceability-matrix.md) and archive the old ones (move to `archive/`)
-5. Update CLAUDE.md sections 4, 8, and 9 to reflect the new approach
-6. Update relevant `.claude/rules/` files
-7. Update PROJECT_STATUS.md
+4. If `archive/` does not exist, create it before moving files.
+5. Generate the new tracking docs (e.g., docs/traceability-matrix.md) and archive the old ones (move to `archive/`)
+6. Update CLAUDE.md sections 4, 8, and 9 to reflect the new approach
+7. Update relevant `.claude/rules/` files
+8. Update PROJECT_STATUS.md
+9. **Validate the switch:** After switching tracking approach, validate that no artifacts from the previous tracking approach remain active. Check that only one set of tracking files exists (either `docs/BACKLOG.md` + `docs/requirements/requirements.md` for in-repo, OR `docs/traceability-matrix.md` for external). Flag any gaps where requirements were not migrated to the new system.
 
 ### Evolve: Refresh Dashboard
 
@@ -115,6 +120,7 @@ Start by identifying the project type and scaffolding tier. The type determines 
 | **Automation / Scripts** | CLI tools, cron jobs, data pipelines (simple) | Light | Lighter structure; may not need full docs suite |
 | **Data pipeline / ETL** | Airflow, dbt, Prefect, scheduled data transforms, source/sink systems | Standard | Ask about source/target systems, scheduling, idempotency, data quality; recommend DATA_LINEAGE.md |
 | **Skill development** | Claude Code skill, SKILL.md, /mnt/skills | Light | Focus on SKILL.md structure, trigger phrases, eval strategy; skip version control and testing rounds |
+| **Salesforce** | `force-app/`, `sfdx-project.json`, `.forceignore`, `lwc/` | Standard | Ask about org type (scratch/sandbox/production), deployment strategy (change sets/CLI/CI), and whether LWC or Aura components are primary. See `references/salesforce.md` for Salesforce-specific directory structure and workflow conventions. |
 | **Mobile app** | React Native, Flutter, Swift, Kotlin, iOS/Android | Full | Ask about target platforms, framework, app store deployment, platform-specific conventions |
 | **Personal project** | User says "personal", "side project", "hobby" | Light | Lighter interview, fewer docs, simpler structure |
 
@@ -124,7 +130,7 @@ Start by identifying the project type and scaffolding tier. The type determines 
 |---|---|---|---|
 | **Interview rounds** | R1 + R7 (2 rounds) | R1, R2, R3, R4, R7, R8 (6 rounds, skip R5 and R6) | All 8 rounds |
 | **CLAUDE.md sections** | 1, 2, 3, 5, 7, 12 (6 sections) | 1-5, 7, 8, 9, 10, 12 (10 sections) | All 13 sections |
-| **Always generated** | CLAUDE.md, README.md, docs/PROJECT_STATUS.md (simplified: sections 1, 2, 5 only), .claude/rules/golden-rules.md, .claude/rules/git-protocol.md | Everything in Light + docs/technical-specs/code-atlas.md, docs/CHANGELOG.md, docs/decisions.md, docs/technical-specs/TECHNICAL_SPEC.md, .claude/rules/document-updates.md, .claude/rules/session-protocol.md | Everything in Standard + full PROJECT_STATUS.md, docs/technical-specs/DATA_MODEL.md, GETTING_STARTED.md, and tracker-specific docs (docs/traceability-matrix.md or docs/requirements/requirements.md + BACKLOG.md) |
+| **Always generated** | CLAUDE.md, README.md, docs/PROJECT_STATUS.md (simplified: sections 1, 2, 5 only), .claude/rules/golden-rules.md, .claude/rules/git-protocol.md | Everything in Light + docs/technical-specs/code-atlas.md, docs/CHANGELOG.md, docs/decisions.md, docs/technical-specs/TECHNICAL_SPEC.md, .claude/rules/document-updates.md, .claude/rules/session-protocol.md | Everything in Standard + full PROJECT_STATUS.md, docs/technical-specs/DATA_MODEL.md, GETTING_STARTED.md, and tracker-specific docs (docs/traceability-matrix.md or docs/requirements/requirements.md + docs/BACKLOG.md) |
 | **Upgrade path** | Can upgrade to Standard or Full via evolve mode | Can upgrade to Full via evolve mode | N/A |
 
 After detecting the project type, state the auto-detected tier and allow the user to override:
@@ -156,7 +162,7 @@ Based on answers, classify the project type from the table above and adapt subse
 - R1: Ask about the skill's purpose, trigger patterns, and which Claude Code context it operates in
 - R7: Ask about eval strategy (how to test the skill), description optimization, and reference file structure
 - Default tier: Light
-- Special scaffolding: Generate a SKILL.md template with description, trigger patterns, and reference file stubs
+- Special scaffolding: Generate a SKILL.md template with description, trigger patterns, and reference file stubs. For skill development projects, generate a `SKILL.md` at the project root using the standard Claude Code skill format: YAML frontmatter (name, description, model, tools) followed by skill instructions in Markdown. Use the interview answers to populate the name, description, and tool requirements.
 - Skip: version control questions (skills typically live in a managed directory), testing questions, infrastructure questions
 
 **Data pipeline / ETL:**
@@ -175,6 +181,7 @@ Based on answers, classify the project type from the table above and adapt subse
 - Default tier: Full
 - Special scaffolding: Platform-specific directory structure, build configuration files
 - Recommend: all standard Full-tier docs plus platform-specific sections in docs/technical-specs/TECHNICAL_SPEC.md
+- Note: Mobile-specific scaffolding generation (e.g., React Native, Flutter directory structures) is not yet implemented. For mobile projects, use the standard scaffolding from the selected tier and manually adapt the directory structure for the target mobile framework.
 
 ### Round 2: Project Phase & Discovery
 
@@ -214,25 +221,25 @@ The user always uses **GitHub**. Ask:
 Ask:
 - How will work items (features, bugs, tasks) be tracked?
   - **External tracker** (Linear, Jira, GitHub Issues, etc.): acceptance criteria and status live in the tracker
-  - **In-repo backlog** (`BACKLOG.md`): Claude manages a local backlog file as the single source of work items
+  - **In-repo backlog** (`docs/BACKLOG.md`): Claude manages a local backlog file as the single source of work items
   - **None / ad hoc**: no formal tracking, just conversation-driven
 
 If using an **external tracker**:
 - Which tool? (Linear, Jira, GitHub Issues, Asana, etc.)
-- **If Linear is selected:** Auto-configure with team Rihm (ID: `dfe15bc4-6dd0-4bde-8609-6620efc3140d`) and assignee Michael Rihm (ID: `8d75f0a6-f848-41af-9f4b-d06036d6af82`) per global rule `rules/mcp-linear.md`. Reference the ticket lifecycle protocol from `rules/linear-ticket-management.md` in the generated rules (move tickets to In Progress on start, add progress comments, move to Done on completion).
+- **If Linear is selected:** Auto-configure with team Rihm (ID: `dfe15bc4-6dd0-4bde-8609-6620efc3140d`) and assignee Michael Rihm (ID: `8d75f0a6-f848-41af-9f4b-d06036d6af82`). <!-- These IDs are intentionally hard-coded per global rules in ~/.claude/rules/mcp-linear.md --> Reference the ticket lifecycle protocol from `rules/linear-ticket-management.md` in the generated rules (move tickets to In Progress on start, add progress comments, move to Done on completion).
 - Does the project have a PRD or equivalent product requirements document?
-- Recommend **docs/traceability-matrix.md** instead of docs/requirements/requirements.md and BACKLOG.md. Explain: the matrix maps every product requirement to its phase and tracker tickets, while acceptance criteria and status live in the tracker. This prevents drift between docs and the tracker.
+- Recommend **docs/traceability-matrix.md** instead of docs/requirements/requirements.md and docs/BACKLOG.md. Explain: the matrix maps every product requirement to its phase and tracker tickets, while acceptance criteria and status live in the tracker. This prevents drift between docs and the tracker.
 - Note: if the project has a PRD, the matrix maps PRD sections to tickets. If no PRD, the matrix maps requirement IDs directly to tickets.
 
 If using **in-repo backlog**:
-- Recommend docs/requirements/requirements.md + BACKLOG.md as the requirement and work tracking documents (the existing approach).
+- Recommend docs/requirements/requirements.md + docs/BACKLOG.md as the requirement and work tracking documents (the existing approach).
 
 **Then, ask which living documents Claude should maintain.** Recommend based on project type and tracking approach:
 
 | Document | Web App | API | Doc Processing | Automation | Personal |
 |---|---|---|---|---|---|
 | docs/traceability-matrix.md | If external tracker | If external tracker | If external tracker | If external tracker | Skip |
-| BACKLOG.md | If no external tracker | If no external tracker | Optional | Optional | Optional |
+| docs/BACKLOG.md | If no external tracker | If no external tracker | Optional | Optional | Optional |
 | docs/requirements/requirements.md | If no external tracker | If no external tracker | Optional | Skip | Skip |
 | docs/decisions.md | Recommended | Recommended | Skip | Skip | Skip |
 | docs/CHANGELOG.md | Recommended | Recommended | Optional | Optional | Skip |
@@ -242,7 +249,7 @@ If using **in-repo backlog**:
 | README.md | Recommended | Recommended | Optional | Optional | Optional |
 | GETTING_STARTED.md | Recommended | Recommended | Skip | Skip | Skip |
 
-**Key rule:** docs/traceability-matrix.md and docs/requirements/requirements.md + BACKLOG.md are mutually exclusive approaches. Do not recommend both. The matrix replaces the other two when an external tracker is used.
+**Key rule:** docs/traceability-matrix.md and docs/requirements/requirements.md + docs/BACKLOG.md are mutually exclusive approaches. Do not recommend both. The matrix replaces the other two when an external tracker is used.
 
 Present the recommendations and let the user confirm or adjust.
 
@@ -431,9 +438,13 @@ Generate with the **13-section structure** described in `references/document-tem
 
 ### Always Created: `docs/PROJECT_STATUS.md`
 
-Generate the project dashboard. Populate Section 1 (Current Phase) based on the phase identified in Round 2. Populate Section 2 (Responsibility Matrix) based on which documents and workflows the user enabled. Initialize Sections 3-4 as empty. Initialize Section 5 (Session Log) with a single entry for the init session. Initialize Section 6 (Phase History) as empty.
+Generate the project dashboard using the 7-section structure from `references/document-templates.md` (Section: "PROJECT_STATUS.md"). Populate Section 1 (Current Phase) based on the phase identified in Round 2. Populate Section 2 (Phase Summary) with the initial phase entry. Populate Section 3 (Responsibility Matrix) based on which documents and workflows the user enabled. Initialize Sections 4-5 (Active Work Items, Blockers & Waiting) as empty. Initialize Section 6 (Session Log) with a single entry for the init session. Initialize Section 7 (Phase History) as empty.
 
 For the responsibility matrix, map each enabled document and workflow to its default owner using the template in `references/document-templates.md`. Adapt based on interview answers: if the user said they want to approve all commits, change Git commits from "Claude (auto)" to "Claude (proposes)".
+
+When creating placeholder documentation files, mark them with an HTML comment at the top: `<!-- MPF placeholder: to be populated by mpf:discover -->`. This allows downstream commands to distinguish placeholders from populated content.
+
+If `docs/technical-specs/code-atlas.md` or `docs/technical-specs/high-level-architecture.md` already exist (e.g., from a prior `mpf:map-codebase` run), do not overwrite them. Skip creation of these files and note in the session log that existing mapper output was preserved.
 
 ### Always Created: `docs/PROJECT.md`
 
@@ -450,6 +461,8 @@ Create an empty `archive/` directory at the project root. This is used to store:
 - Previous versions of docs before major restructures
 - Deprecated code moved out of the main codebase
 - Old scaffolding from tier upgrades
+
+Place a `.gitkeep` file inside `archive/` so git tracks the empty directory.
 
 When moving files to archive, prefix with the date: `archive/2026-03-20_requirements.md`. Note the archival in the session log. Always include this in the directory structure preview shown during Phase 3.
 
@@ -502,6 +515,7 @@ The scaffolding creates the following directory structure:
 docs/
 ├── PROJECT.md
 ├── PROJECT_STATUS.md
+├── BACKLOG.md                      (if in-repo tracking)
 ├── decisions.md
 ├── roadmap.md
 ├── CHANGELOG.md
@@ -510,12 +524,13 @@ docs/
 │   ├── high-level-architecture.md
 │   ├── TECHNICAL_SPEC.md
 │   ├── DATA_MODEL.md               (Full tier)
+│   ├── DATA_LINEAGE.md             (optional, for pipeline/ETL projects)
 │   ├── code-atlas.md
 │   ├── architecture/               (empty initially, populated during discovery)
 │   └── code-modules/               (empty initially, populated as code grows)
 └── requirements/
     ├── PRD.md                       (placeholder, filled by mpf:discover)
-    ├── requirements.md              (if in-repo tracking)
+    ├── requirements.md              (if in-repo tracking; placeholder, populated by mpf:discover)
     └── phases/                      (empty initially, populated by mpf:plan-phases)
 ```
 

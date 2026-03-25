@@ -5,7 +5,7 @@ description: >
   Creates a feature branch, spawns mpf-executor agents per task, and pushes to remote.
   Usage: mpf:execute <phase_number>
   Run after mpf:plan-tasks, before mpf:verify.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
 ---
 
 # mpf:execute
@@ -86,6 +86,11 @@ Agent(
 )
 ```
 
+If Linear is not configured, pass `linear_enabled: false` and `ticket_id: 'N/A'` to the executor. The executor uses these values to skip Linear updates in its Step 6.
+
+```
+```
+
 #### Wave Completion Gate
 
 After all tasks in a wave complete:
@@ -131,8 +136,8 @@ Passed: {count}/{total}
 
 When `mpf:execute` is run on a phase that was already partially executed:
 
-1. Read the existing task files and check "Done" criteria.
-2. Read any verification report from `mpf:verify`.
+1. Read the existing task files and check "Done" criteria. A task is considered "already done" only if ALL Done checkboxes are checked AND the task's verify commands pass when re-run. If Done checkboxes are checked but verify commands fail, the task needs re-execution to fix the regression.
+2. Read the verification report at `docs/requirements/phases/phase-{NN}-{name}/verify-report.md` if it exists. Use this report to identify which tasks failed and need re-execution.
 3. Build a list of tasks that need (re-)execution:
    - Tasks with unchecked Done criteria
    - Tasks flagged as FAIL in a prior verify report

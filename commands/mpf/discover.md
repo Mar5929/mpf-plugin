@@ -78,7 +78,7 @@ Only ask about categories relevant to the project's tech stack and domain. Skip 
 
 ### Round 6: Technical Architecture (if not already captured in mpf:init)
 
-Check if `docs/technical-specs/TECHNICAL_SPEC.md` already has substantive content. If it's a placeholder, ask:
+Check if `docs/technical-specs/TECHNICAL_SPEC.md` already has substantive content. A file has substantive content if it contains more than just headings, placeholders (`<!-- MPF placeholder -->`), or template text. Specifically: if the file has at least one section with project-specific information (not just structural headings or HTML comment placeholders), treat it as having substantive content and merge rather than overwrite. If it's a placeholder, ask:
 
 - What are the major system components?
 - How do they communicate? (REST, GraphQL, message queue, etc.)
@@ -97,11 +97,17 @@ Write `docs/requirements/PRD.md` following the template in document-templates.md
 
 ### 2. requirements.md (if in-repo tracking)
 
+> **Ownership note:** `mpf:init` creates the placeholder file structure (empty `docs/requirements/requirements.md`). `mpf:discover` populates it with actual requirement content from user interviews and PRD analysis. If the file already exists as a placeholder from init, populate it rather than creating a new one.
+
 Check CLAUDE.md to determine the tracking approach:
-- **If in-repo tracking:** Update `docs/requirements/requirements.md` with atomic requirements extracted from the PRD. Each requirement gets an ID (REQ-001, REQ-002, etc.), a title, description, priority, and status (Not Started).
+- **If in-repo tracking:** Update `docs/requirements/requirements.md` with atomic requirements extracted from the PRD. Each requirement gets an ID (REQ-001, REQ-002, etc.), a title, description, priority, and status (Not Started). If the file already exists as a placeholder from `mpf:init`, populate it in place.
 - **If external tracker:** Skip this file. Requirements will be tracked as tickets in the external system.
 
-### 3. Technical Specs (if discussed in Round 6)
+### 3. traceability-matrix.md (if external tracker)
+
+If the project uses an external tracker (check CLAUDE.md for tracking approach): create or update `docs/traceability-matrix.md` with requirement IDs from the PRD mapped to placeholder ticket IDs (to be populated by `mpf:plan-phases` or `mpf:sync-linear`). Each requirement extracted from the PRD should have a row in the matrix with its REQ-ID, PRD section reference, and a "TBD" placeholder for the ticket ID.
+
+### 4. Technical Specs (if discussed in Round 6)
 
 Update these files with any new architectural decisions:
 - `docs/technical-specs/TECHNICAL_SPEC.md`: system design, component interactions
@@ -111,7 +117,9 @@ Update these files with any new architectural decisions:
 
 Only update files where new information was gathered. Don't overwrite existing content; append or merge.
 
-### 4. PROJECT_STATUS.md
+If `docs/technical-specs/code-atlas.md` or other technical-spec files already exist (e.g., from `mpf:map-codebase`), read them first and merge new findings into the existing content rather than overwriting. Reference existing subsystem documentation when writing architecture sections. Preserve file paths, code examples, and module details from the mapper output.
+
+### 5. PROJECT_STATUS.md
 
 Update `docs/PROJECT_STATUS.md`:
 - Set current phase to "Discovery: Complete" (or update as appropriate)
@@ -130,3 +138,7 @@ Tell the user:
 - **Complex projects (> 20 requirements):** Group features by domain area in round 2. Consider splitting into multiple PRD sections.
 - **Brownfield projects:** If `docs/technical-specs/code-atlas.md` exists (from mpf:map-codebase), reference it during round 6 to ground architecture discussions in the existing codebase.
 - **User provides a PRD:** If the user already has a PRD or equivalent document, skip the interview. Read their document, reformat it into the MPF PRD template, extract requirements, and confirm with the user before writing.
+
+## Roadmap Update
+
+If `docs/roadmap.md` exists, update it with a placeholder entry noting that requirements have been discovered and are ready for phase planning via `mpf:plan-phases`.

@@ -73,6 +73,12 @@ Build a map of all files referenced across all tasks:
 
 **FAIL if:** File conflicts detected.
 
+### 6. Traceability Check (external tracker only)
+
+If the project uses external tracking (check CLAUDE.md for tracking approach), verify that each task's Linear Ticket field is populated with a valid ticket ID (not empty or placeholder). Skip this check for in-repo tracking projects.
+
+**FAIL if:** Any task has an empty or placeholder Linear Ticket field when external tracking is configured.
+
 ## Output
 
 Produce a structured report:
@@ -87,6 +93,7 @@ MPF Plan Check: Phase {N} - {Name}
 | Wave Dependencies | PASS/FAIL | {details} |
 | Task Completeness | PASS/FAIL | {details} |
 | File Conflicts | PASS/FAIL | {details} |
+| Traceability | PASS/FAIL/SKIP | {details} |
 
 Overall: PASS / FAIL ({N} issues found)
 

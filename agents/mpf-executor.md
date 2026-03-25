@@ -1,6 +1,7 @@
 ---
 name: mpf-executor
 description: Execute a single task with atomic commits, inline verification, and living document updates.
+model: sonnet
 tools:
   - Read
   - Write
@@ -48,7 +49,7 @@ Follow the task's "Action" section. Write the code as specified.
 
 **Deviation rules:**
 - **Auto-fix without asking:** Import errors, missing type declarations, minor syntax fixes, test fixture setup, linting issues.
-- **Ask the orchestrator (stop and report):** Architectural changes not in the task, new dependencies not specified, changes to files not listed in the task, scope creep beyond the task's requirements.
+- **Stop and return an error report:** Architectural changes not in the task, new dependencies not specified, changes to files not listed in the task, scope creep beyond the task's requirements. Return a structured error via your Agent return value so the orchestrating command (mpf:execute) can surface it to the user.
 
 **Coding standards:**
 - Follow all conventions from CLAUDE.md (naming, patterns, formatting).
@@ -73,7 +74,7 @@ git commit -m "$(cat <<'EOF'
 
 {one-line description of what was done}
 
-Co-Authored-By: Claude <noreply@anthropic.com>
+Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
 EOF
 )"
 ```
@@ -81,19 +82,21 @@ EOF
 Commit message rules:
 - Use `feat` for new features, `fix` for bug fixes, `refactor` for restructuring, `test` for test-only changes, `docs` for documentation.
 - Include the ticket ID prefix if Linear is enabled (e.g., `feat(RIH-150): add user model`).
-- If no Linear, use the requirement ID: `feat(REQ-001): add user model`.
+- If no Linear, use the backlog item ID: `feat(BL-001): add user model`.
 
-Push the commit: `git push`
+If CLAUDE.md Section 9 specifies a push policy of "on request" or "manual", skip the push. Otherwise, push the commit: `git push`
 
 ### Step 5: Update Living Documents
 
-After committing, update these documents if the task warrants it:
+Before committing in Step 4, also update these documents if the task warrants it, so they are included in the same atomic commit:
 
 1. **code-atlas.md**: If new files were created or module structure changed, update the relevant section.
 2. **code-modules/{module}.md**: If the task added/changed functions or classes in an existing module, update the module doc. Create a new module doc if a new module was introduced.
 3. **Task file**: Mark the "Done" checkboxes as complete.
+4. **docs/BACKLOG.md**: If in-repo tracking is configured, mark the corresponding backlog item as Done.
+5. **docs/requirements/requirements.md**: If in-repo tracking is configured, update the requirement's status to reflect task completion.
 
-Commit doc updates separately: `docs: update living documents for task-{NN}`
+Include all doc updates in the Step 4 commit by staging them alongside the code changes. Do not create a separate commit for doc updates.
 
 ### Step 6: Linear Updates (if enabled)
 

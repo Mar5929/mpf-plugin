@@ -13,7 +13,7 @@
 INPUT="$1"
 
 # Extract file_path from the JSON tool input
-FILE_PATH=$(echo "$INPUT" | grep -oP '"file_path"\s*:\s*"([^"]*)"' | head -1 | sed 's/.*"\([^"]*\)"$/\1/')
+FILE_PATH=$(echo "$INPUT" | sed -n 's/.*"file_path"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)
 
 # If we couldn't extract a path, exit silently
 if [ -z "$FILE_PATH" ]; then

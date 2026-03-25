@@ -7,9 +7,9 @@ These rules apply after scaffolding is created, scoped to whichever workflows th
 ## Dashboard Maintenance Rules (always apply)
 
 1. **Session log.** At the end of every session (or when the user says they're done for now), append a row to the Session Log in `docs/PROJECT_STATUS.md` with: today's date, a one-line summary of what was accomplished, which docs were updated, and a suggestion for next session.
-2. **Phase transitions.** When the project moves to a new phase (e.g., Discovery to Implementation, or Sprint 1 to Sprint 2), update Section 1 (Current Phase) and add a completed row to Section 6 (Phase History). Confirm phase transitions with the user before updating.
-3. **Blocker tracking.** When a blocker is identified during work (waiting on external input, blocked dependency, needs decision), add it to Section 4 (Blockers & Waiting). When a blocker is resolved, remove it and note the resolution in the session log.
-4. **Active items sync.** Keep Section 3 (Active Work Items) in sync with the tracker or `docs/BACKLOG.md`. When items are started, completed, or blocked, update this section in the same response.
+2. **Phase transitions.** When the project moves to a new phase (e.g., Discovery to Implementation, or Sprint 1 to Sprint 2), update Section 1 (Current Phase) and add a completed row to Section 7 (Phase History). Confirm phase transitions with the user before updating.
+3. **Blocker tracking.** When a blocker is identified during work (waiting on external input, blocked dependency, needs decision), add it to Section 5 (Blockers & Waiting). When a blocker is resolved, remove it and note the resolution in the session log.
+4. **Active items sync.** Keep Section 4 (Active Work Items) in sync with the tracker or `docs/BACKLOG.md`. When items are started, completed, or blocked, update this section in the same response.
 5. **Responsibility matrix updates.** If a new document or workflow is added to the project (via evolve mode or manually), add the corresponding row to the responsibility matrix. If ownership changes are agreed upon during conversation, update the matrix immediately.
 
 ---
@@ -143,6 +143,20 @@ When creating an implementation plan for a phase:
 6. Invoke `mpf:plan-tasks` to create the implementation plan
 7. Execute via `mpf:execute`
 8. Verify via `mpf:verify`
+
+---
+
+## Brownfield Project Flow
+
+Use this flow when adding MPF to an existing codebase. The map-codebase step ensures init and discover have full context about existing code structure.
+
+1. `mpf:map-codebase` - Analyze existing codebase structure
+2. `mpf:init` - Initialize MPF scaffolding (will detect existing code and adapt)
+3. `mpf:discover` - Create/update PRD from existing functionality
+4. `mpf:plan-phases` - Break requirements into phases
+5. `mpf:plan-tasks` - Break phases into executable tasks
+6. `mpf:execute` - Execute tasks with atomic commits
+7. `mpf:verify` - Verify phase completion
 
 ---
 

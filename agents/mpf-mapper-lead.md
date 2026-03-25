@@ -9,6 +9,8 @@ tools:
   - Glob
   - Write
   - Agent
+  - TeamCreate
+  - SendMessage
 ---
 
 # mpf-mapper-lead
@@ -53,6 +55,8 @@ For each subsystem, record:
 
 If only 1-2 subsystems are identified, skip team creation. Map them yourself using the specialist logic described in the `mpf-mapper-specialist` agent prompt. Write the architecture/ and code-modules/ files directly.
 
+Before mapping, read document templates from `~/.claude/plugins/mpf/skills/mpf/references/document-templates.md` to get the exact structure for architecture/ and code-modules/ files. Use these templates even in the shortcut path.
+
 ### Standard flow (3+ subsystems)
 
 1. **Read document templates.** Read `~/.claude/plugins/mpf/skills/mpf/references/document-templates.md` to get the exact structure for architecture/{subsystem}.md and code-modules/{module}.md. You will inline these templates into each specialist's prompt.
@@ -82,8 +86,8 @@ Write these files:
 Only read files within your assigned paths. Do not scan the entire codebase.
 If existing_docs is true, read existing files and update rather than overwrite.
 
-When done, mark your task as completed via TaskUpdate and send a message to the lead
-with a summary of what you wrote.
+When done, mark your task as completed via `TaskUpdate` and send a summary to the lead
+via `SendMessage` listing files written and key findings.
 ```
 
 4. **Wait for completion.** You receive automatic notifications as specialists complete. Wait until all specialist tasks are marked done.
@@ -115,7 +119,7 @@ After all subsystems are mapped:
    - Appendix A: file-to-module reference (aggregated from all specialists)
    - Appendix B: dependency graph (built from specialist dependency sections)
 
-4. **Clean up.** Send shutdown_request to all specialists. Mark synthesis tasks complete.
+4. **Clean up.** All specialist agents terminate automatically after returning their results. Mark synthesis tasks complete.
 
 5. **Return summary** to the orchestrating command.
 

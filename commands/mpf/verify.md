@@ -5,7 +5,7 @@ description: >
   all task verify commands, success criteria, and project test suite.
   Usage: mpf:verify <phase_number>
   Run after mpf:execute. Phase merges to main only after verify passes.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
 ---
 
 # mpf:verify
@@ -59,7 +59,9 @@ Display the verifier's report to the user with clear formatting.
    - Set phase status to "Done" (or "Verified" if manual checks remain)
    - Update progress to 100%
 
-3. If there are MANUAL verification items, present them as a checklist:
+3. If in-repo tracking is configured, update `docs/BACKLOG.md` to mark all phase backlog items as Done. Update `docs/requirements/requirements.md` requirement statuses accordingly.
+
+4. If there are MANUAL verification items, present them as a checklist:
    ```
    Manual verification needed:
    - [ ] UI renders the login form correctly
@@ -68,7 +70,7 @@ Display the verifier's report to the user with clear formatting.
    Confirm these pass, then merge the branch.
    ```
 
-4. Guide the user on merging:
+5. Guide the user on merging:
    - If version control enabled: "Phase {N} is verified. Merge `feature/phase-{N}-{name}` to main when ready, then run `mpf:plan-tasks {N+1}` for the next phase."
    - If no version control: "Phase {N} is verified. Run `mpf:plan-tasks {N+1}` for the next phase."
 
@@ -94,6 +96,7 @@ Display the verifier's report to the user with clear formatting.
 ### Step 4: Linear Updates (if configured)
 
 Check CLAUDE.md for Linear configuration. If enabled:
+- To find the milestone ID: read the phase overview file at `docs/requirements/phases/phase-{NN}-{name}/overview.md` and look for the recorded milestone ID. If no milestone ID is recorded in the overview, search Linear milestones by phase name using `list_milestones`. If no milestone is found, skip milestone updates and note this gap in the verification report.
 - On PASS: Add a comment to the phase milestone noting verification passed
 - On FAIL: Add comments to the relevant tickets noting which verifications failed
 

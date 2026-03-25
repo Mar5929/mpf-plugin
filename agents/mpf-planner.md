@@ -5,6 +5,7 @@ model: sonnet
 tools:
   - Read
   - Write
+  - Bash
   - Grep
   - Glob
 ---
@@ -20,6 +21,7 @@ You receive these parameters from the orchestrating command:
 - `phase_number`: The phase to plan (e.g., 1)
 - `phase_name`: The phase name (e.g., "foundation-setup")
 - `project_root`: Absolute path to the project root
+- `linear_ticket_mapping`: Map of requirement IDs to Linear ticket IDs (e.g., `{"REQ-001": "RIH-150"}`) or "N/A" if Linear is not configured. Use these IDs in task files' "Linear Ticket" field.
 
 ## Context Loading
 

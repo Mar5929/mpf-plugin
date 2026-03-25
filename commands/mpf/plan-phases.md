@@ -5,7 +5,7 @@ description: >
   Produces docs/roadmap.md and phase overview files under docs/requirements/phases/.
   Creates Linear milestones if external tracking is configured.
   Run after mpf:discover, before mpf:plan-tasks.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__claude_ai_Linear__*
 ---
 
 # mpf:plan-phases
@@ -102,9 +102,11 @@ If the project uses an external tracker with traceability matrix:
 - Update `docs/traceability-matrix.md` to map each requirement to its phase
 - Ticket IDs will be added later when `mpf:plan-tasks` creates individual tickets
 
+**If the project uses in-repo tracking** (no external tracker configured), skip `docs/traceability-matrix.md` updates in this step. Use `docs/BACKLOG.md` and `docs/requirements/requirements.md` instead.
+
 ### Step 5: Linear Integration (if configured)
 
-Check CLAUDE.md for Linear configuration. If Linear is enabled:
+Check CLAUDE.md Section 4 (Update Protocol) for the tracking approach. If the tracking approach is "external" and the tracker is "Linear", proceed with Linear milestone creation. If Linear is enabled:
 
 1. Create a Linear milestone for each phase using the phase name
 2. Record the milestone ID in the phase overview file

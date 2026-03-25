@@ -4,6 +4,7 @@ description: Phase-level UAT verification. Runs all task verify commands, checks
 model: sonnet
 tools:
   - Read
+  - Write
   - Bash
   - Grep
   - Glob
