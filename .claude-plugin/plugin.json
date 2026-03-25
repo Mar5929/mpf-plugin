@@ -1,0 +1,8 @@
+{
+  "name": "mpf",
+  "description": "Mike Project Framework - lean project management pipeline with phased execution, state tracking, and atomic commits. Commands: mpf:init, mpf:map-codebase, mpf:discover, mpf:plan-phases, mpf:plan-tasks, mpf:execute, mpf:verify, mpf:status.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael Rihm"
+  }
+}
