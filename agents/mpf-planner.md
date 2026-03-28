@@ -1,7 +1,7 @@
 ---
 name: mpf-planner
 description: Break a phase into granular executable tasks with dependency ordering and wave assignment.
-model: sonnet
+model: opus
 tools:
   - Read
   - Write

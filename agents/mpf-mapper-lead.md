@@ -1,7 +1,7 @@
 ---
 name: mpf-mapper-lead
 description: Discover project subsystems, orchestrate parallel specialist agents, synthesize top-level technical docs.
-model: sonnet
+model: opus
 tools:
   - Read
   - Bash
