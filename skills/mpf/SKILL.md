@@ -8,7 +8,8 @@ description: >
   structure, upgrade a project from light to full scaffolding, add new documents to an existing
   project, or change a project's tracking approach. After scaffolding, use mpf:discover to
   create the PRD, mpf:plan-phases for phase breakdown, mpf:execute for implementation, and
-  mpf:verify for verification. Covers full-stack web apps (Next.js, React, Python), APIs,
+  mpf:verify for verification. Use mpf:decompose to break ad-hoc TODOs into tasks without
+  the full PRD pipeline. Covers full-stack web apps (Next.js, React, Python), APIs,
   document processing projects (Excel, Word, PDF, PPTX), automation scripts, data pipelines,
   skill development, mobile apps, and personal projects. Also use when the user says things
   like "new project", "set up a project", "initialize this repo", "bootstrap this", "project
@@ -600,4 +601,4 @@ After all files are created:
 - **Data model changes always require confirmation.** Across all project types: database schema, Salesforce object model, or any data structure change.
 - **After scaffolding, recommend mpf:discover.** If the project is in Discovery phase, the next step is always to run mpf:discover to create the PRD and flesh out requirements.
 - **After PRD, recommend mpf:plan-phases.** Once the PRD exists, recommend mpf:plan-phases to break the work into implementation phases.
-- **MPF command workflow.** The full MPF lifecycle follows this sequence: mpf:init (this skill) > mpf:discover > mpf:plan-phases > mpf:execute > mpf:verify. Each command builds on the outputs of the previous one.
+- **MPF command workflow.** The full MPF lifecycle follows this sequence: mpf:init (this skill) > mpf:discover > mpf:plan-phases > mpf:plan-tasks > mpf:execute > mpf:verify. Each command builds on the outputs of the previous one. For ad-hoc TODOs that don't need the full PRD pipeline, use mpf:decompose to break them into executable task files directly.

@@ -36,7 +36,7 @@ Run each check and record PASS or FAIL with details.
 ### 1. Requirement Coverage
 
 For each requirement listed in the phase overview's "Requirements Covered" section:
-- Is there at least one task with a matching `Requirement: REQ-{XXX}` reference?
+- Is there at least one task whose `Requirement:` field references this requirement ID? (IDs may use any prefix: `REQ-xxx`, `TODO-xxx`, etc.)
 - Does the task's Action section address the requirement's core intent?
 
 **FAIL if:** Any requirement has zero tasks covering it.
@@ -106,5 +106,5 @@ Issues:
 
 - **No auto-fix.** You report, you don't repair. Issues go to the user via the orchestrating command.
 - **No iteration.** Run checks once. If there are failures, report them and stop.
-- **Be specific.** "REQ-003 has no covering task" is useful. "Some requirements might not be covered" is not.
+- **Be specific.** "{ID} has no covering task" is useful. "Some requirements might not be covered" is not. Requirement IDs may use any prefix (REQ-xxx, TODO-xxx, etc.).
 - **Err on the side of passing.** If a task plausibly covers a requirement (even if the mapping isn't explicit), count it as covered. Only fail for clear gaps.
