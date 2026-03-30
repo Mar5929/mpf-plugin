@@ -1,10 +1,6 @@
 ---
 name: mpf:verify
-description: >
-  Run phase-level UAT verification after execution. Spawns mpf-verifier to check
-  all task verify commands, success criteria, and project test suite.
-  Usage: mpf:verify <phase_number>
-  Run after mpf:execute. Phase merges to main only after verify passes.
+description: Run phase-level UAT verification after execution. Spawns mpf-verifier to check all task verify commands, success criteria, and project test suite. Usage: mpf:verify <phase_number>. Run after mpf:execute. Phase merges to main only after verify passes.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
 ---
 
@@ -96,7 +92,7 @@ Display the verifier's report to the user with clear formatting.
 ### Step 4: Linear Updates (if configured)
 
 Check CLAUDE.md for Linear configuration. If enabled:
-- To find the milestone ID: read the phase overview file at `docs/requirements/phases/phase-{NN}-{name}/overview.md` and look for the recorded milestone ID. If no milestone ID is recorded in the overview, search Linear milestones by phase name using `list_milestones`. If no milestone is found, skip milestone updates and note this gap in the verification report.
+- To find the milestone ID: read the phase overview file at `docs/requirements/phases/phase-{NN}-{name}/overview.md` and look for the recorded milestone ID. If no milestone ID is recorded in the overview, search Linear milestones by phase name using `mcp__claude_ai_Linear__*`. If no milestone is found, skip milestone updates and note this gap in the verification report.
 - On PASS: Add a comment to the phase milestone noting verification passed
 - On FAIL: Add comments to the relevant tickets noting which verifications failed
 

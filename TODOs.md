@@ -1,5 +1,0 @@
-# Enhancements
-
-All right, so there are a couple of enhancements that I want to make for this plugin:
-1. If we're going to use linear.ai or an external ticketing system, I want to make sure that, whether it's a greenfield or a brownfield project, whatever requirements we're breaking down into phases, the framework must require all of those phases to be really, really detailed and broken down into those atomic tasks. You have your product requirements document, the overall requirements, which is kind of the source of truth. You break those down into phases, and then you break those phases down into tasks, and then you do implementation planning. Once all of that is broken down, it should be really, really outlined in detail in a markdown folder or file, exactly the hierarchy and the structure of all those phases and the tasks.
-2. Once we feel good about that, we will ask the AI to create all those milestones and tickets in linear. After it creates all of them, it should then spawn a few agents to do verification to make sure it didn't miss anything or there are no discrepancies or gaps. At that point, linear will become the source of truth.

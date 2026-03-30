@@ -1,10 +1,6 @@
 ---
 name: mpf:plan-phases
-description: >
-  Break PRD requirements into implementation phases and generate the project roadmap.
-  Produces docs/roadmap.md and phase overview files under docs/requirements/phases/.
-  Creates Linear milestones if external tracking is configured.
-  Run after mpf:discover, before mpf:plan-tasks.
+description: Break PRD requirements into implementation phases and generate the project roadmap. Produces docs/roadmap.md and phase overview files under docs/requirements/phases/. Creates Linear milestones if external tracking is configured. Run after mpf:discover, before mpf:plan-tasks.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__claude_ai_Linear__*
 ---
 
@@ -26,7 +22,7 @@ If `docs/requirements/PRD.md` does not exist or is a placeholder, tell the user:
 
 ## Template Reference
 
-Read the roadmap.md and Phase Overview templates from `~/.claude/plugins/mpf/skills/mpf/references/document-templates.md` before generating documents.
+Read the roadmap.md and Phase Overview templates from `skills/mpf/references/document-templates.md` before generating documents.
 
 ## Phase Decomposition
 

@@ -1,10 +1,6 @@
 ---
 name: mpf:discover
-description: >
-  Create the Product Requirements Document (PRD) through a structured interview.
-  Produces docs/requirements/PRD.md, updates docs/requirements/requirements.md (if in-repo tracking),
-  and populates technical-specs/ with architecture and data model decisions.
-  Run after mpf:init, before mpf:plan-phases.
+description: Create the Product Requirements Document (PRD) through a structured interview. Produces docs/requirements/PRD.md, updates docs/requirements/requirements.md (if in-repo tracking), and populates technical-specs/ with architecture and data model decisions. Run after mpf:init, before mpf:plan-phases.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 
@@ -24,7 +20,7 @@ If `CLAUDE.md` does not exist, tell the user: "No CLAUDE.md found. Run `mpf:init
 
 ## Template Reference
 
-Read the PRD.md template from `~/.claude/plugins/mpf/skills/mpf/references/document-templates.md` (section "PRD.md") before generating the document. Follow that structure exactly.
+Read the PRD.md template from `skills/mpf/references/document-templates.md` (section "PRD.md") before generating the document. Follow that structure exactly.
 
 ## Interview Process
 

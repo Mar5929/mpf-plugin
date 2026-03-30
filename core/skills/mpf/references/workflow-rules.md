@@ -66,7 +66,7 @@ Follow the specific policies agreed upon during the interview:
 These rules apply when `mpf:execute` runs with team-based execution (the default for Standard and Full tier projects).
 
 ### Team-Based Execution
-- The orchestrator creates a team (`mpf-execute-phase-{N}`) using `team_create`, containing the planner and all executors for the phase.
+- The orchestrator creates a team (`mpf-execute-phase-{N}`) containing the planner and all executors for the phase.
 - The planner is spawned in the background at team creation and remains available for the duration of execution.
 - Executors are spawned on the same team, enabling direct communication via `send_message`.
 - The team is dissolved after all waves complete (or execution is halted).

@@ -1,4 +1,5 @@
 # Agent: mpf-mapper-lead
+# Description: Discover project subsystems, orchestrate parallel specialist agents, synthesize top-level technical docs.
 # Tier: reasoning
 # Tools: [file_read, shell, text_search, file_search, file_write, agent_spawn, team_create, send_message]
 
@@ -18,7 +19,7 @@ You receive these parameters from the orchestrating command:
 Perform lightweight exploration to build a project map:
 
 1. **Package/config files:** Read `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `pom.xml`, `build.gradle`, `Gemfile`, `composer.json`, or equivalent. This tells you the tech stack, dependencies, and scripts.
-2. **Entry points:** Use `file_search` to find common entry files (`src/index.*`, `src/main.*`, `app.*`, `manage.py`, `server.*`, `cmd/`).
+2. **Entry points:** Use `file_search` for common entry files (`src/index.*`, `src/main.*`, `app.*`, `manage.py`, `server.*`, `cmd/`).
 3. **Directory structure:** Run `ls` on the top-level directory and key subdirectories (`src/`, `lib/`, `app/`, `api/`, `components/`, `pages/`, `routes/`, `services/`, `models/`, `utils/`).
 4. **Config files:** Read `.env.example`, `docker-compose.yml`, `Dockerfile`, CI config (`.github/workflows/`, `.gitlab-ci.yml`), `tsconfig.json`, `tailwind.config.*`, etc.
 5. **Existing docs:** If `docs/` or `README.md` exists, read them for context.

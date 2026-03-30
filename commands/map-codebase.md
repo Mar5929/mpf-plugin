@@ -1,10 +1,6 @@
 ---
 name: mpf:map-codebase
-description: >
-  Analyze an existing codebase and generate technical-specs/ documentation for brownfield projects.
-  Spawns the mpf-mapper-lead agent to discover subsystems, orchestrate parallel specialist agents, and produce
-  high-level-architecture.md, code-atlas.md, architecture/ and code-modules/ files.
-  Run before mpf:init for brownfield projects.
+description: Analyze an existing codebase and generate technical-specs/ documentation for brownfield projects. Spawns the mpf-mapper-lead agent to discover subsystems, orchestrate parallel specialist agents, and produce high-level-architecture.md, code-atlas.md, architecture/ and code-modules/ files. Run before mpf:init for brownfield projects.
 allowed-tools: Read, Bash, Grep, Glob, Agent
 ---
 

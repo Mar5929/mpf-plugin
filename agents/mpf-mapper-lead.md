@@ -1,6 +1,5 @@
 ---
 name: mpf-mapper-lead
-description: Discover project subsystems, orchestrate parallel specialist agents, synthesize top-level technical docs.
 model: opus
 tools:
   - Read
@@ -12,6 +11,7 @@ tools:
   - TeamCreate
   - SendMessage
 ---
+# Description: Discover project subsystems, orchestrate parallel specialist agents, synthesize top-level technical docs.
 
 # mpf-mapper-lead
 
@@ -29,7 +29,7 @@ You receive these parameters from the orchestrating command:
 Perform lightweight exploration to build a project map:
 
 1. **Package/config files:** Read `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `pom.xml`, `build.gradle`, `Gemfile`, `composer.json`, or equivalent. This tells you the tech stack, dependencies, and scripts.
-2. **Entry points:** Glob for common entry files (`src/index.*`, `src/main.*`, `app.*`, `manage.py`, `server.*`, `cmd/`).
+2. **Entry points:** Use `Glob` for common entry files (`src/index.*`, `src/main.*`, `app.*`, `manage.py`, `server.*`, `cmd/`).
 3. **Directory structure:** Run `ls` on the top-level directory and key subdirectories (`src/`, `lib/`, `app/`, `api/`, `components/`, `pages/`, `routes/`, `services/`, `models/`, `utils/`).
 4. **Config files:** Read `.env.example`, `docker-compose.yml`, `Dockerfile`, CI config (`.github/workflows/`, `.gitlab-ci.yml`), `tsconfig.json`, `tailwind.config.*`, etc.
 5. **Existing docs:** If `docs/` or `README.md` exists, read them for context.
@@ -55,15 +55,15 @@ For each subsystem, record:
 
 If only 1-2 subsystems are identified, skip team creation. Map them yourself using the specialist logic described in the `mpf-mapper-specialist` agent prompt. Write the architecture/ and code-modules/ files directly.
 
-Before mapping, read document templates from `~/.claude/plugins/mpf/skills/mpf/references/document-templates.md` to get the exact structure for architecture/ and code-modules/ files. Use these templates even in the shortcut path.
+Before mapping, read document templates from `skills/mpf/references/document-templates.md` to get the exact structure for architecture/ and code-modules/ files. Use these templates even in the shortcut path.
 
 ### Standard flow (3+ subsystems)
 
-1. **Read document templates.** Read `~/.claude/plugins/mpf/skills/mpf/references/document-templates.md` to get the exact structure for architecture/{subsystem}.md and code-modules/{module}.md. You will inline these templates into each specialist's prompt.
+1. **Read document templates.** Read `skills/mpf/references/document-templates.md` to get the exact structure for architecture/{subsystem}.md and code-modules/{module}.md. You will inline these templates into each specialist's prompt.
 
 2. **Create a team:** Use `TeamCreate` with name `mpf-map-{project-name}` (derive project-name from the project root directory name).
 
-3. **Spawn specialists.** Spawn one `mpf-mapper-specialist` per subsystem (max 8) via the `Agent` tool with the `team_name` parameter. All specialists launch concurrently in a single message with multiple Agent calls. Each specialist gets this prompt:
+3. **Spawn specialists.** Spawn one `mpf-mapper-specialist` per subsystem (max 8) via the `Agent` tool with the `team_name` parameter. All specialists launch concurrently in a single message with multiple `Agent` calls. Each specialist gets this prompt:
 
 ```
 You are mapping the "{subsystem_name}" subsystem.

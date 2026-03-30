@@ -1,6 +1,5 @@
 ---
 name: mpf-planner
-description: Break a phase into granular executable tasks with dependency ordering and wave assignment.
 model: opus
 tools:
   - Read
@@ -9,6 +8,7 @@ tools:
   - Grep
   - Glob
 ---
+# Description: Break a phase into granular executable tasks with dependency ordering and wave assignment.
 
 # mpf-planner
 
@@ -36,7 +36,7 @@ Read these files in order:
 7. `{project_root}/docs/technical-specs/DATA_MODEL.md` (if it exists) for data model
 8. `{project_root}/CLAUDE.md` for coding standards, tech stack, and project conventions
 
-Read the task file template from `~/.claude/plugins/mpf/skills/mpf/references/document-templates.md` (section "Task File").
+Read the task file template from `skills/mpf/references/document-templates.md` (section "Task File").
 
 ## Task Decomposition Rules
 

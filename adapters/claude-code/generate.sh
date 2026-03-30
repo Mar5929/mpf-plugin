@@ -10,7 +10,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 CORE_DIR="$REPO_ROOT/core"
 TOOL_MAP="$SCRIPT_DIR/tool-map.yaml"
-OUTPUT_DIR="$REPO_ROOT/dist/claude-code"
+OUTPUT_DIR="$REPO_ROOT"
 
 # ==============================================================================
 # Associative arrays for mappings
@@ -92,16 +92,12 @@ build_sed_script() {
     echo 's/\([^a-zA-Z0-9_]\)'"$key"'\([^a-zA-Z0-9_]\)/\1'"$val_escaped"'\2/g' >> "$SED_SCRIPT_FILE"
   done
 
-  # Build combined script with tier-to-model substitutions appended
-  SED_SCRIPT_FILE_FULL="$SCRIPT_DIR/.sed_script_full.tmp"
-  cp "$SED_SCRIPT_FILE" "$SED_SCRIPT_FILE_FULL"
-  for tier in "${!TIER_MODELS[@]}"; do
-    local model="${TIER_MODELS[$tier]}"
-    echo 's/`'"$tier"'`/`'"$model"'`/g' >> "$SED_SCRIPT_FILE_FULL"
-    echo 's/\([^a-zA-Z0-9_]\)'"$tier"'\([^a-zA-Z0-9_]\)/\1'"$model"'\2/g' >> "$SED_SCRIPT_FILE_FULL"
-  done
+  # NOTE: No tier-to-model body substitutions. Tier mapping only applies to
+  # agent frontmatter (model: field), not body text. Applying it to body text
+  # corrupts prose (e.g., "Deep reasoning needed" becomes "Deep opus needed").
+  SED_SCRIPT_FILE_FULL="$SED_SCRIPT_FILE"
 
-  echo "[build_sed_script] Precompiled sed scripts (${#keys[@]} tool + ${#TIER_MODELS[@]} tier mappings)."
+  echo "[build_sed_script] Precompiled sed script (${#keys[@]} tool mappings)."
 }
 
 # ==============================================================================
@@ -177,7 +173,7 @@ transform_agents() {
 
 transform_commands() {
   local cmd_dir="$CORE_DIR/commands/mpf"
-  local out_dir="$OUTPUT_DIR/commands/mpf"
+  local out_dir="$OUTPUT_DIR/commands"
   mkdir -p "$out_dir"
 
   local count=0
@@ -351,7 +347,7 @@ validate() {
   echo "  Agents:     $c"
   total=$((total + c))
 
-  c=$(ls "$OUTPUT_DIR/commands/mpf/"*.md 2>/dev/null | wc -l)
+  c=$(ls "$OUTPUT_DIR/commands/"*.md 2>/dev/null | wc -l)
   echo "  Commands:   $c"
   total=$((total + c))
 
@@ -361,11 +357,6 @@ validate() {
 
   if [[ -f "$OUTPUT_DIR/hooks/doc-update-hook.sh" ]]; then
     echo "  Hooks:      1"
-    total=$((total + 1))
-  fi
-
-  if [[ -f "$OUTPUT_DIR/.claude-plugin/plugin.json" ]]; then
-    echo "  Plugin JSON: yes"
     total=$((total + 1))
   fi
 
@@ -383,8 +374,8 @@ main() {
   echo "MPF generate.sh - building Claude Code plugin from core/ specs"
   echo ""
 
-  # Clean previous output (idempotent)
-  rm -rf "$OUTPUT_DIR"
+  # Clean previous generated output (safe: only removes known generated dirs)
+  rm -rf "$OUTPUT_DIR/agents" "$OUTPUT_DIR/commands" "$OUTPUT_DIR/skills" "$OUTPUT_DIR/hooks"
   mkdir -p "$OUTPUT_DIR"
 
   parse_tool_map
@@ -392,7 +383,6 @@ main() {
   transform_agents
   transform_commands
   transform_skills
-  generate_plugin_json
   generate_hook
 
   # Clean up temp sed script

@@ -1,9 +1,6 @@
 ---
 name: mpf:status
-description: >
-  Display the current project status dashboard. Reads docs/PROJECT_STATUS.md,
-  roadmap, Linear ticket counts, git branch status, and sync health.
-  Run any time to check project state.
+description: Display the current project status dashboard. Reads docs/PROJECT_STATUS.md, roadmap, Linear ticket counts, git branch status, and sync health. Run any time to check project state.
 allowed-tools: Read, Grep, Glob, Bash, mcp__claude_ai_Linear__*
 ---
 
@@ -42,7 +39,7 @@ Show all phases from the roadmap with progress indicators:
 If Linear is configured:
 
 1. Read `docs/traceability-matrix.md` to get all ticket IDs (RIH-XXX) mapped to phases.
-2. Query Linear MCP `list_issues` for team Rihm to get current ticket states.
+2. Query `mcp__claude_ai_Linear__*` for team Rihm to get current ticket states.
 3. Display a per-phase ticket breakdown:
 
 ```
@@ -54,7 +51,7 @@ If Linear is configured:
 | Total |                   | 19      | 8       | 2           | 9    | 0         |
 ```
 
-If Linear MCP tools are unavailable or the query fails, display: "Linear status unavailable. Run `mpf:sync-linear` for detailed tracking."
+If `mcp__claude_ai_Linear__*` tools are unavailable or the query fails, display: "Linear status unavailable. Run `mpf:sync-linear` for detailed tracking."
 
 If Linear is not configured, skip this section entirely.
 
@@ -109,5 +106,5 @@ Based on the current state, suggest what the user should do next. Examples:
 
 - If `docs/PROJECT_STATUS.md` does not exist, inform the user: "No PROJECT_STATUS.md found. Run `mpf:init` to set up the project first."
 - If `docs/roadmap.md` does not exist, skip the phase summary table and note that no roadmap has been created yet.
-- If Linear query fails, skip the Linear Ticket Status section gracefully and note it in Suggested Next Action.
+- If `mcp__claude_ai_Linear__*` query fails, skip the Linear Ticket Status section gracefully and note it in Suggested Next Action.
 - If `git` is not available, skip the Git Status section.

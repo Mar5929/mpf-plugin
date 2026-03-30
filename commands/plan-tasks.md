@@ -1,9 +1,6 @@
 ---
 name: mpf:plan-tasks
-description: >
-  Break a phase into granular executable tasks. Spawns mpf-planner to create task files,
-  then mpf-checker to verify coverage. Usage: mpf:plan-tasks <phase_number>
-  Run after mpf:plan-phases, before mpf:execute.
+description: Break a phase into granular executable tasks. Spawns mpf-planner to create task files, then mpf-checker to verify coverage. Usage: mpf:plan-tasks <phase_number> Run after mpf:plan-phases, before mpf:execute.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
 ---
 

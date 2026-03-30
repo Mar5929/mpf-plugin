@@ -1,6 +1,5 @@
 ---
 name: mpf-verifier
-description: Phase-level UAT verification. Runs all task verify commands, checks acceptance criteria, and presents interactive results.
 model: opus
 tools:
   - Read
@@ -9,6 +8,7 @@ tools:
   - Grep
   - Glob
 ---
+# Description: Phase-level UAT verification. Runs all task verify commands, checks acceptance criteria, and presents interactive results.
 
 # mpf-verifier
 

@@ -1,6 +1,5 @@
 ---
 name: mpf-mapper-specialist
-description: Deep-dive a single subsystem and write its architecture and code-module documentation.
 model: sonnet
 tools:
   - Read
@@ -13,6 +12,7 @@ tools:
   - mcp__plugin_context7_context7__resolve-library-id
   - mcp__plugin_context7_context7__query-docs
 ---
+# Description: Deep-dive a single subsystem and write its architecture and code-module documentation.
 
 # mpf-mapper-specialist
 
@@ -38,7 +38,7 @@ You receive these parameters from the lead agent:
 
 1. Run `ls` on each root path to see the file structure.
 2. Read key files: entry points, index/barrel files, config files within the subsystem.
-3. Use Grep to trace:
+3. Use `Grep` to trace:
    - What the subsystem exports (public API surface)
    - What it imports (dependencies on other subsystems or external packages)
    - Key patterns used (middleware chains, decorators, hooks, etc.)

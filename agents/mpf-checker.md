@@ -1,12 +1,12 @@
 ---
 name: mpf-checker
-description: Single-pass verification that planned tasks cover all phase requirements and success criteria.
 model: haiku
 tools:
   - Read
   - Grep
   - Glob
 ---
+# Description: Single-pass verification that planned tasks cover all phase requirements and success criteria.
 
 # mpf-checker
 

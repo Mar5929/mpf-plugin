@@ -1,5 +1,5 @@
 # Command: mpf:plan-tasks
-# Description: Break a phase into granular executable tasks. Spawns mpf-planner to create task files, then mpf-checker to verify coverage. Usage: mpf:plan-tasks <phase_number>. Run after mpf:plan-phases, before mpf:execute.
+# Description: Break a phase into granular executable tasks. Spawns mpf-planner to create task files, then mpf-checker to verify coverage. Usage: mpf:plan-tasks <phase_number> Run after mpf:plan-phases, before mpf:execute.
 # Tools: [file_read, file_write, file_edit, shell, text_search, file_search, agent_spawn, linear_api]
 
 # mpf:plan-tasks

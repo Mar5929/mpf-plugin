@@ -1,4 +1,5 @@
 # Agent: mpf-mapper-specialist
+# Description: Deep-dive a single subsystem and write its architecture and code-module documentation.
 # Tier: standard
 # Tools: [file_read, shell, text_search, file_search, file_write, task_update, send_message, context7_resolve, context7_query]
 

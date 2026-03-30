@@ -1,6 +1,5 @@
 ---
 name: mpf-executor
-description: Execute a single task with atomic commits, inline verification, and living document updates.
 model: sonnet
 tools:
   - Read
@@ -13,6 +12,7 @@ tools:
   - mcp__plugin_context7_context7__resolve-library-id
   - mcp__plugin_context7_context7__query-docs
 ---
+# Description: Execute a single task with atomic commits, inline verification, and living document updates.
 
 # mpf-executor
 
@@ -37,7 +37,7 @@ Read in order:
    a. Call `mcp__plugin_context7_context7__resolve-library-id` with the library name to get its Context7 identifier.
    b. Call `mcp__plugin_context7_context7__query-docs` with the resolved library ID and a query derived from the task's Action section (e.g., if the task says "create a REST endpoint with Express," query "Express routing and middleware").
    c. Include the fetched documentation in your working context for the implementation step.
-   d. **Graceful degradation:** If `resolve-library-id` returns no match, or `query-docs` fails (network error, timeout, empty response), log a warning in your output (`Context7: {library-name} not resolved, proceeding with training knowledge`) and continue. Never block execution on Context7 unavailability.
+   d. **Graceful degradation:** If `mcp__plugin_context7_context7__resolve-library-id` returns no match, or `mcp__plugin_context7_context7__query-docs` fails (network error, timeout, empty response), log a warning in your output (`Context7: {library-name} not resolved, proceeding with training knowledge`) and continue. Never block execution on Context7 unavailability.
 3. `{project_root}/CLAUDE.md` for coding standards, golden rules, and conventions
 4. Each file listed in the task's "Files" section (if they exist, to understand current state)
 5. `{project_root}/docs/technical-specs/code-atlas.md` only if you need to understand module relationships
@@ -59,7 +59,7 @@ Follow the task's "Action" section. Write the code as specified.
 
 **Deviation rules:**
 - **Auto-fix without asking:** Import errors, missing type declarations, minor syntax fixes, test fixture setup, linting issues.
-- **Stop and return an error report (or escalate if on a team):** Architectural changes not in the task, new dependencies not specified, changes to files not listed in the task, scope creep beyond the task's requirements. If executing within a team, attempt escalation (Step 2b) before stopping. Return a structured error via your Agent return value so the orchestrating command (mpf:execute) can surface it to the user.
+- **Stop and return an error report (or escalate if on a team):** Architectural changes not in the task, new dependencies not specified, changes to files not listed in the task, scope creep beyond the task's requirements. If executing within a team, attempt escalation (Step 2b) before stopping. Return a structured error via your agent return value so the orchestrating command (mpf:execute) can surface it to the user.
 
 **Coding standards:**
 - Follow all conventions from CLAUDE.md (naming, patterns, formatting).

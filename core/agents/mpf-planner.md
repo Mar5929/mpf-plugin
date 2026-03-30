@@ -1,4 +1,5 @@
 # Agent: mpf-planner
+# Description: Break a phase into granular executable tasks with dependency ordering and wave assignment.
 # Tier: reasoning
 # Tools: [file_read, file_write, shell, text_search, file_search]
 

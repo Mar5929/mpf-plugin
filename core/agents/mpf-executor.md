@@ -1,4 +1,5 @@
 # Agent: mpf-executor
+# Description: Execute a single task with atomic commits, inline verification, and living document updates.
 # Tier: standard
 # Tools: [file_read, file_write, file_edit, shell, text_search, file_search, send_message, context7_resolve, context7_query]
 
@@ -47,7 +48,7 @@ Follow the task's "Action" section. Write the code as specified.
 
 **Deviation rules:**
 - **Auto-fix without asking:** Import errors, missing type declarations, minor syntax fixes, test fixture setup, linting issues.
-- **Stop and return an error report (or escalate if on a team):** Architectural changes not in the task, new dependencies not specified, changes to files not listed in the task, scope creep beyond the task's requirements. If executing within a team, attempt escalation (Step 2b) before stopping. Return a structured error via your Agent return value so the orchestrating command (mpf:execute) can surface it to the user.
+- **Stop and return an error report (or escalate if on a team):** Architectural changes not in the task, new dependencies not specified, changes to files not listed in the task, scope creep beyond the task's requirements. If executing within a team, attempt escalation (Step 2b) before stopping. Return a structured error via your agent return value so the orchestrating command (mpf:execute) can surface it to the user.
 
 **Coding standards:**
 - Follow all conventions from CLAUDE.md (naming, patterns, formatting).

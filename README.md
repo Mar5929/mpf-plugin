@@ -1,6 +1,6 @@
 # MPF (Mike Project Framework)
 
-A Claude Code plugin for lean project management: phased execution, codebase mapping, state tracking, and atomic commits.
+A cross-platform AI plugin for lean project management: phased execution, codebase mapping, state tracking, and atomic commits. Currently targets Claude Code, with Cursor and Codex adapters planned.
 
 ## Commands
 
@@ -15,6 +15,7 @@ A Claude Code plugin for lean project management: phased execution, codebase map
 | `mpf:verify` | Verify phase completion against acceptance criteria |
 | `mpf:status` | Show current project status (with Linear counts, git status, sync health) |
 | `mpf:sync-linear` | Compare local project state with Linear tickets; report and fix discrepancies |
+| `mpf:decompose` | Break ad-hoc TODOs into structured task files without the full PRD pipeline |
 
 ## Installation
 
@@ -22,6 +23,7 @@ A Claude Code plugin for lean project management: phased execution, codebase map
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated
 - Git
+- Bash 4.0+ (for the build script)
 
 ### Steps
 
@@ -35,57 +37,65 @@ A Claude Code plugin for lean project management: phased execution, codebase map
    git clone https://github.com/Mar5929/mpf-plugin.git %USERPROFILE%\.claude\plugins\mpf
    ```
 
-   If `~/.claude/plugins/` does not exist yet, create it first:
+2. **Build the plugin:**
 
    ```bash
-   mkdir -p ~/.claude/plugins
+   cd ~/.claude/plugins/mpf
+   bash build.sh
    ```
 
-2. **Restart Claude Code.** The plugin is detected automatically on startup via the `.claude-plugin/plugin.json` manifest. No settings changes needed.
+3. **Load the plugin:**
 
-3. **Verify installation.** In a Claude Code session, type any MPF command (e.g., `/mpf:status`). If the command is recognized, the plugin is loaded.
+   ```bash
+   claude --plugin-dir ~/.claude/plugins/mpf
+   ```
+
+4. **Verify.** In your Claude session, type `/mpf:status`. If the command is recognized, the plugin is loaded.
 
 ### Updating
-
-Pull the latest changes:
 
 ```bash
 cd ~/.claude/plugins/mpf
 git pull
+bash build.sh
 ```
 
-Then restart Claude Code.
+Then run `/reload-plugins` in your Claude session.
 
 ### Uninstalling
-
-Remove the plugin directory:
 
 ```bash
 rm -rf ~/.claude/plugins/mpf
 ```
 
-Then restart Claude Code.
-
 ## Architecture
 
 ```
-mpf/
-  .claude-plugin/
-    plugin.json          # Plugin manifest
-  agents/
-    mpf-mapper-lead.md   # Discovers subsystems, orchestrates parallel mapping
-    mpf-mapper-specialist.md  # Maps a single subsystem (spawned by lead)
-    mpf-checker.md       # Validates phase output
-    mpf-executor.md      # Executes task plans
-    mpf-planner.md       # Generates task-level plans
-    mpf-verifier.md      # Verifies phase completion
-  commands/mpf/          # Slash commands (one file per command)
-  hooks/                 # Git and doc-update hooks
-  skills/mpf/            # Skill definitions and reference docs
-    references/
-      document-templates.md   # Templates for generated documentation
-      workflow-rules.md       # Execution and commit conventions
+core/                          <- SOURCE OF TRUTH. Edit here.
+  agents/                      <- Agent behavior specs (abstract tool/tier names)
+  commands/mpf/                <- Command orchestration specs
+  skills/mpf/                  <- Skill definition + reference docs
+  hooks/                       <- Hook behavior specs
+  model-tiers.yaml             <- Tier definitions (reasoning/standard/fast)
+  tool-mappings.yaml           <- Abstract tool name mappings
+
+adapters/claude-code/          <- Transforms core/ into Claude Code format
+  generate.sh                  <- Build script
+  tool-map.yaml                <- Claude Code tool + tier mappings
+
+agents/, commands/, skills/, hooks/   <- GENERATED. Do not hand-edit.
 ```
+
+### Development workflow
+
+1. Edit files in `core/`
+2. Run `bash build.sh`
+3. In Claude: `/reload-plugins`
+4. Test your changes
+
+### Building adapters for other platforms
+
+See `adapters/ADAPTER_GUIDE.md` for the adapter interface specification.
 
 ## Codebase Mapping
 
@@ -97,42 +107,7 @@ mpf/
 
 For small projects (1-2 subsystems), the lead handles everything inline without spawning specialists.
 
-Output goes to `docs/technical-specs/` with architecture diagrams, code atlases, and per-subsystem documentation.
-
-## Architecture: Core and Adapters
-
-MPF v2 separates platform-neutral spec content from platform-specific delivery. The `core/` directory contains all agent behaviors, command logic, skills, and references using abstract tool names and model tiers. Platform adapters transform `core/` into a platform-specific plugin structure.
-
-```
-mpf/
-  core/                          # Platform-neutral specs
-    agents/                      # Agent behavior specs (abstract tiers and tools)
-    commands/mpf/                # Command orchestration logic
-    skills/mpf/                  # SKILL.md and references
-    hooks/                       # Hook behavior specs
-    model-tiers.yaml             # Abstract tier definitions
-    tool-mappings.yaml           # Abstract tool name mappings
-  adapters/
-    claude-code/                 # Claude Code adapter
-      generate.sh                # Transforms core/ into plugin structure
-      tool-map.yaml              # Claude Code tool name mappings
-      README.md                  # Adapter usage docs
-    ADAPTER_GUIDE.md             # How to build new adapters
-  dist/
-    claude-code/                 # Generated Claude Code plugin (output of adapter)
-```
-
-### Regenerating the Claude Code plugin
-
-The root-level plugin structure (`.claude-plugin/`, `agents/`, `commands/`, `skills/`, `hooks/`) is the active Claude Code plugin. To regenerate after editing core specs:
-
-```bash
-cd adapters/claude-code && ./generate.sh
-```
-
-### Building adapters for other platforms
-
-See `adapters/ADAPTER_GUIDE.md` for the full adapter interface specification, including how to map abstract tiers, tools, commands, and platform-specific features.
+Output goes to `docs/technical-specs/`.
 
 ## License
 

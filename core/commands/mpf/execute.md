@@ -1,5 +1,5 @@
 # Command: mpf:execute
-# Description: Execute all tasks in a phase with wave-based parallelization and atomic commits. Creates a feature branch, spawns mpf-executor agents per task, and pushes to remote. Usage: mpf:execute <phase_number>. Run after mpf:plan-tasks, before mpf:verify.
+# Description: Execute all tasks in a phase with wave-based parallelization and atomic commits. Creates a feature branch, spawns mpf-executor agents per task, and pushes to remote. Usage: mpf:execute <phase_number> Run after mpf:plan-tasks, before mpf:verify.
 # Tools: [file_read, file_write, file_edit, shell, text_search, file_search, agent_spawn, team_create, send_message, linear_api]
 
 # mpf:execute

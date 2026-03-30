@@ -1,10 +1,6 @@
 ---
 name: mpf:sync-linear
-description: >
-  Compare local MPF project artifacts with Linear ticket status. Reports gaps,
-  orphan tickets, status mismatches, and missing traceability. Optionally fixes
-  discrepancies by updating Linear or local docs.
-  Run any time to audit project-tracker alignment.
+description: Compare local MPF project artifacts with Linear ticket status. Reports gaps, orphan tickets, status mismatches, and missing traceability. Optionally fixes discrepancies by updating Linear or local docs. Run any time to audit project-tracker alignment.
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash, mcp__claude_ai_Linear__*
 ---
 
@@ -47,11 +43,11 @@ Build a local state map from project files:
 
 Query Linear for the current ticket state:
 
-1. Use Linear MCP `list_issues` for team Rihm (`dfe15bc4-6dd0-4bde-8609-6620efc3140d`) to get all tickets.
+1. Use `mcp__claude_ai_Linear__*` for team Rihm (`dfe15bc4-6dd0-4bde-8609-6620efc3140d`) to get all tickets.
 2. For each ticket, record: ticket ID, title, state (Backlog, Todo, In Progress, Done, Cancelled), assignee, milestone.
 3. Build a lookup map: ticketId -> { title, state, assignee, milestone }.
 
-If Linear MCP tools are unavailable, tell the user: "Linear MCP server is not connected. Check that the Linear MCP server is configured in your Claude Code settings."
+If `mcp__claude_ai_Linear__*` tools are unavailable, tell the user: "Linear MCP server is not connected. Check that the Linear MCP server is configured in your Claude Code settings."
 
 ### Step 4: Compare and Detect Discrepancies
 
@@ -144,14 +140,14 @@ Wait for the user's choice before proceeding.
 
 **Fix actions by discrepancy type:**
 
-- **Missing ticket:** Create a new Linear ticket via `save_issue` with the requirement description, assign to Michael Rihm, set appropriate state. Update `docs/traceability-matrix.md` with the new ticket ID.
+- **Missing ticket:** Create a new Linear ticket via `mcp__claude_ai_Linear__*` with the requirement description, assign to Michael Rihm, set appropriate state. Update `docs/traceability-matrix.md` with the new ticket ID.
 - **Orphan ticket:** Ask the user if the ticket belongs to this project. If yes, add it to `docs/traceability-matrix.md` mapped to the appropriate requirement. If no, skip it.
-- **Status mismatch (local ahead):** Update the Linear ticket state to match local status via `save_issue`. Add a comment via `save_comment`: "Status synced from local project state: task completed."
+- **Status mismatch (local ahead):** Update the Linear ticket state to match local status via `mcp__claude_ai_Linear__*`. Add a comment via `mcp__claude_ai_Linear__*`: "Status synced from local project state: task completed."
 - **Status mismatch (Linear ahead):** Update the local task file to check all Done checkboxes. Update `docs/PROJECT_STATUS.md` active work items section.
 - **Phase mismatch (local ahead):** Update Linear tickets for the phase to Done state.
 - **Phase mismatch (Linear ahead):** Update `docs/roadmap.md` phase status to Done. Update `docs/PROJECT_STATUS.md` phase summary.
 - **Missing milestone:** Note in the report. Do not auto-create milestones (user may have restructured in Linear).
-- **Unassigned ticket:** Assign to Michael Rihm (`8d75f0a6-f848-41af-9f4b-d06036d6af82`) via `save_issue`.
+- **Unassigned ticket:** Assign to Michael Rihm (`8d75f0a6-f848-41af-9f4b-d06036d6af82`) via `mcp__claude_ai_Linear__*`.
 
 ### Step 7: Post-Fix Summary
 
@@ -168,7 +164,7 @@ Update the sync report file (`docs/sync-report.md`) to reflect the fixes applied
 
 ## Error Handling
 
-- If Linear MCP tools are not available (server not connected), tell the user: "Linear MCP server is not connected. Check that the Linear MCP server is configured in your Claude Code settings."
+- If `mcp__claude_ai_Linear__*` tools are not available (server not connected), tell the user: "Linear MCP server is not connected. Check that the Linear MCP server is configured in your Claude Code settings."
 - If `docs/traceability-matrix.md` does not exist, tell the user: "No traceability matrix found. This command requires external tracker integration. Run `mpf:init` with external tracking, then `mpf:plan-phases` to create the matrix."
-- If Linear API calls fail or rate limit, report partial results and note which phases could not be checked.
+- If `mcp__claude_ai_Linear__*` calls fail or rate limit, report partial results and note which phases could not be checked.
 - If no phases exist yet (empty roadmap), tell the user: "No phases found in roadmap. Run `mpf:plan-phases` first."
