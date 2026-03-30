@@ -1,7 +1,7 @@
 ---
 name: mpf:sync-linear
 description: Compare local MPF project artifacts with Linear ticket status. Reports gaps, orphan tickets, status mismatches, and missing traceability. Optionally fixes discrepancies by updating Linear or local docs. Run any time to audit project-tracker alignment.
-allowed-tools: Read, Write, Edit, Grep, Glob, Bash, mcp__claude_ai_Linear__*
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash, mcp__claude_ai_Linear__*
 ---
 
 # mpf:sync-linear

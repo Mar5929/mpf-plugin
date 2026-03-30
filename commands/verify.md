@@ -1,7 +1,7 @@
 ---
 name: mpf:verify
 description: Run phase-level UAT verification after execution. Spawns mpf-verifier to check all task verify commands, success criteria, and project test suite. Usage: mpf:verify <phase_number>. Run after mpf:execute. Phase merges to main only after verify passes.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
 ---
 
 # mpf:verify
@@ -30,7 +30,7 @@ Example: `mpf:verify 1`
 Launch the verifier agent:
 
 ```
-Agent(
+Agent(
   subagent_type: "mpf-verifier",
   prompt: "Verify phase {N} ({name}). Project root: {project_root}. Phase number: {N}. Phase name: {name}."
 )

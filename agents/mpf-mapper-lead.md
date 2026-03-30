@@ -1,6 +1,6 @@
 ---
 name: mpf-mapper-lead
-model: opus
+model: reasoning
 tools:
   - Read
   - Bash
@@ -29,7 +29,7 @@ You receive these parameters from the orchestrating command:
 Perform lightweight exploration to build a project map:
 
 1. **Package/config files:** Read `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `pom.xml`, `build.gradle`, `Gemfile`, `composer.json`, or equivalent. This tells you the tech stack, dependencies, and scripts.
-2. **Entry points:** Use `Glob` for common entry files (`src/index.*`, `src/main.*`, `app.*`, `manage.py`, `server.*`, `cmd/`).
+2. **Entry points:** Use `Glob` for common entry files (`src/index.*`, `src/main.*`, `app.*`, `manage.py`, `server.*`, `cmd/`).
 3. **Directory structure:** Run `ls` on the top-level directory and key subdirectories (`src/`, `lib/`, `app/`, `api/`, `components/`, `pages/`, `routes/`, `services/`, `models/`, `utils/`).
 4. **Config files:** Read `.env.example`, `docker-compose.yml`, `Dockerfile`, CI config (`.github/workflows/`, `.gitlab-ci.yml`), `tsconfig.json`, `tailwind.config.*`, etc.
 5. **Existing docs:** If `docs/` or `README.md` exists, read them for context.
@@ -61,9 +61,9 @@ Before mapping, read document templates from `skills/mpf/references/document-tem
 
 1. **Read document templates.** Read `skills/mpf/references/document-templates.md` to get the exact structure for architecture/{subsystem}.md and code-modules/{module}.md. You will inline these templates into each specialist's prompt.
 
-2. **Create a team:** Use `TeamCreate` with name `mpf-map-{project-name}` (derive project-name from the project root directory name).
+2. **Create a team:** Use `TeamCreate` with name `mpf-map-{project-name}` (derive project-name from the project root directory name).
 
-3. **Spawn specialists.** Spawn one `mpf-mapper-specialist` per subsystem (max 8) via the `Agent` tool with the `team_name` parameter. All specialists launch concurrently in a single message with multiple `Agent` calls. Each specialist gets this prompt:
+3. **Spawn specialists.** Spawn one `mpf-mapper-specialist` per subsystem (max 8) via the `Agent` tool with the `team_name` parameter. All specialists launch concurrently in a single message with multiple `Agent` calls. Each specialist gets this prompt:
 
 ```
 You are mapping the "{subsystem_name}" subsystem.
@@ -86,8 +86,8 @@ Write these files:
 Only read files within your assigned paths. Do not scan the entire codebase.
 If existing_docs is true, read existing files and update rather than overwrite.
 
-When done, mark your task as completed via `TaskUpdate` and send a summary to the lead
-via `SendMessage` listing files written and key findings.
+When done, mark your task as completed via `TaskUpdate` and send a summary to the lead
+via `SendMessage` listing files written and key findings.
 ```
 
 4. **Wait for completion.** You receive automatic notifications as specialists complete. Wait until all specialist tasks are marked done.

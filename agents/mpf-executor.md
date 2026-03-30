@@ -1,6 +1,6 @@
 ---
 name: mpf-executor
-model: sonnet
+model: standard
 tools:
   - Read
   - Write
@@ -34,10 +34,10 @@ Read in order:
 
 1. The task file at `{task_file}`
 2. **Library documentation (if Libraries section exists):** For each library listed in the task's `## Libraries` section:
-   a. Call `mcp__plugin_context7_context7__resolve-library-id` with the library name to get its Context7 identifier.
-   b. Call `mcp__plugin_context7_context7__query-docs` with the resolved library ID and a query derived from the task's Action section (e.g., if the task says "create a REST endpoint with Express," query "Express routing and middleware").
+   a. Call `mcp__plugin_context7_context7__resolve-library-id` with the library name to get its Context7 identifier.
+   b. Call `mcp__plugin_context7_context7__query-docs` with the resolved library ID and a query derived from the task's Action section (e.g., if the task says "create a REST endpoint with Express," query "Express routing and middleware").
    c. Include the fetched documentation in your working context for the implementation step.
-   d. **Graceful degradation:** If `mcp__plugin_context7_context7__resolve-library-id` returns no match, or `mcp__plugin_context7_context7__query-docs` fails (network error, timeout, empty response), log a warning in your output (`Context7: {library-name} not resolved, proceeding with training knowledge`) and continue. Never block execution on Context7 unavailability.
+   d. **Graceful degradation:** If `mcp__plugin_context7_context7__resolve-library-id` returns no match, or `mcp__plugin_context7_context7__query-docs` fails (network error, timeout, empty response), log a warning in your output (`Context7: {library-name} not resolved, proceeding with training knowledge`) and continue. Never block execution on Context7 unavailability.
 3. `{project_root}/CLAUDE.md` for coding standards, golden rules, and conventions
 4. Each file listed in the task's "Files" section (if they exist, to understand current state)
 5. `{project_root}/docs/technical-specs/code-atlas.md` only if you need to understand module relationships
@@ -77,7 +77,7 @@ When executing within a team (team-based execution via `mpf:execute`), you can c
 4. The task depends on an external system, API, or service not specified in the project's tech stack
 
 **How to escalate:**
-1. Send a structured message to the planner via `SendMessage`:
+1. Send a structured message to the planner via `SendMessage`:
    ```
    ESCALATION from task-{NN}
    Trigger: {trigger type from list above}

@@ -1,7 +1,7 @@
 ---
 name: mpf:decompose
 description: Decompose ad-hoc TODOs or enhancement ideas into structured, executable task files without requiring the full PRD pipeline. Accepts input from a file, inline text, or interactive prompt. Reuses mpf-planner for complex decompositions. Run any time you have loose ideas to break down.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
 ---
 
 # mpf:decompose
@@ -121,7 +121,7 @@ Write task files to `{target_directory}/tasks/task-{NN}.md`.
 Spawn the `mpf-planner` agent:
 
 ```
-Agent(
+Agent(
   subagent_type: "mpf:mpf-planner",
   prompt: "Plan tasks for decomposed TODOs. Project root: {project_root}. Phase number: {NN}. Phase name: {kebab-name}. Linear ticket mapping: {ticket_id_map or 'N/A'}. NOTE: This is an ad-hoc decomposition from mpf:decompose, not a PRD-derived phase. The overview.md uses TODO-xxx IDs instead of REQ-xxx IDs. PRD.md may not exist for this project; if missing, skip it and rely on the phase overview and CLAUDE.md for context. Apply the same task decomposition rules, wave assignment, and coverage checks as normal."
 )
@@ -138,7 +138,7 @@ Wait for the planner to complete and review its output.
 If yes, spawn the `mpf-checker` agent:
 
 ```
-Agent(
+Agent(
   subagent_type: "mpf:mpf-checker",
   prompt: "Check task plan for decomposed TODOs. Project root: {project_root}. Phase number: {NN}. Phase name: {kebab-name}."
 )

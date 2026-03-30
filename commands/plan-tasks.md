@@ -1,7 +1,7 @@
 ---
 name: mpf:plan-tasks
 description: Break a phase into granular executable tasks. Spawns mpf-planner to create task files, then mpf-checker to verify coverage. Usage: mpf:plan-tasks <phase_number> Run after mpf:plan-phases, before mpf:execute.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*
 ---
 
 # mpf:plan-tasks
@@ -49,7 +49,7 @@ If Linear is enabled:
 Launch the mpf-planner agent with:
 
 ```
-Agent(
+Agent(
   subagent_type: "mpf-planner",
   prompt: "Plan tasks for phase {N} ({name}). Project root: {project_root}. Phase number: {N}. Phase name: {name}. Linear ticket mapping: {ticket_id_map or 'N/A'}."
 )
@@ -62,7 +62,7 @@ Wait for the planner to complete and review its output summary.
 After the planner finishes, launch the mpf-checker agent:
 
 ```
-Agent(
+Agent(
   subagent_type: "mpf-checker",
   prompt: "Check task plan for phase {N} ({name}). Project root: {project_root}. Phase number: {N}. Phase name: {name}."
 )

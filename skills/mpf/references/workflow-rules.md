@@ -68,7 +68,7 @@ These rules apply when `mpf:execute` runs with team-based execution (the default
 ### Team-Based Execution
 - The orchestrator creates a team (`mpf-execute-phase-{N}`) containing the planner and all executors for the phase.
 - The planner is spawned in the background at team creation and remains available for the duration of execution.
-- Executors are spawned on the same team, enabling direct communication via `SendMessage`.
+- Executors are spawned on the same team, enabling direct communication via `SendMessage`.
 - The team is dissolved after all waves complete (or execution is halted).
 
 ### Escalation Flow
@@ -94,7 +94,7 @@ These rules apply when `mpf:execute` runs with team-based execution (the default
 
 ## Living Document Hook Rules
 
-- PostToolUse hook on Write/Edit reminds Claude to check doc updates
+- PostToolUse hook on Write/Edit reminds Claude to check doc updates
 - Priority order for doc updates: code-atlas -> tracker status -> traceability/backlog -> changelog -> decisions/spec -> PROJECT_STATUS
 - Update `code-modules/` files when module internals change
 - Update `architecture/` files when subsystem boundaries change

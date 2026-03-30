@@ -6,9 +6,9 @@
 |-------|-------|---------------|-----------|------|-----------|-----------------|
 | mpf-planner | reasoning | reasoning | (standard set) | Break phases into executable tasks | Deep reasoning needed for dependency analysis, wave ordering, and requirement coverage | Tasks are simple enough that structured decomposition suffices |
 | mpf-verifier | reasoning | reasoning | (standard set) | Phase-level UAT and acceptance testing | Must evaluate whether implementation meets requirements, a judgment call | Verification becomes a mechanical checklist with no ambiguity |
-| mpf-mapper-lead | reasoning | reasoning | Agent, TeamCreate, SendMessage | Discover subsystems and synthesize architecture | Architectural reasoning requires understanding system boundaries and abstractions | Codebase is small enough that a single specialist can map it |
-| mpf-executor | standard | standard | SendMessage, Context7 | Implement a single task per spec | Follows well-defined task specs with library doc lookup | Tasks become architecturally complex (multi-system integration) |
-| mpf-mapper-specialist | standard | standard | TaskUpdate, SendMessage, Context7 | Deep-dive a single subsystem | Follows structured exploration protocol with optional doc lookup | Subsystem requires cross-cutting architectural understanding |
+| mpf-mapper-lead | reasoning | reasoning | Agent, TeamCreate, SendMessage | Discover subsystems and synthesize architecture | Architectural reasoning requires understanding system boundaries and abstractions | Codebase is small enough that a single specialist can map it |
+| mpf-executor | standard | standard | SendMessage, Context7 | Implement a single task per spec | Follows well-defined task specs with library doc lookup | Tasks become architecturally complex (multi-system integration) |
+| mpf-mapper-specialist | standard | standard | TaskUpdate, SendMessage, Context7 | Deep-dive a single subsystem | Follows structured exploration protocol with optional doc lookup | Subsystem requires cross-cutting architectural understanding |
 | mpf-checker | fast | fast | (read-only subset) | Validate plan structure and coverage | Mechanical checks: template completeness, requirement coverage, wave conflicts | Checks require semantic judgment beyond structural validation |
 
 **Context7 tools** (`resolve-library-id`, `query-docs`): Available to executor and mapper-specialist agents for fetching current library documentation. Usage is optional and degrades gracefully if unavailable. See NFR-003.

@@ -1,7 +1,7 @@
 ---
 name: mpf:discover
 description: Create the Product Requirements Document (PRD) through a structured interview. Produces docs/requirements/PRD.md, updates docs/requirements/requirements.md (if in-repo tracking), and populates technical-specs/ with architecture and data model decisions. Run after mpf:init, before mpf:plan-phases.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 
 # mpf:discover

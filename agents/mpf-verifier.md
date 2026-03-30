@@ -1,6 +1,6 @@
 ---
 name: mpf-verifier
-model: opus
+model: reasoning
 tools:
   - Read
   - Write

@@ -1,7 +1,7 @@
 ---
 name: mpf:init
 description: Initialize a new project with MPF scaffolding through a structured interview. Creates docs/ structure, CLAUDE.md, .claude/rules/, and project configuration. Use for greenfield projects or to add MPF to existing codebases. Also handles evolving existing MPF scaffolding (upgrade tier, add docs, change tracking).
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 
 # mpf:init
@@ -23,7 +23,7 @@ For brownfield projects (existing codebases), run `mpf:map-codebase` first to an
 
 Before installing the hook, verify the `.claude/` directory exists at the project root. If it does not exist, create it: `mkdir -p .claude`.
 
-If the user selected hook-triggered doc updates (the default for Standard/Full tier), the skill installs a PostToolUse hook in `.claude/settings.json` that fires on `Write`/`Edit` tool calls. The hook script lives at `skills/mpf/hooks/doc-update-hook.sh` and prints a reminder when source files are modified, prompting Claude to check if living documents need updating.
+If the user selected hook-triggered doc updates (the default for Standard/Full tier), the skill installs a PostToolUse hook in `.claude/settings.json` that fires on `Write`/`Edit` tool calls. The hook script lives at `skills/mpf/hooks/doc-update-hook.sh` and prints a reminder when source files are modified, prompting Claude to check if living documents need updating.
 
 ## Placeholder and Existing File Handling
 

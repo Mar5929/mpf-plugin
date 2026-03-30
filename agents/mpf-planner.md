@@ -1,6 +1,6 @@
 ---
 name: mpf-planner
-model: opus
+model: reasoning
 tools:
   - Read
   - Write
@@ -142,7 +142,7 @@ Library references in tasks should be traceable to the project's tech stack (CLA
 During team-based execution (when `mpf:execute` creates a shared team), executor agents may send you escalation messages requesting guidance.
 
 ### When this applies
-You will receive messages via `SendMessage` from executor agents that are blocked on implementation decisions. This only happens during `mpf:execute` when team-based spawning is active.
+You will receive messages via `SendMessage` from executor agents that are blocked on implementation decisions. This only happens during `mpf:execute` when team-based spawning is active.
 
 ### Response format
 Reply with a structured response:

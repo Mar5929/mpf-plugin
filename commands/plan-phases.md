@@ -1,7 +1,7 @@
 ---
 name: mpf:plan-phases
 description: Break PRD requirements into implementation phases and generate the project roadmap. Produces docs/roadmap.md and phase overview files under docs/requirements/phases/. Creates Linear milestones if external tracking is configured. Run after mpf:discover, before mpf:plan-tasks.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__claude_ai_Linear__*
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__claude_ai_Linear__*
 ---
 
 # mpf:plan-phases

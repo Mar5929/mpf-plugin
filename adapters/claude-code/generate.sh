@@ -284,11 +284,14 @@ generate_plugin_json() {
   cat > "$plugin_dir/plugin.json" <<'PLUGIN_EOF'
 {
   "name": "mpf",
-  "description": "Mike Project Framework - lean project management pipeline with phased execution, state tracking, and atomic commits. Commands: mpf:init, mpf:map-codebase, mpf:discover, mpf:plan-phases, mpf:plan-tasks, mpf:execute, mpf:verify, mpf:status, mpf:sync-linear.",
-  "version": "0.1.0",
+  "description": "Mike Project Framework: phased execution, codebase mapping, state tracking, and atomic commits for AI-assisted development",
+  "version": "1.0.0",
   "author": {
-    "name": "Michael Rihm"
-  }
+    "name": "Michael Rihm",
+    "url": "https://github.com/Mar5929"
+  },
+  "repository": "https://github.com/Mar5929/mpf-plugin",
+  "keywords": ["project-management", "scaffolding", "phased-execution", "codebase-mapping"]
 }
 PLUGIN_EOF
 
@@ -384,6 +387,7 @@ main() {
   transform_commands
   transform_skills
   generate_hook
+  generate_plugin_json
 
   # Clean up temp sed script
   rm -f "$SED_SCRIPT_FILE" "$SED_SCRIPT_FILE_FULL" 2>/dev/null

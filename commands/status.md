@@ -1,7 +1,7 @@
 ---
 name: mpf:status
 description: Display the current project status dashboard. Reads docs/PROJECT_STATUS.md, roadmap, Linear ticket counts, git branch status, and sync health. Run any time to check project state.
-allowed-tools: Read, Grep, Glob, Bash, mcp__claude_ai_Linear__*
+allowed-tools: Read, Grep, Glob, Bash, mcp__claude_ai_Linear__*
 ---
 
 # mpf:status

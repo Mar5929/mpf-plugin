@@ -19,43 +19,38 @@ A cross-platform AI plugin for lean project management: phased execution, codeba
 
 ## Installation
 
+### Via Plugin System (Recommended)
+
+In Claude Code, run:
+
+```
+/plugin marketplace add Mar5929/mpf-plugin
+/plugin install mpf@Mar5929/mpf-plugin
+```
+
+This installs to **user scope** (available in all projects) by default.
+
+For **project scope** (shared with collaborators) or **local scope** (just you, this repo only), use the interactive `/plugin` UI > Discover tab > select MPF > choose your scope.
+
+### Via CLI Flag (Development/Testing)
+
+```bash
+git clone https://github.com/Mar5929/mpf-plugin.git ~/mpf-plugin
+claude --plugin-dir ~/mpf-plugin
+```
+
 ### Prerequisites
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated
-- Git
-- Bash 4.0+ (for the build script)
-
-### Steps
-
-1. **Clone into your Claude Code plugins directory:**
-
-   ```bash
-   # macOS / Linux
-   git clone https://github.com/Mar5929/mpf-plugin.git ~/.claude/plugins/mpf
-
-   # Windows
-   git clone https://github.com/Mar5929/mpf-plugin.git %USERPROFILE%\.claude\plugins\mpf
-   ```
-
-2. **Build the plugin:**
-
-   ```bash
-   cd ~/.claude/plugins/mpf
-   bash build.sh
-   ```
-
-3. **Load the plugin:**
-
-   ```bash
-   claude --plugin-dir ~/.claude/plugins/mpf
-   ```
-
-4. **Verify.** In your Claude session, type `/mpf:status`. If the command is recognized, the plugin is loaded.
 
 ### Updating
 
+If installed via the plugin system, Claude Code handles updates automatically when the version in `plugin.json` is bumped.
+
+If using `--plugin-dir`, pull and rebuild:
+
 ```bash
-cd ~/.claude/plugins/mpf
+cd ~/mpf-plugin
 git pull
 bash build.sh
 ```
@@ -64,9 +59,9 @@ Then run `/reload-plugins` in your Claude session.
 
 ### Uninstalling
 
-```bash
-rm -rf ~/.claude/plugins/mpf
-```
+Via plugin system: `/plugin uninstall mpf`
+
+Via CLI: Remove the cloned directory.
 
 ## Architecture
 

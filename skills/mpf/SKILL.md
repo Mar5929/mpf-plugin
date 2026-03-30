@@ -487,7 +487,7 @@ Create or update `.claude/settings.json` to include:
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "Write|Edit",
         "command": "bash ~/.claude/plugins/mpf/hooks/doc-update-hook.sh \"$TOOL_INPUT\""
       }
     ]

@@ -43,6 +43,15 @@ agents/, commands/, skills/, hooks/   <- GENERATED OUTPUT. Do not hand-edit.
 
 ## Loading the Plugin
 
+### Via Plugin System (Recommended)
+
+```
+/plugin marketplace add Mar5929/mpf-plugin
+/plugin install mpf@Mar5929/mpf-plugin
+```
+
+### Via CLI Flag (Development/Testing)
+
 ```bash
-claude --plugin-dir C:/Users/michael.rihm/.claude/plugins/mpf
+claude --plugin-dir ~/mpf-plugin
 ```
