@@ -99,6 +99,41 @@ For small projects (1-2 subsystems), the lead handles everything inline without 
 
 Output goes to `docs/technical-specs/` with architecture diagrams, code atlases, and per-subsystem documentation.
 
+## Architecture: Core and Adapters
+
+MPF v2 separates platform-neutral spec content from platform-specific delivery. The `core/` directory contains all agent behaviors, command logic, skills, and references using abstract tool names and model tiers. Platform adapters transform `core/` into a platform-specific plugin structure.
+
+```
+mpf/
+  core/                          # Platform-neutral specs
+    agents/                      # Agent behavior specs (abstract tiers and tools)
+    commands/mpf/                # Command orchestration logic
+    skills/mpf/                  # SKILL.md and references
+    hooks/                       # Hook behavior specs
+    model-tiers.yaml             # Abstract tier definitions
+    tool-mappings.yaml           # Abstract tool name mappings
+  adapters/
+    claude-code/                 # Claude Code adapter
+      generate.sh                # Transforms core/ into plugin structure
+      tool-map.yaml              # Claude Code tool name mappings
+      README.md                  # Adapter usage docs
+    ADAPTER_GUIDE.md             # How to build new adapters
+  dist/
+    claude-code/                 # Generated Claude Code plugin (output of adapter)
+```
+
+### Regenerating the Claude Code plugin
+
+The root-level plugin structure (`.claude-plugin/`, `agents/`, `commands/`, `skills/`, `hooks/`) is the active Claude Code plugin. To regenerate after editing core specs:
+
+```bash
+cd adapters/claude-code && ./generate.sh
+```
+
+### Building adapters for other platforms
+
+See `adapters/ADAPTER_GUIDE.md` for the full adapter interface specification, including how to map abstract tiers, tools, commands, and platform-specific features.
+
 ## License
 
 Private. Not for redistribution.

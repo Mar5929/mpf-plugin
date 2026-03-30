@@ -1,14 +1,6 @@
----
-name: mpf-planner
-description: Break a phase into granular executable tasks with dependency ordering and wave assignment.
-model: opus
-tools:
-  - Read
-  - Write
-  - Bash
-  - Grep
-  - Glob
----
+# Agent: mpf-planner
+# Tier: reasoning
+# Tools: [file_read, file_write, shell, text_search, file_search]
 
 # mpf-planner
 
@@ -36,7 +28,7 @@ Read these files in order:
 7. `{project_root}/docs/technical-specs/DATA_MODEL.md` (if it exists) for data model
 8. `{project_root}/CLAUDE.md` for coding standards, tech stack, and project conventions
 
-Read the task file template from `~/.claude/plugins/mpf/skills/mpf/references/document-templates.md` (section "Task File").
+Read the task file template from `skills/mpf/references/document-templates.md` (section "Task File").
 
 ## Task Decomposition Rules
 
@@ -142,7 +134,7 @@ Library references in tasks should be traceable to the project's tech stack (CLA
 During team-based execution (when `mpf:execute` creates a shared team), executor agents may send you escalation messages requesting guidance.
 
 ### When this applies
-You will receive messages via `SendMessage` from executor agents that are blocked on implementation decisions. This only happens during `mpf:execute` when team-based spawning is active.
+You will receive messages via `send_message` from executor agents that are blocked on implementation decisions. This only happens during `mpf:execute` when team-based spawning is active.
 
 ### Response format
 Reply with a structured response:

@@ -1,12 +1,6 @@
----
-name: mpf:execute
-description: >
-  Execute all tasks in a phase with wave-based parallelization and atomic commits.
-  Creates a feature branch, spawns mpf-executor agents per task, and pushes to remote.
-  Usage: mpf:execute <phase_number>
-  Run after mpf:plan-tasks, before mpf:verify.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, TeamCreate, SendMessage, mcp__claude_ai_Linear__*
----
+# Command: mpf:execute
+# Description: Execute all tasks in a phase with wave-based parallelization and atomic commits. Creates a feature branch, spawns mpf-executor agents per task, and pushes to remote. Usage: mpf:execute <phase_number>. Run after mpf:plan-tasks, before mpf:verify.
+# Tools: [file_read, file_write, file_edit, shell, text_search, file_search, agent_spawn, team_create, send_message, linear_api]
 
 # mpf:execute
 
@@ -78,7 +72,7 @@ Create a team for this phase execution so the planner and executors can communic
 
 1. Create the team:
    ```
-   TeamCreate(
+   team_create(
      name: "mpf-execute-phase-{N}",
      description: "Phase {N} execution team: planner + executors"
    )
@@ -86,7 +80,7 @@ Create a team for this phase execution so the planner and executors can communic
 
 2. Spawn the planner agent on the team (it will stay available for executor consultations throughout execution):
    ```
-   Agent(
+   agent_spawn(
      subagent_type: "mpf-planner",
      name: "phase-{N}-planner",
      team_name: "mpf-execute-phase-{N}",
@@ -104,7 +98,7 @@ Check if tasks in this wave have file overlaps:
 For each task, spawn the executor:
 
 ```
-Agent(
+agent_spawn(
   subagent_type: "mpf-executor",
   team_name: "mpf-execute-phase-{N}",
   prompt: "Execute task. Task file: {task_path}. Project root: {project_root}. Phase branch: {branch_name}. Linear enabled: {true/false}. Ticket ID: {ticket_id or N/A}. Planner agent name: phase-{N}-planner.{prior_wave_context}"
@@ -155,7 +149,7 @@ If inline wave verification is enabled (per CLAUDE.md or default):
 
 1. After collecting wave results and before spawning the next wave, run the checker on completed tasks:
    ```
-   Agent(
+   agent_spawn(
      subagent_type: "mpf-checker",
      prompt: "Verify tasks completed in Wave {N} of Phase {P}. Task files: {list of task paths from this wave}. Project root: {project_root}. Check: requirement coverage, file existence, verify commands pass. Report PASS or FAIL per task."
    )

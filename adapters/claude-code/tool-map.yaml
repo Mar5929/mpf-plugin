@@ -1,0 +1,40 @@
+# Claude Code Tool Mappings
+# Used by generate.sh to transform abstract tool names in core/ specs
+# into Claude Code-specific tool names.
+
+mappings:
+  file_read: Read
+  file_write: Write
+  file_edit: Edit
+  shell: Bash
+  text_search: Grep
+  file_search: Glob
+  agent_spawn: Agent
+  team_create: TeamCreate
+  send_message: SendMessage
+  task_update: TaskUpdate
+  context7_resolve: mcp__plugin_context7_context7__resolve-library-id
+  context7_query: mcp__plugin_context7_context7__query-docs
+  linear_api: "mcp__claude_ai_Linear__*"
+
+# Frontmatter format for Claude Code agents:
+# ---
+# name: {agent-name}
+# model: {resolved from model-tiers.yaml}
+# tools:
+#   - {tool1}
+#   - {tool2}
+# ---
+
+# Frontmatter format for Claude Code commands:
+# ---
+# name: mpf:{command-name}
+# description: {description}
+# allowed-tools: {comma-separated tool list}
+# ---
+
+# Model tier mappings (from core/model-tiers.yaml -> providers.claude):
+tier_to_model:
+  reasoning: opus
+  standard: sonnet
+  fast: haiku

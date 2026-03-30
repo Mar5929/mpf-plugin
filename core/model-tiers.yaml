@@ -1,0 +1,38 @@
+# Model Tier Definitions
+# Maps abstract performance tiers to provider-specific model identifiers.
+# Platform adapters read this file to resolve tier names in agent specs.
+
+tiers:
+  reasoning:
+    description: "Complex planning, architecture synthesis, verification, and judgment calls"
+    providers:
+      claude: opus
+      openai: o3
+      google: gemini-2.5-pro
+    default_for:
+      - planner
+      - verifier
+      - mapper-lead
+
+  standard:
+    description: "Code execution, following well-defined specs, structured exploration"
+    providers:
+      claude: sonnet
+      openai: gpt-4.1
+      google: gemini-2.5-flash
+    default_for:
+      - executor
+      - mapper-specialist
+
+  fast:
+    description: "Mechanical checks, simple lookups, structural validation"
+    providers:
+      claude: haiku
+      openai: gpt-4.1-mini
+      google: gemini-2.5-flash-lite
+    default_for:
+      - checker
+
+# Cost guidance (from NFR-002):
+# Reasoning-tier usage should stay below 20% of total agent calls per phase.
+# See skills/mpf/references/model-routing.md for detailed cost analysis.

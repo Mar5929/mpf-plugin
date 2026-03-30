@@ -1,21 +1,5 @@
----
-name: mpf
-description: >
-  Initialize, upgrade, and evolve project scaffolding with a structured interview, tailored
-  documentation, and Claude Code configuration using the Mike Project Framework (MPF). Use this
-  skill when the user wants to: start a new project (mpf:init), bootstrap a codebase, set up
-  project documentation, create a CLAUDE.md, initialize a repo with docs, scaffold a project
-  structure, upgrade a project from light to full scaffolding, add new documents to an existing
-  project, or change a project's tracking approach. After scaffolding, use mpf:discover to
-  create the PRD, mpf:plan-phases for phase breakdown, mpf:execute for implementation, and
-  mpf:verify for verification. Covers full-stack web apps (Next.js, React, Python), APIs,
-  document processing projects (Excel, Word, PDF, PPTX), automation scripts, data pipelines,
-  skill development, mobile apps, and personal projects. Also use when the user says things
-  like "new project", "set up a project", "initialize this repo", "bootstrap this", "project
-  setup", "create project docs", "upgrade this project", "add docs to this project", or
-  "switch to Linear tracking". Works in two modes: INIT mode for new projects, EVOLVE mode
-  for existing projects that already have scaffolding.
----
+# Skill: mpf
+# Description: Initialize, upgrade, and evolve project scaffolding with a structured interview, tailored documentation, and platform configuration using the Mike Project Framework (MPF). Use this skill when the user wants to: start a new project (mpf:init), bootstrap a codebase, set up project documentation, create a CLAUDE.md, initialize a repo with docs, scaffold a project structure, upgrade a project from light to full scaffolding, add new documents to an existing project, or change a project's tracking approach. After scaffolding, use mpf:discover to create the PRD, mpf:plan-phases for phase breakdown, mpf:execute for implementation, and mpf:verify for verification. Covers full-stack web apps (Next.js, React, Python), APIs, document processing projects (Excel, Word, PDF, PPTX), automation scripts, data pipelines, skill development, mobile apps, and personal projects. Also use when the user says things like "new project", "set up a project", "initialize this repo", "bootstrap this", "project setup", "create project docs", "upgrade this project", "add docs to this project", or "switch to Linear tracking". Works in two modes: INIT mode for new projects, EVOLVE mode for existing projects that already have scaffolding.
 
 # MPF: Project Init
 
@@ -373,9 +357,9 @@ This round configures MPF-specific behaviors that control how the framework oper
   - **End-of-session batch**: update all docs at end of each work session (fewer interruptions, risk of drift)
   - Default: hook-triggered
 
-- **Model routing:** Which model tier should each agent use? Default assignments are documented in `skills/mpf/references/model-routing.md` (Opus for planner/verifier/mapper-lead, Sonnet for executor/mapper-specialist, Haiku for checker). Options:
+- **Model routing:** Which model tier should each agent use? Default assignments are documented in `references/model-routing.md` (reasoning tier for planner/verifier/mapper-lead, standard tier for executor/mapper-specialist, fast tier for checker). Options:
   - **Default (recommended)**: use the assignments from the routing table
-  - **Custom**: specify per-agent overrides (e.g., downgrade planner to Sonnet for budget projects, upgrade executor to Opus for critical phases)
+  - **Custom**: specify per-agent overrides (e.g., downgrade planner to standard tier for budget projects, upgrade executor to reasoning tier for critical phases)
   - If custom, store the overrides in CLAUDE.md under a "Model Routing Overrides" section.
   - Default: Default
 
@@ -501,8 +485,8 @@ Create or update `.claude/settings.json` to include:
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write|Edit",
-        "command": "bash ~/.claude/plugins/mpf/hooks/doc-update-hook.sh \"$TOOL_INPUT\""
+        "matcher": "file_write|file_edit",
+        "command": "bash hooks/doc-update-hook.sh \"$TOOL_INPUT\""
       }
     ]
   }
