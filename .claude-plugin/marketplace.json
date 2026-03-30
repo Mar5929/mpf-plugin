@@ -1,0 +1,40 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "Mar5929-mpf-plugin",
+  "description": "Mike Project Framework: phased execution, codebase mapping, state tracking, and atomic commits for AI-assisted development",
+  "owner": {
+    "name": "Michael Rihm",
+    "email": ""
+  },
+  "metadata": {
+    "description": "Mike Project Framework plugin for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "mpf",
+      "source": "./",
+      "description": "Mike Project Framework: phased execution, codebase mapping, state tracking, and atomic commits for AI-assisted development",
+      "version": "1.0.0",
+      "author": {
+        "name": "Michael Rihm"
+      },
+      "homepage": "https://github.com/Mar5929/mpf-plugin",
+      "repository": "https://github.com/Mar5929/mpf-plugin",
+      "license": "MIT",
+      "keywords": [
+        "project-management",
+        "scaffolding",
+        "phased-execution",
+        "codebase-mapping"
+      ],
+      "category": "workflow",
+      "tags": [
+        "project-management",
+        "phased-execution",
+        "state-tracking",
+        "atomic-commits"
+      ],
+      "strict": false
+    }
+  ]
+}
