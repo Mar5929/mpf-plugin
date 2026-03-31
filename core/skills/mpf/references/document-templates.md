@@ -31,7 +31,7 @@ This file defines the exact structure for every document the MPF skill can gener
 
 ## CLAUDE.md Structure
 
-**Tier-dependent generation.** The full 13-section structure below applies to Full tier. Standard tier omits sections 6, 11, and 13. Light tier generates only sections 1, 2, 3, 5, 7, and 12. When generating for a lower tier, skip the omitted sections entirely (don't include them as empty placeholders).
+**Tier-dependent generation.** The full 13-section structure below applies to Full tier. Standard tier omits sections 6, 11, and 13. Light tier generates only sections 1, 2, 3, 5, 7, 8, and 12. When generating for a lower tier, skip the omitted sections entirely (don't include them as empty placeholders).
 
 | Section | Light | Standard | Full |
 |---|---|---|---|
@@ -42,7 +42,7 @@ This file defines the exact structure for every document the MPF skill can gener
 | 5. Coding Standards | Yes | Yes | Yes |
 | 6. Tech Stack Reference | - | - | Yes |
 | 7. Key Commands | Yes | Yes | Yes |
-| 8. Session Startup Checklist | - | Yes | Yes |
+| 8. Session Startup Checklist | Yes | Yes | Yes |
 | 9. Git Commit Protocol | - | Yes | Yes |
 | 10. Clarification Protocol | - | Yes | Yes |
 | 11. Context Window Management | - | - | Yes |
@@ -168,6 +168,11 @@ docs/
 
 ### Section 8: Session Startup Checklist
 - Numbered list of files Claude should read at the start of every session, in priority order.
+
+**Light tier variant (simplified):**
+  1. `CLAUDE.md` (this file)
+  2. `docs/PROJECT_ROADMAP.md` for current phase, roadmap, and session history
+  3. If a task is in progress, read the relevant task file in `docs/requirements/phases/`
 
 **If using in-repo tracking:**
   1. `CLAUDE.md` (this file)

@@ -113,7 +113,7 @@ Start by identifying the project type and scaffolding tier. The type determines 
 | Aspect | Light | Standard | Full |
 |---|---|---|---|
 | **Interview rounds** | R1 + R7 (2 rounds) | R1, R2, R3, R4, R7, R8 (6 rounds, skip R5 and R6) | All 8 rounds |
-| **CLAUDE.md sections** | 1, 2, 3, 5, 7, 12 (6 sections) | 1-5, 7, 8, 9, 10, 12 (10 sections) | All 13 sections |
+| **CLAUDE.md sections** | 1, 2, 3, 5, 7, 8, 12 (7 sections) | 1-5, 7, 8, 9, 10, 12 (10 sections) | All 13 sections |
 | **Always generated** | CLAUDE.md, README.md, docs/PROJECT_ROADMAP.md (simplified: sections 1, 2, 3, 6 only), .claude/rules/golden-rules.md, .claude/rules/git-protocol.md | Everything in Light + full PROJECT_ROADMAP.md (all 8 sections), docs/technical-specs/code-atlas.md, docs/CHANGELOG.md, docs/decisions.md, docs/technical-specs/TECHNICAL_SPEC.md, .claude/rules/document-updates.md, .claude/rules/session-protocol.md | Everything in Standard + docs/technical-specs/DATA_MODEL.md, GETTING_STARTED.md, and tracker-specific docs (docs/traceability-matrix.md or docs/requirements/requirements.md + docs/BACKLOG.md) |
 | **Upgrade path** | Can upgrade to Standard or Full via evolve mode | Can upgrade to Full via evolve mode | N/A |
 
@@ -471,7 +471,7 @@ For rule file templates, read `references/document-templates.md` (section: ".cla
 - `document-updates.md`: event-to-action table + maintenance rules (if any living documents are enabled)
 - `git-protocol.md`: commit format, branching strategy, push/PR policies (if version control is enabled)
 - `traceability.md`: source-of-truth hierarchy, traceability rules, agent planning protocol (if external tracker + traceability matrix is enabled)
-- `session-protocol.md`: session-start briefing and session-end dashboard update (Standard and Full tier)
+- `session-protocol.md`: session-start briefing and session-end dashboard update (all tiers; Light tier gets a simplified reading-order-only variant)
 
 ### Conditionally Created: `.claude/settings.json` Hook (if hook-triggered doc updates selected in R8)
 
