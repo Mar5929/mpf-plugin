@@ -28,6 +28,7 @@ This file defines the exact structure for every document the MPF skill can gener
 20. [Task File](#task-file)
 21. [MPF_GUIDE.md](#mpf_guidemd)
 22. [REQUIREMENT_HIERARCHY.md](#requirement_hierarchymd)
+23. [audit-report.md](#audit-reportmd)
 
 ---
 
@@ -298,7 +299,10 @@ Initialize with a "Project Bootstrap" entry listing all created documentation fi
 - **Requirement Index table**: `ID | Title | Priority | Status`
 - **Functional Requirements** (`### REQ-001: Title`):
   - Priority, Status (`DRAFT | APPROVED | IN PROGRESS | DONE | DEFERRED | SUPERSEDED`)
+  - Source: {origin of this requirement, e.g., "Linear: RIH-42", "docs/old-spec.md, Section 2.1", "Notion/page-id", "Interview", "mpf:discover"}
   - Description, Acceptance Criteria (numbered checkbox list), Dependencies, Notes
+
+  The Source field is optional for greenfield projects (defaults to "mpf:discover") but required for imported requirements.
 - **Non-Functional Requirements** (`### NFR-001: Title`):
   - Priority, Description, Acceptance Criteria (measurable)
 - **Glossary** table: `Term | Definition`
@@ -656,6 +660,28 @@ npm test -- --grep "relevant test"
 | 7: Session Log | - | Yes | Yes |
 | 8: Phase History | - | Yes | Yes |
 
+**Conditional section (ONBOARD mode only):**
+
+When PROJECT_ROADMAP.md is generated during ONBOARD mode and `mpf:audit` has been run, include a **Pre-MPF Work** section between Section 1 (Project Overview) and Section 2 (Current Phase):
+
+### Pre-MPF Work
+
+Summary of work completed before MPF adoption, based on the implementation audit.
+
+| Requirement | Status | Evidence |
+|-------------|--------|----------|
+| REQ-001: {title} | Done | {file paths} |
+| REQ-003: {title} | Partial | {file paths, what's missing} |
+| REQ-007: {title} | Done | {file paths} |
+
+**Completed:** {N} of {total} requirements fully implemented
+**Partial:** {N} requirements need additional work
+**Remaining:** {N} requirements not started
+
+Detailed audit: `docs/requirements/audit-report.md`
+
+_Phases in Section 3 (Phase Roadmap) cover only remaining and partial work. Completed requirements are recorded here, not re-planned._
+
 **Structure:**
 
 ### Section 1: Project Overview
@@ -840,6 +866,20 @@ Table with columns: `Phase | Focus | Started | Completed | Key Outcomes`
 **Location:** `.claude/rules/` at the project root (not the global `~/.claude/rules/`).
 
 **Key principle:** Rules files contain **only behavioral constraints**: the "must do / must not do" rules that Claude must follow automatically. CLAUDE.md contains the full project reference including context that rules files should not duplicate: workspace structure, tech stack details, key commands, session startup checklist, bug-prevention facts, and references. Do not duplicate content between CLAUDE.md and rules files. Rules files should reference CLAUDE.md sections where appropriate (e.g., "See CLAUDE.md Section 6 for the full tech stack") rather than repeating the information. The only exception is the Golden Rules, which appear in both places because they are the most critical invariants and benefit from redundancy.
+
+---
+
+## Archive Conventions
+
+**Purpose:** Preserve original documents when absorbing them into MPF docs during reconciliation.
+
+**Location:** `docs/archive/pre-mpf/`
+
+**Convention:**
+- When `mpf:reconcile` absorbs an existing document, the original is moved to `docs/archive/pre-mpf/{original-filename}`
+- Absorbed content in MPF docs includes attribution: "Originally from {filename}, absorbed during MPF onboarding"
+- Archive files are kept for reference but are not maintained by MPF
+- The `docs/archive/` directory is distinct from the project root `archive/` directory (which stores superseded MPF docs)
 
 ---
 
@@ -1154,6 +1194,9 @@ One-paragraph explanation of the Mike Project Framework: what it does, why it ex
 | `mpf:status` | Show project dashboard | Any time, to check current state |
 | `mpf:sync-linear` | Sync local state with Linear | When using Linear tracking, to detect drift |
 | `mpf:map-codebase` | Analyze codebase and generate architecture docs | Before init on existing codebases, or to refresh code atlas |
+| `mpf:import` | Import requirements from external sources | Bringing existing requirements into MPF format |
+| `mpf:audit` | Assess implementation status of requirements | After import, to determine what's already built |
+| `mpf:reconcile` | Align existing docs with MPF structure | After audit, to handle document overlap |
 
 ### Workflows
 
@@ -1270,3 +1313,55 @@ Phase 1:
 | REQ-003 | - | - | - | **GAP: Unplanned** |
 
 Gap rows highlight requirements with no phase assignment or no tasks.
+
+---
+
+## audit-report.md
+
+**Purpose:** Implementation status analysis results. Maps imported requirements against the existing codebase to determine what is Done, Partial, or Not Started. Produced by `mpf:audit`.
+
+**Conditionally generated:** Yes, only during brownfield onboarding (ONBOARD mode). Created by `mpf:audit`.
+
+**Location:** `docs/requirements/audit-report.md`
+
+**Structure:**
+
+### Audit Summary
+
+| Metric | Count |
+|--------|-------|
+| Total requirements | {N} |
+| Done | {N} |
+| Partial | {N} |
+| Not Started | {N} |
+| High confidence assessments | {N} |
+| Low confidence (needs review) | {N} |
+
+### Requirement Assessments
+
+Per-requirement blocks:
+
+#### REQ-{XXX}: {Title}
+
+- **Status:** Done | Partial | Not Started
+- **Confidence:** High | Medium | Low
+- **Evidence:**
+  - `{file path}`: {what it implements}
+  - `{test file}`: {what it tests}
+- **Implemented:** {list of satisfied acceptance criteria}
+- **Missing:** {list of unsatisfied acceptance criteria}
+- **Notes:** {observations about code quality, completeness, or tech debt}
+
+### Coverage Summary
+
+| Requirement | Status | Confidence | Evidence Files | Missing Criteria |
+|-------------|--------|------------|----------------|-----------------|
+| REQ-001 | Done | High | 4 files | 0 |
+| REQ-002 | Partial | Medium | 2 files | 2 criteria |
+| REQ-003 | Not Started | High | 0 files | 5 criteria |
+
+### Audit Metadata
+
+- **Audit date:** {YYYY-MM-DD}
+- **Code atlas used:** Yes | No
+- **User corrections:** {N} assessments corrected during review

@@ -17,6 +17,7 @@ Read these files before starting:
 3. `docs/technical-specs/TECHNICAL_SPEC.md` (architecture decisions)
 4. `docs/technical-specs/DATA_MODEL.md` (data model, if exists)
 5. `docs/requirements/requirements.md` (if in-repo tracking) or check external tracker for existing tickets
+6. `docs/requirements/audit-report.md` (if exists; produced by `mpf:audit` during onboarding)
 
 If `docs/requirements/PRD.md` does not exist or is a placeholder, tell the user: "No PRD found. Run `mpf:discover` first to create the product requirements."
 
@@ -27,6 +28,15 @@ Read the PROJECT_ROADMAP.md and Phase Overview templates from `skills/mpf/refere
 ## Phase Decomposition
 
 ### Step 1: Identify Requirement Groups
+
+**Audit-aware filtering (if audit-report.md exists):**
+
+Read `docs/requirements/audit-report.md` and filter requirements by status:
+- **Done requirements:** Exclude from phase planning entirely. These are already recorded in the Pre-MPF Work section of PROJECT_ROADMAP.md.
+- **Partial requirements:** Include in phase planning, but the phase overview must note what already exists and what remains. Create finish-up tasks only for the missing work.
+- **Not Started requirements:** Normal phase planning (no special handling).
+
+If all requirements are Done, tell the user: "All imported requirements are already implemented. No phases to plan. Consider running `mpf:discover` to define new requirements."
 
 Group requirements by dependency and domain:
 - Which requirements depend on each other? (e.g., "user profile" depends on "user auth")
@@ -43,14 +53,32 @@ Create phases following these principles:
 4. **Balanced scope.** Target 3-8 requirements per phase. If a phase has more than 10, split it. If fewer than 2, merge with an adjacent phase.
 5. **Task count guidance.** Each requirement should decompose into 3-10 tasks. If a phase would produce more than 40 tasks, split the phase. If fewer than 5 tasks, consider merging with an adjacent phase.
 6. **P0 before P1.** Higher-priority requirements should land in earlier phases, but respect dependency order over priority when they conflict.
+7. **Completion phases.** When mixing Partial and Not Started requirements, prefer grouping Partial requirements into early phases ("completion" phases) so existing work gets finished before new features begin. Label these phases clearly: "Phase 1: Complete {feature area}".
 
 ### Step 3: Present the Plan
 
-Show the user a summary table before writing any files:
+Show the user a summary table before writing any files.
+
+When presenting phases, add a "Type" column to distinguish between completion phases and new implementation phases:
 
 ```
 Proposed Phases:
 
+| Phase | Name | Type | Requirements | Est. Tasks |
+|-------|------|------|-------------|------------|
+| 1 | Complete Authentication | Completion | REQ-003 (Partial), REQ-004 (Partial) | 3-5 |
+| 2 | Dashboard Features | New | REQ-006, REQ-007 | 6-8 |
+...
+```
+
+For completion phases, also show:
+- What already exists (from audit evidence)
+- What remains to be built
+- Why it was marked partial
+
+If no audit-report.md exists, omit the "Type" column and use the standard table format:
+
+```
 | Phase | Name | Requirements | Est. Tasks |
 |-------|------|-------------|------------|
 | 1 | Foundation & Setup | REQ-001, REQ-002 | 4-6 |
@@ -86,6 +114,11 @@ Follow the Phase Overview template. Include:
 - Success criteria (2-5 testable criteria per phase)
 - Dependencies on prior phases
 - Linear milestone reference (if external tracking configured)
+
+For completion phases (containing Partial requirements), the phase overview file must include:
+- An "Existing Implementation" section listing files/components that already exist (from audit evidence)
+- A "Remaining Work" section listing what's missing per acceptance criterion
+- A note: "This phase completes work started before MPF adoption. See docs/requirements/audit-report.md for the full audit."
 
 Create the `tasks/` subdirectory inside each phase folder (empty; tasks are created by `mpf:plan-tasks`).
 

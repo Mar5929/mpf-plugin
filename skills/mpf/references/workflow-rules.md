@@ -61,6 +61,29 @@ Follow the specific policies agreed upon during the interview:
 - If `mpf:verify` fails, re-run `mpf:execute` to fix failed tasks
 - Phase advancement requires explicit user action
 
+## Requirement Import Rules
+
+These rules apply when `mpf:import` is used to bring external requirements into MPF format.
+
+1. **Source preservation.** Every imported requirement must record its origin in the `Source:` field. This is non-negotiable for traceability.
+2. **Deduplication.** When importing from multiple sources, flag potential duplicates for user review rather than silently merging. Two requirements with similar titles but different acceptance criteria are NOT duplicates.
+3. **ID assignment.** New requirements get the next available REQ-xxx ID. Never reuse an ID, even if the original requirement was deleted.
+4. **Append, don't overwrite.** When `mpf:import` runs on a project that already has requirements.md, append new requirements. Never overwrite existing entries.
+5. **Priority mapping.** If the source has priority info, map to P0/P1/P2. If not, default to P1 and flag for user review.
+
+## Document Reconciliation Rules
+
+These rules apply when `mpf:reconcile` handles document overlap between existing project docs and MPF docs.
+
+1. **User decides.** Per-document action (absorb, reference, skip) is always the user's choice. Never absorb or archive without confirmation.
+2. **Attribution required.** Absorbed content must include attribution: "Originally from {filename}, absorbed during MPF onboarding."
+3. **Archive, don't delete.** Absorbed originals go to `docs/archive/pre-mpf/`, never deleted.
+4. **Source of truth assignment.** After reconciliation:
+   - Structured external tools (Linear, Notion): remain authoritative, MPF syncs from them
+   - Absorbed markdown files: MPF docs become the source of truth
+   - Referenced docs: original stays authoritative, MPF references it
+5. **Partial overlap.** If a document overlaps with multiple MPF docs, split the content and merge each part into the appropriate MPF doc. Note the split in both target docs.
+
 ## Agent Orchestration Rules
 
 These rules apply when `mpf:execute` runs with team-based execution (the default for Standard and Full tier projects).
@@ -175,17 +198,48 @@ When creating an implementation plan for a phase:
 
 ---
 
-## Brownfield Project Flow
+## Brownfield Project Flow (Onboarding)
 
-Use this flow when adding MPF to an existing codebase. The map-codebase step ensures init and discover have full context about existing code structure.
+Use this flow when adding MPF to an existing codebase with established requirements and partial implementations. Each command runs in its own context window with natural checkpoint guidance.
 
 1. `mpf:map-codebase` - Analyze existing codebase structure
-2. `mpf:init` - Initialize MPF scaffolding (will detect existing code and adapt)
-3. `mpf:discover` - Create/update PRD from existing functionality
-4. `mpf:plan-phases` - Break requirements into phases
-5. `mpf:plan-tasks` - Break phases into executable tasks
-6. `mpf:execute` - Execute tasks with atomic commits
-7. `mpf:verify` - Verify phase completion
+   - Produces architecture docs and code-atlas
+   - Guides: "Codebase mapped. Run `mpf:init` next."
+
+2. `mpf:init` (ONBOARD mode auto-detected)
+   - Signal scan detects brownfield project
+   - Adapted interview with pre-filled answers from existing artifacts
+   - Scaffolding generation (PROJECT_ROADMAP.md, CLAUDE.md, rules, MPF_GUIDE.md)
+   - Guides: "Project initialized. Run `mpf:import` to bring in your existing requirements."
+
+3. `mpf:import` - Import existing requirements
+   - Scans for requirement sources (markdown, Linear, Notion) or uses `--sources` flag
+   - Parses, normalizes, deduplicates into REQ-xxx format
+   - User reviews and confirms
+   - Guides: "Requirements imported. Run `mpf:audit` to assess implementation status."
+
+4. `mpf:audit` - Assess implementation status
+   - Agent analyzes codebase against imported requirements
+   - Produces coverage report: Done / Partial / Not Started per requirement
+   - User reviews and corrects assessments
+   - Guides: "Audit complete. Run `mpf:reconcile` to align your existing docs with MPF."
+
+5. `mpf:reconcile` - Align existing docs with MPF
+   - Detects document overlaps with MPF docs
+   - User chooses per-doc: absorb (merge + archive), reference (link), or skip
+   - Executes merges and archiving
+   - Guides: "Documents reconciled. Run `mpf:sync-linear` to check tracker alignment."
+
+6. `mpf:sync-linear` - Check tracker alignment
+   - Reports mismatches: done-in-code but open tickets, untracked requirements, orphans
+   - Optionally creates tickets for untracked requirements
+   - Guides: "Sync complete. Run `mpf:plan-phases` to plan remaining work."
+
+7. `mpf:plan-phases` (audit-aware) - Plan remaining work
+   - Excludes Done requirements (recorded in Pre-MPF Work section)
+   - Creates finish-up tasks for Partial requirements
+   - Normal planning for Not Started requirements
+   - Then: `mpf:plan-tasks` > `mpf:execute` > `mpf:verify` per phase
 
 ---
 

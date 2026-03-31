@@ -12,12 +12,19 @@ The skill will guide the user through a structured interview to understand their
 
 ## Modes
 
-- **New project**: Full interview and scaffolding generation for greenfield projects or existing codebases without MPF.
+- **New project (Init)**: Full interview and scaffolding generation for greenfield projects or existing codebases without MPF and without significant existing work.
+- **Onboard**: Adapted interview and scaffolding for brownfield projects with existing requirements, code, and documentation. Auto-detected when brownfield signals are present (50+ git commits, existing requirements/spec docs, established dependencies). Guides the user through the full onboarding flow: import, audit, reconcile, sync.
 - **Evolve**: Upgrade an existing MPF project (change tier, add documents, switch tracking method).
 
 ## Brownfield Projects
 
-For brownfield projects (existing codebases), run `mpf:map-codebase` first to analyze the codebase before running init. This gives init and discover full context about existing code structure.
+For brownfield projects (existing codebases with established requirements and code), `mpf:init` auto-detects brownfield signals and offers ONBOARD mode. This provides:
+
+- Pre-filled interview answers from existing project artifacts
+- Onboard-specific questions about requirement sources and existing documentation
+- Post-scaffolding guidance through the full onboarding flow: `mpf:import` > `mpf:audit` > `mpf:reconcile` > `mpf:sync-linear` > `mpf:plan-phases`
+
+If the project has no code-atlas yet, run `mpf:map-codebase` first to give init full context about the existing codebase.
 
 ## Hook Installation
 
@@ -31,4 +38,8 @@ When the skill creates placeholder documentation files (e.g., technical-spec stu
 
 ## After Completion
 
-Once `mpf:init` finishes, instruct the user to run `mpf:discover` to create the PRD and begin structured requirement gathering. The discover phase produces the product requirements document, technical spec, and data model that drive all subsequent phases.
+Once `mpf:init` finishes:
+
+- **Init mode:** Instruct the user to run `mpf:discover` to create the PRD and begin structured requirement gathering.
+- **Onboard mode:** Display the full onboarding flow and instruct the user to run `mpf:import` next to bring in existing requirements.
+- **Evolve mode:** Summarize what was changed and suggest next steps based on the upgrade.

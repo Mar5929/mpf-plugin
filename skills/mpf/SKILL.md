@@ -1,6 +1,6 @@
 ---
 name: mpf
-description: Initialize, upgrade, and evolve project scaffolding with a structured interview, tailored documentation, and Claude Code configuration using the Mike Project Framework (MPF). Use this skill when the user wants to: start a new project (mpf:init), bootstrap a codebase, set up project documentation, create a CLAUDE.md, initialize a repo with docs, scaffold a project structure, upgrade a project from light to full scaffolding, add new documents to an existing project, or change a project's tracking approach. After scaffolding, use mpf:discover to create the PRD, mpf:plan-phases for phase breakdown, mpf:execute for implementation, and mpf:verify for verification. Use mpf:decompose to break ad-hoc TODOs into tasks without the full PRD pipeline. Covers full-stack web apps (Next.js, React, Python), APIs, document processing projects (Excel, Word, PDF, PPTX), automation scripts, data pipelines, skill development, mobile apps, and personal projects. Also use when the user says things like "new project", "set up a project", "initialize this repo", "bootstrap this", "project setup", "create project docs", "upgrade this project", "add docs to this project", or "switch to Linear tracking". Works in two modes: INIT mode for new projects, EVOLVE mode for existing projects that already have scaffolding.
+description: Initialize, upgrade, and evolve project scaffolding with a structured interview, tailored documentation, and Claude Code configuration using the Mike Project Framework (MPF). Use this skill when the user wants to: start a new project (mpf:init), bootstrap a codebase, set up project documentation, create a CLAUDE.md, initialize a repo with docs, scaffold a project structure, upgrade a project from light to full scaffolding, add new documents to an existing project, or change a project's tracking approach. After scaffolding, use mpf:discover to create the PRD, mpf:plan-phases for phase breakdown, mpf:execute for implementation, and mpf:verify for verification, mpf:import for requirement import, mpf:audit for implementation audit, mpf:reconcile for document reconciliation. Use mpf:decompose to break ad-hoc TODOs into tasks without the full PRD pipeline. Covers full-stack web apps (Next.js, React, Python), APIs, document processing projects (Excel, Word, PDF, PPTX), automation scripts, data pipelines, skill development, mobile apps, and personal projects. Also use when the user says things like "new project", "set up a project", "initialize this repo", "bootstrap this", "project setup", "create project docs", "upgrade this project", "add docs to this project", or "switch to Linear tracking". Works in three modes: INIT mode for new projects, EVOLVE mode for existing projects that already have scaffolding, ONBOARD mode for brownfield projects adopting MPF. Also use when the user says "import requirements", "audit implementation", "reconcile docs", "onboard project", or "brownfield".
 ---
 
 # MPF: Project Init
@@ -22,7 +22,27 @@ Before starting the interview, check the project root for existing scaffolding:
 4. Check for `docs/technical-specs/` directory
 5. Check for `docs/requirements/` directory
 
-**If `CLAUDE.md` does not exist at the project root: Init mode.** Proceed to Phase 1 as normal. The presence of a `docs/` directory alone (e.g., from `mpf:map-codebase`) does NOT indicate existing scaffolding.
+**If `CLAUDE.md` does not exist at the project root**, check for brownfield signals before defaulting to Init mode:
+
+| Signal | Weight |
+|--------|--------|
+| Significant git history (50+ commits) | Strong |
+| Existing requirements/PRD/spec docs in common locations | Strong |
+| `package.json`, `pyproject.toml`, etc. with dependencies | Medium |
+| Existing test suite | Medium |
+| Existing `docs/` folder with content | Medium |
+
+If 2+ medium/strong signals are detected, prompt the user:
+
+> "I detected an existing project with established code and documentation. Would you like to enter **Onboard mode** to import your existing requirements and assess implementation status? This gives you a structured path to adopt MPF on your existing project.
+>
+> - **Yes (Onboard):** I'll adapt the interview to your existing project, then guide you through importing requirements, auditing what's built, and reconciling your docs.
+> - **No (Init):** I'll run the standard init interview as if this were a new project.
+>
+> Which would you prefer?"
+
+If the user chooses Onboard, proceed with ONBOARD mode adaptations in Phases 1-4.
+If no brownfield signals or user declines, proceed with standard Init mode. The presence of a `docs/` directory alone (e.g., from `mpf:map-codebase`) does NOT indicate existing scaffolding.
 
 **If `CLAUDE.md` exists: Evolve mode.** Read the existing CLAUDE.md and PROJECT_ROADMAP.md (if present) to understand current state, then present the evolve menu:
 
@@ -119,6 +139,17 @@ Start by identifying the project type and scaffolding tier. The type determines 
 | **Always generated** | CLAUDE.md, README.md, docs/PROJECT_ROADMAP.md (simplified: sections 1, 2, 3, 6 only), docs/MPF_GUIDE.md, .claude/rules/golden-rules.md, .claude/rules/git-protocol.md | Everything in Light + full PROJECT_ROADMAP.md (all 8 sections), docs/technical-specs/code-atlas.md, docs/CHANGELOG.md, docs/decisions.md, docs/technical-specs/TECHNICAL_SPEC.md, .claude/rules/document-updates.md, .claude/rules/session-protocol.md | Everything in Standard + docs/technical-specs/DATA_MODEL.md, GETTING_STARTED.md, and tracker-specific docs (docs/traceability-matrix.md or docs/requirements/requirements.md + docs/BACKLOG.md) |
 | **Upgrade path** | Can upgrade to Standard or Full via evolve mode | Can upgrade to Full via evolve mode | N/A |
 
+### ONBOARD Mode: Pre-Fill from Existing Artifacts
+
+When in ONBOARD mode, pre-fill interview answers from detected project state before asking the user:
+
+- **Project name:** from `package.json` name field, `pyproject.toml` project name, or directory name
+- **Tech stack:** from `package.json` dependencies, `pyproject.toml` dependencies, `go.mod`, `Cargo.toml`, etc.
+- **Project description:** from README.md first paragraph, `package.json` description, or `pyproject.toml` description
+- **Project maturity:** inferred from git history length and commit frequency
+
+Present pre-filled answers to the user for confirmation: "Based on your project, I've detected: [pre-filled values]. Is this correct, or would you like to adjust anything?"
+
 After detecting the project type, state the auto-detected tier and allow the user to override:
 
 > "This looks like a **[type]** project. I'd recommend **[tier]** scaffolding, which includes [brief description]. Want to go with that, or would you prefer a different tier?"
@@ -181,6 +212,17 @@ Based on answers, classify the project type from the table above and adapt subse
   - If yes: Is the original source code or documentation available?
   - If yes: Recommend a **Migration Reference** (`docs/MIGRATION_REFERENCE.md`)
 - If Discovery: Should Claude act as the **Discovery architect**: guiding user stories, acceptance criteria, technical specs, and data models before any code is written?
+
+### ONBOARD Mode: Additional Questions (asked after Round 2)
+
+When in ONBOARD mode, ask these additional questions:
+
+1. **Where do your requirements live?** (Linear project, markdown files in the repo, Notion, other)
+   - If multiple sources: "Which sources should I import from? I can handle multiple."
+2. **Which existing docs should MPF manage vs leave alone?**
+   - "I'll scan for overlap later with `mpf:reconcile`, but it helps to know your preference upfront."
+3. **Are there requirements that are fully implemented and should not be re-planned?**
+   - "I'll verify this with `mpf:audit`, but knowing your assessment helps calibrate."
 
 ### Round 3: Version Control & Git Workflow
 
@@ -444,6 +486,23 @@ Generate the consolidated project document using the 8-section structure from `r
 - **Section 7 (Session Log):** Initialize with a single entry for the init session.
 - **Section 8 (Phase History):** Initialize as empty.
 
+### ONBOARD Mode: Pre-MPF Work Section (Phase 2.6)
+
+When scaffolding is generated in ONBOARD mode and `docs/requirements/audit-report.md` exists (from a prior `mpf:audit` run, or when `mpf:audit` is run later), include a Pre-MPF Work section in PROJECT_ROADMAP.md between Section 1 (Project Overview) and Section 2 (Current Phase):
+
+The Pre-MPF Work section summarizes work completed before MPF adoption. It is populated by `mpf:audit` results. If audit-report.md does not yet exist at scaffolding time, add a placeholder:
+
+```markdown
+## Pre-MPF Work
+
+_Run `mpf:audit` to populate this section with implementation status of existing requirements._
+```
+
+When audit-report.md is available, this section should contain:
+- Summary table: Requirement | Status | Evidence
+- Totals: N completed, M partial, P remaining
+- Link to detailed audit: `docs/requirements/audit-report.md`
+
 When creating placeholder documentation files, mark them with an HTML comment at the top: `<!-- MPF placeholder: to be populated by mpf:discover -->`. This allows downstream commands to distinguish placeholders from populated content.
 
 If `docs/technical-specs/code-atlas.md` or `docs/technical-specs/high-level-architecture.md` already exist (e.g., from a prior `mpf:map-codebase` run), do not overwrite them. Skip creation of these files and note in the session log that existing mapper output was preserved.
@@ -582,6 +641,21 @@ After all files are created:
 3. If Greenfield build phase: suggest running `mpf:plan-phases` if phases are not yet defined, or ask what the user wants to work on first
 4. Otherwise: ask what the user wants to work on first, showing open backlog items if any
 
+### ONBOARD Mode: Post-Scaffolding Guidance
+
+When in ONBOARD mode, after scaffolding is complete, display the full onboarding flow:
+
+> "Your project scaffolding is set up. Here's your onboarding path:
+>
+> 1. ~~`mpf:init`~~ (done)
+> 2. **Next: `mpf:import`** to bring in your existing requirements
+> 3. `mpf:audit` to assess which requirements are already implemented
+> 4. `mpf:reconcile` to align your existing docs with MPF's structure
+> 5. `mpf:sync-linear` to check tracker alignment
+> 6. `mpf:plan-phases` to plan remaining work
+>
+> Run `mpf:import` now to continue."
+
 ---
 
 ## Key Reminders
@@ -594,4 +668,8 @@ After all files are created:
 - **Data model changes always require confirmation.** Across all project types: database schema, Salesforce object model, or any data structure change.
 - **After scaffolding, recommend mpf:discover.** If the project is in Discovery phase, the next step is always to run mpf:discover to create the PRD and flesh out requirements.
 - **After PRD, recommend mpf:plan-phases.** Once the PRD exists, recommend mpf:plan-phases to break the work into implementation phases.
-- **MPF command workflow.** The full MPF lifecycle follows this sequence: mpf:init (this skill) > mpf:discover > mpf:plan-phases > mpf:plan-tasks > mpf:execute > mpf:verify. Each command builds on the outputs of the previous one. For ad-hoc TODOs that don't need the full PRD pipeline, use mpf:decompose to break them into executable task files directly. See `docs/MPF_GUIDE.md` for a complete command reference and workflow guide.
+- **MPF command workflow.** The full MPF lifecycle follows this sequence:
+  - **Greenfield:** mpf:init > mpf:discover > mpf:plan-phases > mpf:plan-tasks > mpf:execute > mpf:verify
+  - **Brownfield (onboarding):** mpf:map-codebase > mpf:init (ONBOARD) > mpf:import > mpf:audit > mpf:reconcile > mpf:sync-linear > mpf:plan-phases > mpf:plan-tasks > mpf:execute > mpf:verify
+  - **Ad-hoc:** mpf:decompose > mpf:execute > mpf:verify
+  Each command builds on the outputs of the previous one. See `docs/MPF_GUIDE.md` for a complete command reference and workflow guide.

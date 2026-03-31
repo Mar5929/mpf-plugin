@@ -51,6 +51,11 @@ If `mcp__claude_ai_Linear__*` tools are unavailable, tell the user: "Linear MCP 
 
 ### Step 4: Compare and Detect Discrepancies
 
+**Onboarding context:** When run as part of the onboarding flow (after `mpf:reconcile`), also read `docs/requirements/audit-report.md` if it exists. Use the audit data to:
+- Cross-reference "Done" assessments in the audit with Linear ticket states
+- Include audit evidence in the sync report for "Done in code, open in Linear" checks
+- Add an "Onboarding Sync" section to the report header noting this is an initial alignment check
+
 Run each of these checks and collect all discrepancies:
 
 | Check | What to Compare | Severity |
@@ -64,6 +69,9 @@ Run each of these checks and collect all discrepancies:
 | **Missing milestone** | Phase overview file references a milestone ID that does not exist in Linear | Low |
 | **Unassigned ticket** | Ticket in Linear has no assignee (should be Michael Rihm) | Low |
 | **Missing dependency link** | Task file has "Depends On" entries but corresponding Linear tickets lack blocked-by/blocks relations | Medium |
+| **Done in code, open in Linear** | audit-report.md marks requirement as Done but corresponding Linear ticket state is not Done | Medium |
+| **Untracked requirement** | Imported requirement in requirements.md has no corresponding Linear ticket (no entry in traceability-matrix.md) | Low |
+| **Orphan ticket (unmatched)** | Linear ticket exists but has no matching requirement in requirements.md (different from "Orphan ticket" which checks traceability matrix only; this also checks requirements.md) | Low |
 
 ### Step 5: Generate Report
 
@@ -116,6 +124,14 @@ Overall: {CLEAN / N DISCREPANCIES FOUND}
 | Ticket | Title | State | Suggested Action |
 |--------|-------|-------|------------------|
 
+## Onboarding Alignment (if audit-report.md exists)
+
+| Requirement | Audit Status | Linear Status | Action Needed |
+|-------------|-------------|---------------|---------------|
+| REQ-001 | Done | Open | Close ticket or dispute audit |
+| REQ-003 | Partial | Open | Expected: partial work remains |
+| REQ-005 | Not Started | No ticket | Create ticket |
+
 ## Coverage Summary
 
 | Requirement | Ticket(s) | Phase | Status |
@@ -150,6 +166,9 @@ Wait for the user's choice before proceeding.
 - **Missing milestone:** Note in the report. Do not auto-create milestones (user may have restructured in Linear).
 - **Unassigned ticket:** Assign to Michael Rihm (`8d75f0a6-f848-41af-9f4b-d06036d6af82`) via `mcp__claude_ai_Linear__*`.
 - **Missing dependency link:** Read the task file's "Depends On" field, look up ticket IDs, and call `save_issue(id: ticket_id, blockedBy: [dependency_ticket_ids])` to create the missing relation.
+- **Done in code, open in Linear:** Update the Linear ticket state to Done via `mcp__claude_ai_Linear__*`. Add a comment via `mcp__claude_ai_Linear__*`: "Marked done based on implementation audit: code exists and acceptance criteria met."
+- **Untracked requirement:** Create a new Linear ticket via `mcp__claude_ai_Linear__*` using the requirement's title and description from `docs/requirements/requirements.md`. Assign to Michael Rihm (`8d75f0a6-f848-41af-9f4b-d06036d6af82`), team Rihm (`dfe15bc4-6dd0-4bde-8609-6620efc3140d`). Update `docs/traceability-matrix.md` with the new ticket ID.
+- **Orphan ticket (unmatched):** Ask the user if the ticket maps to an existing requirement (link it in `docs/traceability-matrix.md`) or should be imported as a new requirement (create a REQ entry in `docs/requirements/requirements.md` and add the mapping to the traceability matrix).
 
 ### Step 7: Post-Fix Summary
 
