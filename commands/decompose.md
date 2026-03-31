@@ -97,7 +97,7 @@ Create the `tasks/` subdirectory inside the phase directory.
 
 ### Step 5: Decompose into Tasks
 
-Read the Task File template from `skills/mpf/references/document-templates.md` (section "Task File").
+Read the Task File template from `skills/mpf/references/templates-phases.md` (section "Task File").
 
 #### Inline Path (1-3 simple items)
 

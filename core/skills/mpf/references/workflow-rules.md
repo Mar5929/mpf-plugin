@@ -16,20 +16,17 @@ These rules apply after scaffolding is created, scoped to whichever workflows th
 
 ## Document Maintenance Rules (apply only to enabled documents)
 
-1. **Proactive updates.** When you write or modify code, update all affected enabled docs in the same response. Do not defer documentation to a later step.
-2. **Cross-reference.** Use IDs (`BL-xxx`, `ADR-xxx`, `REQ-xxx`, `NFR-xxx`) to link between documents. A changelog entry should reference the backlog item it closes. A backlog item should reference the requirement it implements. A decision should list related requirements, backlog items, and other ADRs.
-3. **No stale docs.** If you notice an enabled doc is out of date during any task, fix it immediately.
-4. **Atomic consistency.** If a change affects multiple docs (e.g., completing a backlog item also updates the changelog, the requirements status, and possibly the code atlas), update all of them together.
-5. **Summarize, don't dump.** Keep entries concise and scannable. Use tables and bullet lists over prose paragraphs.
-6. **Follow the Update Protocol.** Refer to the event-to-action table in CLAUDE.md Section 4 for which docs to update for each type of event.
-7. **Session length check.** If a session exceeds 15 turns, Claude should proactively suggest: "We've been going for a while. Want me to update all living docs with the current state and start a fresh session? Long sessions increase the chance I'll miss doc updates." This is not a hard rule: the user may decline.
-8. **Prioritized update order.** When a single action requires updating multiple docs, follow this priority order. If you cannot complete all updates in one response, complete as many as possible in priority order, then explicitly state which updates remain.
+Core maintenance rules (proactive updates, cross-referencing, no stale docs, atomic consistency, summarize don't dump) are defined in `.claude/rules/document-updates.md`. The rules below are additional behavioral guidelines:
+
+1. **Follow the Update Protocol.** Refer to `.claude/rules/document-updates.md` for the event-to-action table.
+2. **Session length check.** If a session exceeds 15 turns, Claude should proactively suggest: "We've been going for a while. Want me to update all living docs with the current state and start a fresh session? Long sessions increase the chance I'll miss doc updates." This is not a hard rule: the user may decline.
+3. **Prioritized update order.** When a single action requires updating multiple docs, follow this priority order. If you cannot complete all updates in one response, complete as many as possible in priority order, then explicitly state which updates remain.
    - Priority 1 (must complete): `docs/technical-specs/code-atlas.md`, tracker ticket status
    - Priority 2 (should complete): `docs/traceability-matrix.md` or `docs/BACKLOG.md`, CHANGELOG.md
    - Priority 3 (complete if possible): `docs/decisions.md`, `docs/technical-specs/TECHNICAL_SPEC.md`, `docs/PROJECT_ROADMAP.md`
-9. **Incomplete update disclosure.** If you complete a code change but cannot update all required docs in the same response, you MUST explicitly say: "I still need to update: [list of docs]. Want me to do that now?" Never silently skip a doc update.
-10. **Show your work for doc updates.** When updating a living document, show the relevant diff or the new content you're adding. For small updates (1-5 lines), include the actual content in your response. For larger updates, show a summary of what changed. This makes it verifiable and reduces hallucinated updates.
-11. **Rules-CLAUDE.md consistency.** Whenever you update a section of CLAUDE.md that has a corresponding `.claude/rules/` file, update both in the same response. If you notice a conflict between a rules file and CLAUDE.md, flag it to the user and ask which is correct before proceeding.
+4. **Incomplete update disclosure.** If you complete a code change but cannot update all required docs in the same response, you MUST explicitly say: "I still need to update: [list of docs]. Want me to do that now?" Never silently skip a doc update.
+5. **Show your work for doc updates.** When updating a living document, show the relevant diff or the new content you're adding. For small updates (1-5 lines), include the actual content in your response. For larger updates, show a summary of what changed. This makes it verifiable and reduces hallucinated updates.
+6. **Rules-CLAUDE.md consistency.** Whenever you update a section of CLAUDE.md that has a corresponding `.claude/rules/` file, update both in the same response. If you notice a conflict between a rules file and CLAUDE.md, flag it to the user and ask which is correct before proceeding.
 
 ---
 

@@ -139,7 +139,9 @@ After all tasks in a wave pass the completion gate, collect structured summaries
      - task-02 ({title}): created src/auth/middleware.ts. Deviation: used JWT instead of session tokens per escalation guidance from planner.
    ```
 
-3. Append this block to the prompt of every executor in the next wave. The executor should read this context to understand what earlier waves produced, but should not modify files from prior waves unless its own task spec explicitly lists them.
+3. **Filter by dependency.** For each executor in the next wave, read its task file's Dependencies section. Only include prior wave context for waves that contain the task's declared dependencies. If a Wave 3 task depends only on task-04 (Wave 2), include Wave 2 context but skip Wave 1 context. If no explicit dependencies are listed, include only the immediately preceding wave.
+
+4. Append the filtered context block to the executor's prompt. The executor should read this context to understand what earlier waves produced, but should not modify files from prior waves unless its own task spec explicitly lists them.
 
 If this is the first wave (Wave 1), there is no prior wave context to inject. Skip this step.
 
@@ -217,6 +219,24 @@ When `mpf:execute` is run on a phase that was already partially executed:
    - Tasks flagged as FAIL in a prior verify report
    - New fix tasks added after verify failure
 4. Execute only those tasks, preserving prior work.
+
+## Rollback Mode
+
+```
+mpf:execute --rollback <phase_number>
+```
+
+When `--rollback` is passed:
+
+1. Check that the phase branch (`feature/phase-{N}-{name}`) exists.
+2. Identify the branch point (the commit where the branch was created from main).
+3. Show the user what will be reset: list the commits that will be undone with `git log --oneline {branch-point}..HEAD`.
+4. **Ask for explicit confirmation** before proceeding.
+5. If confirmed: `git reset --hard {branch-point}` to reset the branch to pre-execution state.
+6. Clear any Done checkboxes in task files that were checked during the rolled-back execution.
+7. Report: "Phase {N} rolled back to pre-execution state. Run `mpf:execute {N}` to re-execute."
+
+If the branch has been pushed to remote, warn: "This branch has been pushed. Remote will be out of sync. You'll need to force-push after rollback."
 
 ## Error Handling
 

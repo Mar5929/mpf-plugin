@@ -26,7 +26,7 @@ If `CLAUDE.md` does not exist, tell the user: "No CLAUDE.md found. Run `mpf:init
 
 ## Template Reference
 
-Read the PRD.md template from `skills/mpf/references/document-templates.md` (section "PRD.md") before generating the document. Follow that structure exactly.
+Read the PRD.md template from `skills/mpf/references/templates-requirements.md` (section "PRD.md") before generating the document. Follow that structure exactly.
 
 ## Extend Mode (--extend)
 
@@ -142,7 +142,7 @@ After the interview, generate the following documents:
 
 ### 1. PRD.md
 
-Write `docs/requirements/PRD.md` following the template in document-templates.md. Include all information gathered during the interview.
+Write `docs/requirements/PRD.md` following the template in `skills/mpf/references/templates-requirements.md`. Include all information gathered during the interview.
 
 ### 2. requirements.md (if in-repo tracking)
 

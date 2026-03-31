@@ -43,7 +43,7 @@ If `docs/requirements/PRD.md` does not exist or is a placeholder, tell the user:
 
 ## Template Reference
 
-Read the PROJECT_ROADMAP.md and Phase Overview templates from `skills/mpf/references/document-templates.md` before generating documents.
+Read the PROJECT_ROADMAP.md template from `skills/mpf/references/templates-core.md` and the Phase Overview template from `skills/mpf/references/templates-phases.md` before generating documents.
 
 ## Phase Decomposition
 

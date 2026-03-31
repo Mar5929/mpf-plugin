@@ -1,17 +1,4 @@
-# Model Routing Table
-
-## Agent Assignments
-
-| Agent | Model | Key Tools | Role | Rationale | Reconsider When |
-|-------|-------|-----------|------|-----------|-----------------|
-| mpf-planner | opus | (standard set) | Break phases into executable tasks | Deep reasoning needed for dependency analysis, wave ordering, and requirement coverage | Tasks are simple enough that structured decomposition suffices |
-| mpf-verifier | opus | (standard set) | Phase-level UAT and acceptance testing | Must evaluate whether implementation meets requirements, a judgment call | Verification becomes a mechanical checklist with no ambiguity |
-| mpf-mapper-lead | opus | agent_spawn, team_create, send_message | Discover subsystems and synthesize architecture | Architectural reasoning requires understanding system boundaries and abstractions | Codebase is small enough that a single specialist can map it |
-| mpf-executor | sonnet | send_message, Context7 | Implement a single task per spec | Follows well-defined task specs with library doc lookup | Tasks become architecturally complex (multi-system integration) |
-| mpf-mapper-specialist | sonnet | task_update, send_message, Context7 | Deep-dive a single subsystem | Follows structured exploration protocol with optional doc lookup | Subsystem requires cross-cutting architectural understanding |
-| mpf-checker | haiku | (read-only subset) | Validate plan structure and coverage | Mechanical checks: template completeness, requirement coverage, wave conflicts | Checks require semantic judgment beyond structural validation |
-
-**Context7 tools** (`resolve-library-id`, `query-docs`): Available to executor and mapper-specialist agents for fetching current library documentation. Usage is optional and degrades gracefully if unavailable. See NFR-003.
+# Model Routing Reference
 
 ## Cost Guidance
 
@@ -24,9 +11,22 @@ Per NFR-002, Opus usage should stay below 20% of total agent calls per phase. In
 
 This gives an opus ratio of 2/(N+3), which is under 20% for any phase with 8+ tasks. For small phases (< 8 tasks), the ratio may exceed 20% but the absolute cost remains low.
 
+## When to Reconsider Defaults
+
+| Agent | Default | Upgrade When | Downgrade When |
+|-------|---------|-------------|----------------|
+| mpf-planner | opus | N/A (already highest) | Tasks are simple enough that structured decomposition suffices |
+| mpf-verifier | opus | N/A | Verification becomes a mechanical checklist with no ambiguity |
+| mpf-mapper-lead | opus | N/A | Codebase is small enough that a single specialist can map it |
+| mpf-executor | sonnet | Tasks involve multi-system integration | N/A (sonnet is baseline) |
+| mpf-mapper-specialist | sonnet | Subsystem has deep cross-cutting concerns | N/A |
+| mpf-checker | haiku | Checks require semantic judgment beyond structural validation | N/A |
+
+**Context7 tools** (`resolve-library-id`, `query-docs`): Available to executor and mapper-specialist agents for fetching current library documentation. Usage is optional and degrades gracefully if unavailable.
+
 ## Customization
 
-Per-project model overrides can be configured during `mpf:init` Round 8 (MPF-Specific Configuration). Overrides are stored in the project's CLAUDE.md and take precedence over these defaults.
+Per-project model overrides can be configured during `mpf:init` Round 8 (MPF-Specific Configuration). Overrides are stored in the project's CLAUDE.md and take precedence over agent defaults.
 
 Common override scenarios:
 - **Budget-conscious projects:** Downgrade planner to sonnet (reduces planning quality but cuts cost)

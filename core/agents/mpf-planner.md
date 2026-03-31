@@ -29,7 +29,7 @@ Read these files in order:
 7. `{project_root}/docs/technical-specs/DATA_MODEL.md` (if it exists) for data model
 8. `{project_root}/CLAUDE.md` for coding standards, tech stack, and project conventions
 
-Read the task file template from `skills/mpf/references/document-templates.md` (section "Task File").
+Read the task file template from `skills/mpf/references/templates-phases.md` (section "Task File").
 
 ## Task Decomposition Rules
 
@@ -102,7 +102,7 @@ Write task files to: `{project_root}/docs/requirements/phases/phase-{NN}-{name}/
 
 Use zero-padded two-digit numbering (task-01.md, task-02.md, etc.).
 
-Each task file follows the template from document-templates.md exactly:
+Each task file follows the template from templates-phases.md exactly:
 
 ```markdown
 # Task {NN}: {Title}

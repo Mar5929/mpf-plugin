@@ -10,16 +10,19 @@ Orchestrate phase-level verification by spawning the verifier agent and handling
 
 ```
 mpf:verify <phase_number>
+mpf:verify --manual <phase_number>
 ```
 
 Example: `mpf:verify 1`
+
+The `--manual` flag skips the execution check, allowing verification of work done outside MPF (manually implemented, done in a prior session, or by another tool). The verifier still runs all verify commands and checks success criteria.
 
 ## Prerequisites
 
 1. Read Section 3 (Phase Roadmap) of `docs/PROJECT_ROADMAP.md` to confirm the phase exists.
 2. Check that task files exist in `docs/requirements/phases/phase-{NN}-{name}/tasks/`.
-3. Verify that at least some tasks have been executed (check for commits on the phase branch or Done checkboxes).
-4. If no execution evidence found, tell the user: "Phase {N} doesn't appear to have been executed yet. Run `mpf:execute {N}` first."
+3. **If `--manual` is NOT set:** Verify that at least some tasks have been executed (check for commits on the phase branch or Done checkboxes). If no execution evidence found, tell the user: "Phase {N} doesn't appear to have been executed yet. Run `mpf:execute {N}` first, or use `mpf:verify --manual {N}` if the work was done outside MPF."
+4. **If `--manual` IS set:** Skip execution evidence check. Proceed directly to verification.
 
 ## Steps
 

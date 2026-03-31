@@ -45,11 +45,11 @@ For each subsystem, record:
 
 If only 1-2 subsystems are identified, skip team creation. Map them yourself using the specialist logic described in the `mpf-mapper-specialist` agent prompt. Write the architecture/ and code-modules/ files directly.
 
-Before mapping, read document templates from `skills/mpf/references/document-templates.md` to get the exact structure for architecture/ and code-modules/ files. Use these templates even in the shortcut path.
+Before mapping, read document templates from `skills/mpf/references/templates-technical.md` to get the exact structure for architecture/ and code-modules/ files. Use these templates even in the shortcut path.
 
 ### Standard flow (3+ subsystems)
 
-1. **Read document templates.** Read `skills/mpf/references/document-templates.md` to get the exact structure for architecture/{subsystem}.md and code-modules/{module}.md. You will inline these templates into each specialist's prompt.
+1. **Read document templates.** Read `skills/mpf/references/templates-technical.md` to get the exact structure for architecture/{subsystem}.md and code-modules/{module}.md. You will inline these templates into each specialist's prompt.
 
 2. **Create a team:** Use `team_create` with name `mpf-map-{project-name}` (derive project-name from the project root directory name).
 
@@ -70,8 +70,8 @@ Write these files:
   (Create additional code-modules/ files if the subsystem has distinct sub-modules)
 
 ## Document Templates
-{inlined architecture/{subsystem}.md template from document-templates.md}
-{inlined code-modules/{module}.md template from document-templates.md}
+{inlined architecture/{subsystem}.md template from templates-technical.md}
+{inlined code-modules/{module}.md template from templates-technical.md}
 
 Only read files within your assigned paths. Do not scan the entire codebase.
 If existing_docs is true, read existing files and update rather than overwrite.

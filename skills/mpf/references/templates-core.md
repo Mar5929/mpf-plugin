@@ -1,34 +1,6 @@
-# Document Templates Reference
+# Core Document Templates
 
-This file defines the exact structure for every document the MPF skill can generate. Read the relevant sections when generating each file.
-
----
-
-## Table of Contents
-
-1. [CLAUDE.md Structure](#claudemd-structure)
-2. [BACKLOG.md](#backlogmd)
-3. [decisions.md](#decisionsmd)
-4. [CHANGELOG.md](#changelogmd)
-5. [requirements.md](#requirementsmd)
-6. [traceability-matrix.md](#traceability-matrixmd)
-7. [TECHNICAL_SPEC.md](#technical_specmd)
-8. [DATA_MODEL.md](#data_modelmd)
-9. [code-atlas.md](#code-atlasmd)
-10. [README.md](#readmemd)
-11. [GETTING_STARTED.md](#getting_startedmd)
-12. [MIGRATION_REFERENCE.md](#migration_referencemd)
-13. [PROJECT_ROADMAP.md](#project_roadmapmd)
-14. [DATA_LINEAGE.md](#data_lineagemd)
-15. [high-level-architecture.md](#high-level-architecturemd)
-16. [architecture/{subsystem}.md](#architecturesubsystemmd)
-17. [code-modules/{module}.md](#code-modulesmodulemd)
-18. [PRD.md](#prdmd)
-19. [Phase Overview](#phase-overview)
-20. [Task File](#task-file)
-21. [MPF_GUIDE.md](#mpf_guidemd)
-22. [REQUIREMENT_HIERARCHY.md](#requirement_hierarchymd)
-23. [audit-report.md](#audit-reportmd)
+Templates for the core documents generated during `mpf:init`. Read the relevant sections when generating each file.
 
 ---
 
@@ -98,7 +70,6 @@ docs/
       phase-02-{name}/
         overview.md
         tasks/
-          task-01.md
   technical-specs/
     TECHNICAL_SPEC.md                 # Technical design document
     DATA_MODEL.md                     # Database schema
@@ -113,46 +84,10 @@ docs/
 ```
 
 ### Section 4: Living Documents: Update Protocol
-- A table mapping events to required document updates. Only include rows for enabled documents.
 
-**If using in-repo tracking (requirements.md + BACKLOG.md):**
+For the update protocol, reference the rules file: "See `.claude/rules/document-updates.md` for the event-to-action update protocol."
 
-  | Event | Action |
-  |---|---|
-  | New feature requested | Add to `docs/requirements/requirements.md` > Add technical approach to `docs/technical-specs/TECHNICAL_SPEC.md` > Update `docs/BACKLOG.md` |
-  | New table/column/object created | Add to `docs/technical-specs/DATA_MODEL.md` |
-  | Architecture decision made | Add ADR entry to `docs/decisions.md` |
-  | Any code committed | Add entry to `docs/CHANGELOG.md` |
-  | Requirement changed | Update `docs/requirements/requirements.md`, mark old version as superseded |
-  | Feature completed | Mark status as `[DONE]` in `docs/requirements/requirements.md` > Update `docs/BACKLOG.md` |
-  | Code added/modified | Update `docs/technical-specs/code-atlas.md` + relevant `docs/technical-specs/code-modules/` file |
-  | Function/class added/changed | Update relevant `docs/technical-specs/code-modules/` file |
-  | Request to modify backlog | Update `docs/BACKLOG.md` |
-  | End of session | Append session log entry to `docs/PROJECT_ROADMAP.md` Section 7 |
-  | Phase transition | Update current phase (Section 2) + phase history (Section 8) + roadmap status (Section 3) in `docs/PROJECT_ROADMAP.md` |
-  | Blocker identified | Add to blockers table in `docs/PROJECT_ROADMAP.md` Section 6 |
-  | Task completed | Mark done in task file + update phase `overview.md` |
-
-**If using external tracker + traceability matrix:**
-
-  | Event | Action |
-  |---|---|
-  | New feature requested | Create tracker ticket > Add to `docs/traceability-matrix.md` > Add technical approach to `docs/technical-specs/TECHNICAL_SPEC.md` |
-  | New table/column/object created | Add to `docs/technical-specs/DATA_MODEL.md` |
-  | Architecture decision made | Add ADR entry to `docs/decisions.md` |
-  | Any code committed | Add entry to `docs/CHANGELOG.md` |
-  | Ticket created, split, or phase changed | Update `docs/traceability-matrix.md` |
-  | Feature completed | Update tracker ticket to Done |
-  | Code added/modified | Update `docs/technical-specs/code-atlas.md` + relevant `docs/technical-specs/code-modules/` file |
-  | Function/class added/changed | Update relevant `docs/technical-specs/code-modules/` file |
-  | Requirements change | Update PRD (if applicable) + `docs/traceability-matrix.md` |
-  | End of session | Append session log entry to `docs/PROJECT_ROADMAP.md` Section 7 |
-  | Phase transition | Update current phase (Section 2) + phase history (Section 8) + roadmap status (Section 3) in `docs/PROJECT_ROADMAP.md` |
-  | Phase completed | Update `docs/PROJECT_ROADMAP.md` Section 2 (progress) + Section 3 (roadmap status) |
-  | Blocker identified | Add to blockers table in `docs/PROJECT_ROADMAP.md` Section 6 |
-  | Task completed | Mark done in task file + update phase `overview.md` |
-
-- Format rules: compact Markdown (tables and bullet lists preferred over prose), use IDs (`REQ-001`, `ADR-001`, `NFR-001`), ISO dates (`YYYY-MM-DD`)
+Include a brief note about format rules: compact Markdown (tables and bullet lists preferred over prose), use IDs (`REQ-001`, `ADR-001`, `NFR-001`), ISO dates (`YYYY-MM-DD`).
 
 ### Section 5: Coding Standards
 - Create per-language subsections based on the tech stack identified during the interview
@@ -230,405 +165,6 @@ docs/
 ### Section 13: References
 - Table with columns: `Resource | Description`
 - Populated from interview answers and updated as project evolves
-
----
-
-## BACKLOG.md
-
-**Purpose:** Single source of truth for all planned, in-progress, and completed work items.
-
-**Location:** `docs/BACKLOG.md` (if in-repo tracking)
-
-**Structure:**
-- **Phases Overview table** at the top: columns for Phase number, Focus area, Duration/Timeline, and Backlog Item ID range
-- **Per-phase sections** (e.g., "Phase 1: Foundation"), each containing:
-  - Summary table: `ID | Title | Priority | Status | Implements`
-  - Detailed description block for each item: `### BL-001: Title` with `**Details**:` paragraph
-- **Completed section** at the bottom: `ID | Title | Completed (date) | Notes`
-
-**Status values:** `NOT STARTED | IN PROGRESS | DONE | BLOCKED | DEFERRED`
-**Priority values:** `P0 (Critical) | P1 (High) | P2 (Medium) | P3 (Low)`
-
-Auto-create new items when TODOs or tech debt are discovered during development.
-
----
-
-## decisions.md
-
-**Purpose:** Architectural Decision Record (ADR) log.
-
-**Location:** `docs/decisions.md`
-
-**Structure:**
-- **Decision Index table** at the top: `ID | Title | Status | Date`
-- **Per-decision sections** (`### ADR-001: Title`):
-  - **Date**
-  - **Status:** `PROPOSED | ACCEPTED | DEPRECATED | SUPERSEDED`
-  - **Context:** What motivated this decision?
-  - **Options Considered:** Numbered list with `Pros: / Cons:` each
-  - **Decision:** What was chosen
-  - **Consequences:** Positive and negative results
-  - **Related:** Cross-references to `REQ-XXX`, `BL-XXX`, or `ADR-XXX`
-
----
-
-## CHANGELOG.md
-
-**Purpose:** Human-readable history of what changed and when.
-
-**Location:** `docs/CHANGELOG.md`
-
-**Format:** [Keep a Changelog](https://keepachangelog.com/) conventions. Reverse chronological.
-
-**Structure per entry:**
-- Heading: `## YYYY-MM-DD: Release Title or Version`
-- Categories (only those that apply): Added, Changed, Fixed, Removed, Deprecated, Security
-- Each bullet references relevant backlog IDs (e.g., `(BL-XXX)`)
-
-Initialize with a "Project Bootstrap" entry listing all created documentation files.
-
----
-
-## requirements.md
-
-**Purpose:** Defines what the project must do: the "what" document.
-
-**Location:** `docs/requirements/requirements.md`
-
-**Structure:**
-- **Requirement Index table**: `ID | Title | Priority | Status`
-- **Functional Requirements** (`### REQ-001: Title`):
-  - Priority, Status (`DRAFT | APPROVED | IN PROGRESS | DONE | DEFERRED | SUPERSEDED`)
-  - Source: {origin of this requirement, e.g., "Linear: RIH-42", "docs/old-spec.md, Section 2.1", "Notion/page-id", "Interview", "mpf:discover"}
-  - Description, Acceptance Criteria (numbered checkbox list), Dependencies, Notes
-
-  The Source field is optional for greenfield projects (defaults to "mpf:discover") but required for imported requirements.
-- **Non-Functional Requirements** (`### NFR-001: Title`):
-  - Priority, Description, Acceptance Criteria (measurable)
-- **Glossary** table: `Term | Definition`
-
----
-
-## traceability-matrix.md
-
-**Purpose:** Maps every product requirement to its implementation phase and external tracker tickets. Replaces requirements.md and BACKLOG.md when an external tracker is used.
-
-**Location:** `docs/traceability-matrix.md`
-
-**When to use:** Only for projects using an external tracker (Linear, Jira, GitHub Issues, etc.). Do NOT generate this for projects using in-repo BACKLOG.md + requirements.md.
-
-**Structure:**
-- **Header** with one-line description and link to the PRD or product requirements doc
-- **Functional Requirements table**: `PRD Section | Req ID | Requirement | Phase | Tracker Ticket(s)`
-  - One row per functional requirement (REQ-001, REQ-002, etc.)
-  - Phase column: the implementation phase this requirement belongs to (e.g., "Phase 1", "Phase 2", "TBD")
-  - Tracker Ticket(s) column: the external tracker ticket IDs that implement this requirement
-- **Non-Functional Requirements table**: same columns
-  - One row per non-functional requirement (NFR-001, NFR-002, etc.)
-- **Foundation Tickets table** (optional): for cross-cutting tickets that support multiple requirements
-  - `Tracker Ticket | Description | Phase | Supports`
-- **Coverage Gaps section**: Requirements with no tracker ticket or incomplete ticket coverage
-  - Explicitly list any PRD requirements without a corresponding tracker ticket
-- **Ticket-to-Requirement Reverse Index**: every tracker ticket maps back to at least one requirement
-  - `Tracker Ticket | Requirement(s)`
-  - Ensures no orphan tickets exist
-
-**Key rules:**
-- Status and acceptance criteria live in the external tracker, NOT in this doc
-- This doc tracks structural mapping only: which requirement maps to which ticket in which phase
-- Update this doc when tickets are created, split, or phases are restructured
-- Every ticket must trace to a requirement. Every requirement must trace to a ticket (or an explicit gap notation).
-
-**Initial population:**
-- During Discovery: populate Req ID and Requirement columns from the PRD, Phase set to TBD
-- During Decomposition: fill in Tracker Ticket(s) as tickets are created
-- During Phase Definition: fill in Phase column as phases are defined
-
----
-
-## TECHNICAL_SPEC.md
-
-**Purpose:** The authoritative technical design document: the "how" companion to requirements.
-
-**Location:** `docs/technical-specs/TECHNICAL_SPEC.md`
-
-**Structure (10 sections):**
-1. **Architecture Overview**: goals, system context, ASCII architecture diagram
-2. **Tech Stack Reference**: `Layer | Technology | Version | Purpose`
-3. **API Route Design**: route convention, route groups table, detailed endpoint schemas
-4. **Service Layer**: `Service Module | Purpose | Key Methods`
-5. **Frontend Component Tree**: ASCII directory structure, key component listing
-6. **Security Model**: Authentication, Authorization, Secrets Management
-7. **Background Tasks**: `Task | Schedule | Purpose` (remove if not applicable)
-8. **Third-Party Integrations**: `Service | Purpose | Auth Method` (remove if not applicable)
-9. **Deployment Architecture**: per-environment details, CI/CD pipeline
-10. **Open Questions**: `# | Question | Status (OPEN/RESOLVED) | Decision`
-
----
-
-## DATA_MODEL.md
-
-**Purpose:** Database schema definition: single source of truth for all tables, columns, relationships, and conventions.
-
-**Location:** `docs/technical-specs/DATA_MODEL.md`
-
-**For SQL databases:**
-- **Table Inventory**: `Table | Description | Status (PLANNED/CREATED/MODIFIED)`
-- **Schema Definitions** grouped by logical area, each table with full `CREATE TABLE` DDL
-- **Relationships**: `Parent | Child | FK Column | On Delete`
-- **ERD Diagram**: Mermaid `erDiagram` syntax
-- **Naming Conventions**: `Aspect | Convention | Example`
-- **Migration Notes**: tool, file location, workflow
-
----
-
-## code-atlas.md
-
-**Purpose:** Persistent context memory for Claude. Read this instead of scanning source files. Populated incrementally.
-
-**Location:** `docs/technical-specs/code-atlas.md`
-
-**Structure (8 sections + appendices):**
-1. **Architecture Overview**: platform bullet list, ASCII layer diagram
-2. **Database Schema**: reference to DATA_MODEL.md, summary table
-3. **Backend Services**: `Module | Purpose | Key Methods`
-4. **API Routes**: `Method | Path | Purpose | Service`
-5. **Background Tasks**: `Task | Schedule | Purpose` (remove if not applicable)
-6. **Frontend Components**: `Component | Path | Purpose`
-7. **Key Patterns & Conventions**: numbered subsections for recurring patterns
-8. **Cross-Cutting Concerns**: Authentication, Error Handling, Logging
-- **Appendix A:** File to Module Reference
-- **Appendix B:** Dependency Graph
-
----
-
-## high-level-architecture.md
-
-**Purpose:** System overview and component architecture. Provides the bird's-eye view of how all parts of the system fit together.
-
-**Location:** `docs/technical-specs/high-level-architecture.md`
-
-**Structure:**
-
-### System Overview
-- One-paragraph description of the system, its purpose, and primary capabilities
-
-### Architecture Diagram
-- ASCII or Mermaid component diagram showing all major components and their relationships
-
-### Component Table
-
-| Component | Purpose | Tech | Dependencies |
-|---|---|---|---|
-| e.g., API Server | Handles client requests | Node.js + Express | Database, Auth Service |
-| e.g., Database | Persistent storage | PostgreSQL 16 | - |
-
-### Communication Patterns
-- How components interact (REST, gRPC, message queues, etc.)
-- Sync vs async patterns
-- Error propagation strategy
-
-### Data Flow
-- High-level description of how data moves through the system
-- Primary read and write paths
-
-### Subsystem Index
-
-| Subsystem | Purpose | Doc |
-|---|---|---|
-| e.g., auth | Authentication and authorization | `architecture/auth.md` |
-| e.g., api | REST API layer | `architecture/api.md` |
-
----
-
-## architecture/{subsystem}.md
-
-**Purpose:** Detailed subsystem documentation. One file per major subsystem, linked from `high-level-architecture.md`.
-
-**Location:** `docs/technical-specs/architecture/{subsystem}.md`
-
-**Structure:**
-
-### {Subsystem Name}
-- One-paragraph description of the subsystem and its role in the overall architecture
-
-### Responsibilities
-- Bullet list of what this subsystem owns and is responsible for
-
-### Interfaces
-- **Exposes:** APIs, events, or services this subsystem provides to others
-- **Consumes:** APIs, events, or services this subsystem depends on from others
-
-### Internal Structure
-- Key classes, modules, or files that make up this subsystem
-- Internal data flow if applicable
-
-### Dependencies
-- **External:** third-party libraries, services, or APIs
-- **Internal:** other subsystems this one depends on
-
-### Configuration
-- Environment variables this subsystem reads
-- Settings files or configuration objects
-- Default values and required overrides
-
----
-
-## code-modules/{module}.md
-
-**Purpose:** Detailed module-level code documentation. Provides a granular breakdown beyond what code-atlas.md covers. One file per logical module.
-
-**Location:** `docs/technical-specs/code-modules/{module}.md`
-
-**Structure:**
-
-### {Module Name}
-- One-paragraph description of the module's purpose and scope
-
-### File Listing
-
-| File | Purpose | Key Exports |
-|---|---|---|
-| e.g., `src/auth/login.ts` | Login handler | `handleLogin`, `validateCredentials` |
-
-### Key Functions/Classes
-
-| Name | Purpose | Parameters | Returns |
-|---|---|---|---|
-| e.g., `handleLogin` | Processes login requests | `credentials: LoginDTO` | `AuthToken` |
-
-### Dependencies
-- **Internal imports:** other project modules this module uses
-- **External imports:** third-party packages
-
-### Patterns
-- Module-specific conventions, naming rules, or architectural patterns
-
-### Test Coverage
-- Test file locations (e.g., `src/auth/__tests__/login.test.ts`)
-- Coverage notes and any known gaps
-
----
-
-## PRD.md
-
-**Purpose:** Product Requirements Document. Defines the product vision, user needs, and feature requirements.
-
-**Location:** `docs/requirements/PRD.md`
-
-**Structure:**
-
-### Product Vision
-- One-paragraph vision statement describing what the product aims to achieve
-
-### Problem Statement
-- What problem this product solves and why existing solutions fall short
-
-### Target Users
-- User personas or descriptions of the primary audience
-- Key characteristics, needs, and pain points for each persona
-
-### User Stories
-- Organized by feature area
-- Each story follows the format: "As a [user], I want [action] so that [benefit]"
-- Each story includes acceptance criteria as a numbered checkbox list
-
-### Feature Requirements
-
-| Feature | Priority | Description | Acceptance Criteria |
-|---|---|---|---|
-| e.g., User login | P0 | Email/password authentication | Users can log in with valid credentials |
-
-### Non-Functional Requirements
-
-| NFR-ID | Category | Requirement | Target |
-|---|---|---|---|
-| e.g., NFR-001 | Performance | Page load time | < 2 seconds on 3G |
-| e.g., NFR-002 | Security | Password hashing | bcrypt with 12 rounds |
-
-### Out of Scope
-- Explicitly excluded items and features that will NOT be built (at least not in this version)
-
-### Open Questions
-- Unresolved product questions that need stakeholder input
-
----
-
-## Phase Overview
-
-**Purpose:** Phase definition with goals and success criteria. One file per phase.
-
-**Location:** `docs/requirements/phases/phase-NN-{name}/overview.md`
-
-**Structure:**
-
-### Phase {NN}: {Name}
-
-**Goal:** One-paragraph description of what this phase accomplishes and why it matters.
-
-**Requirements Covered:**
-- REQ-001: {title}
-- REQ-002: {title}
-- (list of REQ-IDs from requirements.md that this phase implements)
-
-**Success Criteria:**
-1. {Observable behavior that proves criterion is met}
-2. {Another observable behavior}
-3. (2-5 criteria total, each testable and specific)
-
-**Dependencies:**
-- What must be complete before this phase can begin
-- Other phases, external systems, or decisions required
-
-**Linear Milestone:** {milestone name/ID} (if Linear is configured, otherwise omit)
-
-**Tasks:** See `tasks/` directory for individual executable tasks.
-
----
-
-## Task File
-
-**Purpose:** Single executable task for the mpf-executor agent. Each task is atomic and independently verifiable.
-
-**Location:** `docs/requirements/phases/phase-NN-{name}/tasks/task-NN.md`
-
-**Structure:**
-
-```markdown
-# Task {NN}: {Title}
-
-**Requirement:** REQ-{XXX} (the requirement ID(s) this task implements)
-**Linear Ticket:** {ticket ID or "N/A" if Linear is not configured}
-
-## Files
-- `path/to/file1.ts` (create)
-- `path/to/file2.ts` (modify)
-
-## Libraries
-- {library-name}@{version-constraint} -- {what it is used for in this task}
-- {another-library}@{version} -- {purpose}
-
-_(Optional. Populated by the planner agent. Omit this section if the task does not use external libraries. The executor uses this list to fetch current documentation from Context7 before implementing.)_
-
-## Action
-Specific implementation instructions. What to build, how to build it, and any constraints or patterns to follow.
-
-## Verify
-```bash
-# Test commands to run after completion
-npm test -- --grep "relevant test"
-```
-
-## Done
-- [ ] {Observable criterion that proves the task is complete}
-- [ ] {Another criterion}
-
-## Dependencies
-**Wave:** {1|2|3|...} (1 = no dependencies, 2+ = depends on earlier waves)
-**Depends On:** task-01, task-03 (list of task numbers this depends on, or "none")
-```
-
-**Libraries field:** Added in MPF v2. The planner agent populates this field by analyzing the task's requirements against the project's tech stack (from CLAUDE.md) and the phase requirements. The executor agent uses it to call Context7 for current documentation before implementing. If Context7 is unavailable, the executor proceeds with training knowledge.
 
 ---
 
@@ -841,21 +377,99 @@ Table with columns: `Phase | Focus | Started | Completed | Key Outcomes`
 
 ---
 
-## DATA_LINEAGE.md
+## MPF_GUIDE.md
 
-**Purpose:** Maps data flow from source systems through transformations to destination systems. Used for data pipeline and ETL projects.
+**Purpose:** Instructional guide for using MPF commands and workflows. Generated during `mpf:init` for all tiers. Adapted based on tier, tracking approach, and project type.
 
-**Location:** `docs/technical-specs/DATA_LINEAGE.md`
+**Always generated:** Yes, for all tiers.
 
-**When to use:** Only for Data pipeline / ETL projects where the user opts in during Round 4.
+**Location:** `docs/MPF_GUIDE.md`
 
 **Structure:**
-- **Source Systems table**: `Source | Type | Connection | Frequency | Format`
-- **Destination Systems table**: `Destination | Type | Connection | Format`
-- **Pipeline Inventory**: `Pipeline | Source(s) | Destination(s) | Schedule | Status`
-- **Transform Chain** (per pipeline): ordered list of transformation steps with input schema to output schema
-- **Data Quality Checks**: `Check | Pipeline | Rule | Severity (WARN/FAIL)`
-- **Lineage Diagram**: Mermaid diagram showing data flow from sources through transforms to destinations
+
+### What is MPF?
+
+One-paragraph explanation of the Mike Project Framework: what it does, why it exists, and how it helps manage projects through phased execution with AI agents.
+
+### Quick Reference: Commands
+
+| Command | Purpose | When to Use |
+|---|---|---|
+| `mpf:init` | Initialize or upgrade project scaffolding | Starting a new project or upgrading an existing one |
+| `mpf:discover` | Create the PRD and flesh out requirements | After init, when requirements need to be defined |
+| `mpf:plan-phases` | Break requirements into implementation phases | After PRD is complete |
+| `mpf:plan-tasks` | Break a phase into executable tasks | Before implementing a phase |
+| `mpf:execute` | Implement tasks for a phase | When tasks are planned and ready |
+| `mpf:verify` | Verify phase completion against acceptance criteria | After executing a phase |
+| `mpf:decompose` | Break ad-hoc TODOs into tasks | Quick task breakdown without the full PRD pipeline |
+| `mpf:status` | Show project dashboard | Any time, to check current state |
+| `mpf:next` | Auto-detect and route to the next workflow step | Any time, to advance the workflow |
+| `mpf:help` | Show command quick reference | Any time |
+| `mpf:sync-linear` | Sync local state with Linear | When using Linear tracking, to detect drift |
+| `mpf:map-codebase` | Analyze codebase and generate architecture docs | Before init on existing codebases, or to refresh code atlas |
+| `mpf:import` | Import requirements from external sources | Bringing existing requirements into MPF format |
+| `mpf:audit` | Assess implementation status of requirements | After import, to determine what's already built |
+| `mpf:reconcile` | Align existing docs with MPF structure | After audit, to handle document overlap |
+
+### Workflows
+
+#### Greenfield Project (New from Scratch)
+
+1. `mpf:init` to scaffold the project
+2. `mpf:discover` to create the PRD
+3. `mpf:plan-phases` to break work into phases
+4. For each phase:
+   a. `mpf:plan-tasks <N>` to create executable tasks
+   b. `mpf:execute <N>` to implement
+   c. `mpf:verify <N>` to confirm completion
+
+#### Brownfield Project (Existing Codebase)
+
+1. `mpf:map-codebase` to analyze what exists
+2. `mpf:init` (enters Onboard mode automatically)
+3. `mpf:import` to bring in existing requirements
+4. `mpf:audit` to assess implementation status
+5. `mpf:reconcile` to align existing docs with MPF
+6. `mpf:sync-linear` to check tracker alignment
+7. `mpf:plan-phases` to plan remaining work
+8. Continue with plan-tasks, execute, verify per phase
+
+#### Ad-Hoc Task (Quick TODO)
+
+1. `mpf:decompose` with your TODO list
+2. `mpf:execute <N>` to implement
+3. `mpf:verify <N>` to confirm
+
+#### Upgrading Your Project
+
+Run `mpf:init` on an existing MPF project to enter Evolve mode. Options: upgrade tier, add documents, change tracking approach, or refresh the dashboard.
+
+### Document Map
+
+| Document | Purpose | Updated By |
+|---|---|---|
+| `CLAUDE.md` | Project configuration and rules | `mpf:init` (generated), manual edits |
+| `docs/PROJECT_ROADMAP.md` | Project overview, status, and phase roadmap | `mpf:plan-phases`, session end updates |
+| `docs/requirements/PRD.md` | Product requirements | `mpf:discover` |
+| `docs/requirements/requirements.md` | Atomic requirements (in-repo tracking) | `mpf:discover`, manual |
+| `docs/traceability-matrix.md` | Requirement-to-ticket mapping (external tracking) | `mpf:plan-phases`, `mpf:plan-tasks` |
+| `docs/technical-specs/TECHNICAL_SPEC.md` | Technical design | `mpf:discover`, manual |
+| `docs/technical-specs/code-atlas.md` | Codebase context memory | `mpf:map-codebase`, auto-updated |
+| `docs/CHANGELOG.md` | Change history | Auto-updated on commits |
+| `docs/decisions.md` | Architecture Decision Records | Manual |
+
+_(Adapt this table based on which documents are enabled for the project.)_
+
+### Tips
+
+- Run `mpf:status` at any time to see where you are
+- Run `mpf:next` to auto-advance to the next step
+- Each MPF command builds on the outputs of the previous one in the workflow
+- Task files in `docs/requirements/phases/` are the atomic units of work
+- The planner agent creates tasks; the executor agent implements them; the verifier agent checks them
+- For quick one-off tasks, `mpf:decompose` skips the full PRD pipeline
+- Keep `docs/PROJECT_ROADMAP.md` open as your project dashboard
+- Session protocol (if enabled) gives Claude reading-order instructions at session start
 
 ---
 
@@ -866,22 +480,6 @@ Table with columns: `Phase | Focus | Started | Completed | Key Outcomes`
 **Location:** `.claude/rules/` at the project root (not the global `~/.claude/rules/`).
 
 **Key principle:** Rules files contain **only behavioral constraints**: the "must do / must not do" rules that Claude must follow automatically. CLAUDE.md contains the full project reference including context that rules files should not duplicate: workspace structure, tech stack details, key commands, session startup checklist, bug-prevention facts, and references. Do not duplicate content between CLAUDE.md and rules files. Rules files should reference CLAUDE.md sections where appropriate (e.g., "See CLAUDE.md Section 6 for the full tech stack") rather than repeating the information. The only exception is the Golden Rules, which appear in both places because they are the most critical invariants and benefit from redundancy.
-
----
-
-## Archive Conventions
-
-**Purpose:** Preserve original documents when absorbing them into MPF docs during reconciliation.
-
-**Location:** `docs/archive/pre-mpf/`
-
-**Convention:**
-- When `mpf:reconcile` absorbs an existing document, the original is moved to `docs/archive/pre-mpf/{original-filename}`
-- Absorbed content in MPF docs includes attribution: "Originally from {filename}, absorbed during MPF onboarding"
-- Archive files are kept for reference but are not maintained by MPF
-- The `docs/archive/` directory is distinct from the project root `archive/` directory (which stores superseded MPF docs)
-
----
 
 ### golden-rules.md (always created)
 
@@ -915,8 +513,6 @@ This is a lightweight refresh, not a full re-read of all docs.
 You must NEVER begin working on a task without first completing the session-start protocol. If the user immediately asks you to do something before you've delivered the briefing, deliver the briefing first (it takes 10 seconds), then address their request.
 ```
 
----
-
 ### coding-standards.md (always created)
 
 ```markdown
@@ -925,8 +521,6 @@ You must NEVER begin working on a task without first completing the session-star
 [Per-language subsections from CLAUDE.md Section 5]
 [Database conventions subsection if applicable]
 ```
-
----
 
 ### document-updates.md (created if any living documents are enabled)
 
@@ -1004,8 +598,6 @@ After every code change, before ending your response, verify:
 If any box is unchecked, either complete the update or explicitly flag it as remaining.
 ```
 
----
-
 ### mpf-doc-updates.md (created for MPF projects)
 
 ```markdown
@@ -1020,8 +612,6 @@ If any box is unchecked, either complete the update or explicitly flag it as rem
 | Requirements change | Update docs/traceability-matrix.md (external tracker) or docs/requirements/requirements.md (in-repo) |
 | Task completed | Mark done in task file + update phase overview.md |
 ```
-
----
 
 ### git-protocol.md (created if version control is enabled)
 
@@ -1041,8 +631,6 @@ If any box is unchecked, either complete the update or explicitly flag it as rem
 - [PR creation policy from interview]
 - [Conflict resolution policy from interview]
 ```
-
----
 
 ### traceability.md (created only if external tracker + traceability matrix is enabled)
 
@@ -1086,8 +674,6 @@ When creating an implementation plan for a phase:
 7. Execute via `mpf:execute`
 8. Verify via `mpf:verify`
 ```
-
----
 
 ### session-protocol.md (created for Standard and Full tier projects)
 
@@ -1166,202 +752,14 @@ Which should I follow? I'll update the other to match."
 
 ---
 
-## MPF_GUIDE.md
+## Archive Conventions
 
-**Purpose:** Instructional guide for using MPF commands and workflows. Generated during `mpf:init` for all tiers. Adapted based on tier, tracking approach, and project type.
+**Purpose:** Preserve original documents when absorbing them into MPF docs during reconciliation.
 
-**Always generated:** Yes, for all tiers.
+**Location:** `docs/archive/pre-mpf/`
 
-**Location:** `docs/MPF_GUIDE.md`
-
-**Structure:**
-
-### What is MPF?
-
-One-paragraph explanation of the Mike Project Framework: what it does, why it exists, and how it helps manage projects through phased execution with AI agents.
-
-### Quick Reference: Commands
-
-| Command | Purpose | When to Use |
-|---|---|---|
-| `mpf:init` | Initialize or upgrade project scaffolding | Starting a new project or upgrading an existing one |
-| `mpf:discover` | Create the PRD and flesh out requirements | After init, when requirements need to be defined |
-| `mpf:plan-phases` | Break requirements into implementation phases | After PRD is complete |
-| `mpf:plan-tasks` | Break a phase into executable tasks | Before implementing a phase |
-| `mpf:execute` | Implement tasks for a phase | When tasks are planned and ready |
-| `mpf:verify` | Verify phase completion against acceptance criteria | After executing a phase |
-| `mpf:decompose` | Break ad-hoc TODOs into tasks | Quick task breakdown without the full PRD pipeline |
-| `mpf:status` | Show project dashboard | Any time, to check current state |
-| `mpf:sync-linear` | Sync local state with Linear | When using Linear tracking, to detect drift |
-| `mpf:map-codebase` | Analyze codebase and generate architecture docs | Before init on existing codebases, or to refresh code atlas |
-| `mpf:import` | Import requirements from external sources | Bringing existing requirements into MPF format |
-| `mpf:audit` | Assess implementation status of requirements | After import, to determine what's already built |
-| `mpf:reconcile` | Align existing docs with MPF structure | After audit, to handle document overlap |
-
-### Workflows
-
-#### Greenfield Project (New from Scratch)
-
-1. `mpf:init` to scaffold the project
-2. `mpf:discover` to create the PRD
-3. `mpf:plan-phases` to break work into phases
-4. For each phase:
-   a. `mpf:plan-tasks <N>` to create executable tasks
-   b. `mpf:execute <N>` to implement
-   c. `mpf:verify <N>` to confirm completion
-
-#### Brownfield Project (Existing Codebase)
-
-1. `mpf:map-codebase` to analyze what exists
-2. `mpf:init` (enters Onboard mode automatically)
-3. `mpf:import` to bring in existing requirements
-4. `mpf:audit` to assess implementation status
-5. `mpf:reconcile` to align existing docs with MPF
-6. `mpf:sync-linear` to check tracker alignment
-7. `mpf:plan-phases` to plan remaining work
-8. Continue with plan-tasks, execute, verify per phase
-
-#### Ad-Hoc Task (Quick TODO)
-
-1. `mpf:decompose` with your TODO list
-2. `mpf:execute <N>` to implement
-3. `mpf:verify <N>` to confirm
-
-#### Upgrading Your Project
-
-Run `mpf:init` on an existing MPF project to enter Evolve mode. Options: upgrade tier, add documents, change tracking approach, or refresh the dashboard.
-
-### Document Map
-
-| Document | Purpose | Updated By |
-|---|---|---|
-| `CLAUDE.md` | Project configuration and rules | `mpf:init` (generated), manual edits |
-| `docs/PROJECT_ROADMAP.md` | Project overview, status, and phase roadmap | `mpf:plan-phases`, session end updates |
-| `docs/requirements/PRD.md` | Product requirements | `mpf:discover` |
-| `docs/requirements/requirements.md` | Atomic requirements (in-repo tracking) | `mpf:discover`, manual |
-| `docs/traceability-matrix.md` | Requirement-to-ticket mapping (external tracking) | `mpf:plan-phases`, `mpf:plan-tasks` |
-| `docs/technical-specs/TECHNICAL_SPEC.md` | Technical design | `mpf:discover`, manual |
-| `docs/technical-specs/code-atlas.md` | Codebase context memory | `mpf:map-codebase`, auto-updated |
-| `docs/CHANGELOG.md` | Change history | Auto-updated on commits |
-| `docs/decisions.md` | Architecture Decision Records | Manual |
-
-_(Adapt this table based on which documents are enabled for the project.)_
-
-### Tips
-
-- Run `mpf:status` at any time to see where you are
-- Each MPF command builds on the outputs of the previous one in the workflow
-- Task files in `docs/requirements/phases/` are the atomic units of work
-- The planner agent creates tasks; the executor agent implements them; the verifier agent checks them
-- For quick one-off tasks, `mpf:decompose` skips the full PRD pipeline
-- Keep `docs/PROJECT_ROADMAP.md` open as your project dashboard
-- Session protocol (if enabled) gives Claude reading-order instructions at session start
-
----
-
-## REQUIREMENT_HIERARCHY.md
-
-**Purpose:** Shows the full requirement traceability tree: PRD to requirements to phases to tasks to Linear tickets. Provides a single view of project decomposition and coverage.
-
-**Conditionally generated:** Yes, for Standard and Full tiers with external tracking. Created by `mpf:plan-phases`, updated by `mpf:plan-tasks`.
-
-**Location:** `docs/requirements/REQUIREMENT_HIERARCHY.md`
-
-**Structure:**
-
-### Overview
-
-Summary statistics:
-- **Requirements:** {N} total ({done} done, {partial} partial, {remaining} remaining)
-- **Phases:** {M} planned
-- **Tasks:** {P} total across all phases
-- **Linear Tickets:** {Q} tracked
-
-### Hierarchy Tree
-
-Per-requirement blocks:
-
-```
-REQ-001: {title}
-  Priority: {P0/P1/P2/P3}
-  Phase: {N} ({phase-name})
-  Linear Tickets: {RIH-xxx, RIH-yyy}
-  Tasks:
-    - task-01 [Wave 1]: {title} (RIH-xxx)
-    - task-02 [Wave 1]: {title} (RIH-xxx)
-    - task-03 [Wave 2]: {title} (RIH-yyy) -> depends on task-01
-```
-
-### Dependency Graph
-
-Phase-level dependencies showing which phases must complete before others.
-
-Per-phase task dependency chains:
-```
-Phase 1:
-  Wave 1: task-01, task-02, task-03 (parallel)
-  Wave 2: task-04 (depends on task-01), task-05 (depends on task-02)
-  Wave 3: task-06 (depends on task-04, task-05)
-```
-
-### Coverage Matrix
-
-| Requirement | Phase | Tasks | Tickets | Status |
-|---|---|---|---|---|
-| REQ-001 | 1 | 3 | RIH-101, RIH-102 | Planned |
-| REQ-002 | 1 | 2 | RIH-103 | Planned |
-| REQ-003 | - | - | - | **GAP: Unplanned** |
-
-Gap rows highlight requirements with no phase assignment or no tasks.
-
----
-
-## audit-report.md
-
-**Purpose:** Implementation status analysis results. Maps imported requirements against the existing codebase to determine what is Done, Partial, or Not Started. Produced by `mpf:audit`.
-
-**Conditionally generated:** Yes, only during brownfield onboarding (ONBOARD mode). Created by `mpf:audit`.
-
-**Location:** `docs/requirements/audit-report.md`
-
-**Structure:**
-
-### Audit Summary
-
-| Metric | Count |
-|--------|-------|
-| Total requirements | {N} |
-| Done | {N} |
-| Partial | {N} |
-| Not Started | {N} |
-| High confidence assessments | {N} |
-| Low confidence (needs review) | {N} |
-
-### Requirement Assessments
-
-Per-requirement blocks:
-
-#### REQ-{XXX}: {Title}
-
-- **Status:** Done | Partial | Not Started
-- **Confidence:** High | Medium | Low
-- **Evidence:**
-  - `{file path}`: {what it implements}
-  - `{test file}`: {what it tests}
-- **Implemented:** {list of satisfied acceptance criteria}
-- **Missing:** {list of unsatisfied acceptance criteria}
-- **Notes:** {observations about code quality, completeness, or tech debt}
-
-### Coverage Summary
-
-| Requirement | Status | Confidence | Evidence Files | Missing Criteria |
-|-------------|--------|------------|----------------|-----------------|
-| REQ-001 | Done | High | 4 files | 0 |
-| REQ-002 | Partial | Medium | 2 files | 2 criteria |
-| REQ-003 | Not Started | High | 0 files | 5 criteria |
-
-### Audit Metadata
-
-- **Audit date:** {YYYY-MM-DD}
-- **Code atlas used:** Yes | No
-- **User corrections:** {N} assessments corrected during review
+**Convention:**
+- When `mpf:reconcile` absorbs an existing document, the original is moved to `docs/archive/pre-mpf/{original-filename}`
+- Absorbed content in MPF docs includes attribution: "Originally from {filename}, absorbed during MPF onboarding"
+- Archive files are kept for reference but are not maintained by MPF
+- The `docs/archive/` directory is distinct from the project root `archive/` directory (which stores superseded MPF docs)
