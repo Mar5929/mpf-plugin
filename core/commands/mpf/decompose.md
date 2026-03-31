@@ -160,12 +160,14 @@ If Linear is configured:
 3. For each task, create a Linear issue linked to the milestone.
    - Use team Rihm (`dfe15bc4-6dd0-4bde-8609-6620efc3140d`) and assignee Michael Rihm (`8d75f0a6-f848-41af-9f4b-d06036d6af82`).
 4. Update task files with the Linear ticket IDs in the **Linear Ticket** field.
-5. Update `docs/traceability-matrix.md` with the new mappings (if the file exists).
+5. Link dependencies: for each task with "Depends On" entries, call `save_issue(id: ticket_id, blockedBy: [dependency_ticket_ids])` to create blocked-by relations in Linear.
+6. Update `docs/traceability-matrix.md` with the new mappings (if the file exists).
 
 ### Step 8: Update Project Status
 
 - **New phase:** Append the phase to `docs/PROJECT_ROADMAP.md` Section 3 (Phase Roadmap) and add a session log entry to Section 7.
 - **Existing phase:** Add a session log entry to `docs/PROJECT_ROADMAP.md` Section 7 noting tasks were added to phase {N}.
+- If `docs/requirements/REQUIREMENT_HIERARCHY.md` exists, update it with the new tasks.
 
 If `docs/PROJECT_ROADMAP.md` does not exist, skip the status update.
 
