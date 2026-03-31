@@ -41,7 +41,8 @@ Create phases following these principles:
 2. **Dependency order.** A phase's requirements must not depend on requirements in a later phase.
 3. **Deployable increments.** Each phase should produce something testable and demonstrable. No "half-built" phases.
 4. **Balanced scope.** Target 3-8 requirements per phase. If a phase has more than 10, split it. If fewer than 2, merge with an adjacent phase.
-5. **P0 before P1.** Higher-priority requirements should land in earlier phases, but respect dependency order over priority when they conflict.
+5. **Task count guidance.** Each requirement should decompose into 3-10 tasks. If a phase would produce more than 40 tasks, split the phase. If fewer than 5 tasks, consider merging with an adjacent phase.
+6. **P0 before P1.** Higher-priority requirements should land in earlier phases, but respect dependency order over priority when they conflict.
 
 ### Step 3: Present the Plan
 
@@ -87,6 +88,13 @@ Follow the Phase Overview template. Include:
 - Linear milestone reference (if external tracking configured)
 
 Create the `tasks/` subdirectory inside each phase folder (empty; tasks are created by `mpf:plan-tasks`).
+
+#### REQUIREMENT_HIERARCHY.md (if external tracking)
+
+If the project uses external tracking, create or update `docs/requirements/REQUIREMENT_HIERARCHY.md`:
+- Populate the Overview section with requirement and phase counts
+- Populate the Hierarchy Tree with REQ -> Phase mapping (tasks left empty; filled by `mpf:plan-tasks`)
+- Populate the Coverage Matrix with initial status (all "Planned" or "GAP: Unplanned")
 
 #### requirements.md Updates (if in-repo tracking)
 

@@ -63,6 +63,7 @@ Run each of these checks and collect all discrepancies:
 | **Phase: Linear ahead** | All tickets for a phase are Done in Linear but PROJECT_ROADMAP.md still shows In Progress or Not Started | Medium |
 | **Missing milestone** | Phase overview file references a milestone ID that does not exist in Linear | Low |
 | **Unassigned ticket** | Ticket in Linear has no assignee (should be Michael Rihm) | Low |
+| **Missing dependency link** | Task file has "Depends On" entries but corresponding Linear tickets lack blocked-by/blocks relations | Medium |
 
 ### Step 5: Generate Report
 
@@ -148,6 +149,7 @@ Wait for the user's choice before proceeding.
 - **Phase mismatch (Linear ahead):** Update `docs/PROJECT_ROADMAP.md` Section 3 (Phase Roadmap) phase status to Done and Section 2 (Current Phase) summary.
 - **Missing milestone:** Note in the report. Do not auto-create milestones (user may have restructured in Linear).
 - **Unassigned ticket:** Assign to Michael Rihm (`8d75f0a6-f848-41af-9f4b-d06036d6af82`) via `mcp__claude_ai_Linear__*`.
+- **Missing dependency link:** Read the task file's "Depends On" field, look up ticket IDs, and call `save_issue(id: ticket_id, blockedBy: [dependency_ticket_ids])` to create the missing relation.
 
 ### Step 7: Post-Fix Summary
 

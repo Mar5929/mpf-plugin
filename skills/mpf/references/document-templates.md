@@ -26,12 +26,14 @@ This file defines the exact structure for every document the MPF skill can gener
 18. [PRD.md](#prdmd)
 19. [Phase Overview](#phase-overview)
 20. [Task File](#task-file)
+21. [MPF_GUIDE.md](#mpf_guidemd)
+22. [REQUIREMENT_HIERARCHY.md](#requirement_hierarchymd)
 
 ---
 
 ## CLAUDE.md Structure
 
-**Tier-dependent generation.** The full 13-section structure below applies to Full tier. Standard tier omits sections 6, 11, and 13. Light tier generates only sections 1, 2, 3, 5, 7, and 12. When generating for a lower tier, skip the omitted sections entirely (don't include them as empty placeholders).
+**Tier-dependent generation.** The full 13-section structure below applies to Full tier. Standard tier omits sections 6, 11, and 13. Light tier generates only sections 1, 2, 3, 5, 7, 8, and 12. When generating for a lower tier, skip the omitted sections entirely (don't include them as empty placeholders).
 
 | Section | Light | Standard | Full |
 |---|---|---|---|
@@ -42,7 +44,7 @@ This file defines the exact structure for every document the MPF skill can gener
 | 5. Coding Standards | Yes | Yes | Yes |
 | 6. Tech Stack Reference | - | - | Yes |
 | 7. Key Commands | Yes | Yes | Yes |
-| 8. Session Startup Checklist | - | Yes | Yes |
+| 8. Session Startup Checklist | Yes | Yes | Yes |
 | 9. Git Commit Protocol | - | Yes | Yes |
 | 10. Clarification Protocol | - | Yes | Yes |
 | 11. Context Window Management | - | - | Yes |
@@ -79,11 +81,13 @@ Generate with the following **13-section structure**, tailored based on intervie
 ```
 docs/
   PROJECT_ROADMAP.md                  # Project overview, status dashboard, and phase roadmap
+  MPF_GUIDE.md                        # MPF usage guide and command reference
   CHANGELOG.md                        # Change history
   decisions.md                        # Architecture Decision Records
   requirements/
     requirements.md                   # Functional and non-functional requirements
     PRD.md                            # Product Requirements Document
+    REQUIREMENT_HIERARCHY.md          # Requirement traceability tree
     phases/
       phase-01-{name}/
         overview.md                   # Phase definition and success criteria
@@ -168,6 +172,11 @@ docs/
 
 ### Section 8: Session Startup Checklist
 - Numbered list of files Claude should read at the start of every session, in priority order.
+
+**Light tier variant (simplified):**
+  1. `CLAUDE.md` (this file)
+  2. `docs/PROJECT_ROADMAP.md` for current phase, roadmap, and session history
+  3. If a task is in progress, read the relevant task file in `docs/requirements/phases/`
 
 **If using in-repo tracking:**
   1. `CLAUDE.md` (this file)
@@ -1114,3 +1123,150 @@ While reading CLAUDE.md and rules files, if you detect any contradictions betwee
 - Rule file says: [Y]
 Which should I follow? I'll update the other to match."
 ```
+
+---
+
+## MPF_GUIDE.md
+
+**Purpose:** Instructional guide for using MPF commands and workflows. Generated during `mpf:init` for all tiers. Adapted based on tier, tracking approach, and project type.
+
+**Always generated:** Yes, for all tiers.
+
+**Location:** `docs/MPF_GUIDE.md`
+
+**Structure:**
+
+### What is MPF?
+
+One-paragraph explanation of the Mike Project Framework: what it does, why it exists, and how it helps manage projects through phased execution with AI agents.
+
+### Quick Reference: Commands
+
+| Command | Purpose | When to Use |
+|---|---|---|
+| `mpf:init` | Initialize or upgrade project scaffolding | Starting a new project or upgrading an existing one |
+| `mpf:discover` | Create the PRD and flesh out requirements | After init, when requirements need to be defined |
+| `mpf:plan-phases` | Break requirements into implementation phases | After PRD is complete |
+| `mpf:plan-tasks` | Break a phase into executable tasks | Before implementing a phase |
+| `mpf:execute` | Implement tasks for a phase | When tasks are planned and ready |
+| `mpf:verify` | Verify phase completion against acceptance criteria | After executing a phase |
+| `mpf:decompose` | Break ad-hoc TODOs into tasks | Quick task breakdown without the full PRD pipeline |
+| `mpf:status` | Show project dashboard | Any time, to check current state |
+| `mpf:sync-linear` | Sync local state with Linear | When using Linear tracking, to detect drift |
+| `mpf:map-codebase` | Analyze codebase and generate architecture docs | Before init on existing codebases, or to refresh code atlas |
+
+### Workflows
+
+#### Greenfield Project (New from Scratch)
+
+1. `mpf:init` to scaffold the project
+2. `mpf:discover` to create the PRD
+3. `mpf:plan-phases` to break work into phases
+4. For each phase:
+   a. `mpf:plan-tasks <N>` to create executable tasks
+   b. `mpf:execute <N>` to implement
+   c. `mpf:verify <N>` to confirm completion
+
+#### Brownfield Project (Existing Codebase)
+
+1. `mpf:map-codebase` to analyze what exists
+2. `mpf:init` (enters Onboard mode automatically)
+3. `mpf:import` to bring in existing requirements
+4. `mpf:audit` to assess implementation status
+5. `mpf:reconcile` to align existing docs with MPF
+6. `mpf:sync-linear` to check tracker alignment
+7. `mpf:plan-phases` to plan remaining work
+8. Continue with plan-tasks, execute, verify per phase
+
+#### Ad-Hoc Task (Quick TODO)
+
+1. `mpf:decompose` with your TODO list
+2. `mpf:execute <N>` to implement
+3. `mpf:verify <N>` to confirm
+
+#### Upgrading Your Project
+
+Run `mpf:init` on an existing MPF project to enter Evolve mode. Options: upgrade tier, add documents, change tracking approach, or refresh the dashboard.
+
+### Document Map
+
+| Document | Purpose | Updated By |
+|---|---|---|
+| `CLAUDE.md` | Project configuration and rules | `mpf:init` (generated), manual edits |
+| `docs/PROJECT_ROADMAP.md` | Project overview, status, and phase roadmap | `mpf:plan-phases`, session end updates |
+| `docs/requirements/PRD.md` | Product requirements | `mpf:discover` |
+| `docs/requirements/requirements.md` | Atomic requirements (in-repo tracking) | `mpf:discover`, manual |
+| `docs/traceability-matrix.md` | Requirement-to-ticket mapping (external tracking) | `mpf:plan-phases`, `mpf:plan-tasks` |
+| `docs/technical-specs/TECHNICAL_SPEC.md` | Technical design | `mpf:discover`, manual |
+| `docs/technical-specs/code-atlas.md` | Codebase context memory | `mpf:map-codebase`, auto-updated |
+| `docs/CHANGELOG.md` | Change history | Auto-updated on commits |
+| `docs/decisions.md` | Architecture Decision Records | Manual |
+
+_(Adapt this table based on which documents are enabled for the project.)_
+
+### Tips
+
+- Run `mpf:status` at any time to see where you are
+- Each MPF command builds on the outputs of the previous one in the workflow
+- Task files in `docs/requirements/phases/` are the atomic units of work
+- The planner agent creates tasks; the executor agent implements them; the verifier agent checks them
+- For quick one-off tasks, `mpf:decompose` skips the full PRD pipeline
+- Keep `docs/PROJECT_ROADMAP.md` open as your project dashboard
+- Session protocol (if enabled) gives Claude reading-order instructions at session start
+
+---
+
+## REQUIREMENT_HIERARCHY.md
+
+**Purpose:** Shows the full requirement traceability tree: PRD to requirements to phases to tasks to Linear tickets. Provides a single view of project decomposition and coverage.
+
+**Conditionally generated:** Yes, for Standard and Full tiers with external tracking. Created by `mpf:plan-phases`, updated by `mpf:plan-tasks`.
+
+**Location:** `docs/requirements/REQUIREMENT_HIERARCHY.md`
+
+**Structure:**
+
+### Overview
+
+Summary statistics:
+- **Requirements:** {N} total ({done} done, {partial} partial, {remaining} remaining)
+- **Phases:** {M} planned
+- **Tasks:** {P} total across all phases
+- **Linear Tickets:** {Q} tracked
+
+### Hierarchy Tree
+
+Per-requirement blocks:
+
+```
+REQ-001: {title}
+  Priority: {P0/P1/P2/P3}
+  Phase: {N} ({phase-name})
+  Linear Tickets: {RIH-xxx, RIH-yyy}
+  Tasks:
+    - task-01 [Wave 1]: {title} (RIH-xxx)
+    - task-02 [Wave 1]: {title} (RIH-xxx)
+    - task-03 [Wave 2]: {title} (RIH-yyy) -> depends on task-01
+```
+
+### Dependency Graph
+
+Phase-level dependencies showing which phases must complete before others.
+
+Per-phase task dependency chains:
+```
+Phase 1:
+  Wave 1: task-01, task-02, task-03 (parallel)
+  Wave 2: task-04 (depends on task-01), task-05 (depends on task-02)
+  Wave 3: task-06 (depends on task-04, task-05)
+```
+
+### Coverage Matrix
+
+| Requirement | Phase | Tasks | Tickets | Status |
+|---|---|---|---|---|
+| REQ-001 | 1 | 3 | RIH-101, RIH-102 | Planned |
+| REQ-002 | 1 | 2 | RIH-103 | Planned |
+| REQ-003 | - | - | - | **GAP: Unplanned** |
+
+Gap rows highlight requirements with no phase assignment or no tasks.
