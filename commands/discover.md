@@ -13,8 +13,7 @@ Guide the user through structured product discovery to produce a complete PRD an
 Before starting, read these files to understand the project context:
 
 1. `CLAUDE.md` at the project root (project overview, tier, tracking approach, tech stack)
-2. `docs/PROJECT_STATUS.md` (current phase and state)
-3. `docs/PROJECT.md` (project identity and problem statement)
+2. `docs/PROJECT_ROADMAP.md` (current phase, project overview, and roadmap state)
 
 If `CLAUDE.md` does not exist, tell the user: "No CLAUDE.md found. Run `mpf:init` first to set up the project."
 
@@ -115,11 +114,11 @@ Only update files where new information was gathered. Don't overwrite existing c
 
 If `docs/technical-specs/code-atlas.md` or other technical-spec files already exist (e.g., from `mpf:map-codebase`), read them first and merge new findings into the existing content rather than overwriting. Reference existing subsystem documentation when writing architecture sections. Preserve file paths, code examples, and module details from the mapper output.
 
-### 5. PROJECT_STATUS.md
+### 5. PROJECT_ROADMAP.md
 
-Update `docs/PROJECT_STATUS.md`:
-- Set current phase to "Discovery: Complete" (or update as appropriate)
-- Add a session log entry noting the PRD was created
+Update `docs/PROJECT_ROADMAP.md`:
+- Section 2 (Current Phase): Set to "Discovery: Complete" (or update as appropriate)
+- Section 7 (Session Log): Add entry noting the PRD was created
 
 ## After Completion
 
@@ -137,4 +136,4 @@ Tell the user:
 
 ## Roadmap Update
 
-If `docs/roadmap.md` exists, update it with a placeholder entry noting that requirements have been discovered and are ready for phase planning via `mpf:plan-phases`.
+If `docs/PROJECT_ROADMAP.md` exists, update Section 3 (Phase Roadmap) with a placeholder entry noting that requirements have been discovered and are ready for phase planning via `mpf:plan-phases`.

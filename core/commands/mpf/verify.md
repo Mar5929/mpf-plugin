@@ -16,7 +16,7 @@ Example: `mpf:verify 1`
 
 ## Prerequisites
 
-1. Read `docs/roadmap.md` to confirm the phase exists.
+1. Read Section 3 (Phase Roadmap) of `docs/PROJECT_ROADMAP.md` to confirm the phase exists.
 2. Check that task files exist in `docs/requirements/phases/phase-{NN}-{name}/tasks/`.
 3. Verify that at least some tasks have been executed (check for commits on the phase branch or Done checkboxes).
 4. If no execution evidence found, tell the user: "Phase {N} doesn't appear to have been executed yet. Run `mpf:execute {N}` first."
@@ -44,14 +44,10 @@ Display the verifier's report to the user with clear formatting.
 
 #### If PASS (all automated checks pass)
 
-1. Update `docs/PROJECT_STATUS.md`:
-   - Mark the phase as "Verified"
-   - Update progress to 100%
-   - Add session log entry
-
-2. Update `docs/roadmap.md`:
-   - Set phase status to "Done" (or "Verified" if manual checks remain)
-   - Update progress to 100%
+1. Update `docs/PROJECT_ROADMAP.md`:
+   - Section 2 (Current Phase): Mark the phase as "Verified", update progress to 100%
+   - Section 3 (Phase Roadmap): Set phase status to "Done" (or "Verified" if manual checks remain), update progress to 100%
+   - Section 7 (Session Log): Add session log entry
 
 3. If in-repo tracking is configured, update `docs/BACKLOG.md` to mark all phase backlog items as Done. Update `docs/requirements/requirements.md` requirement statuses accordingly.
 
@@ -83,9 +79,9 @@ Display the verifier's report to the user with clear formatting.
    Recommended: Run `mpf:execute {N}` to fix these issues, then `mpf:verify {N}` again.
    ```
 
-3. Update `docs/PROJECT_STATUS.md`:
-   - Add a blocker entry for each failure
-   - Add session log entry noting the verification failure
+3. Update `docs/PROJECT_ROADMAP.md`:
+   - Section 6 (Blockers & Waiting): Add a blocker entry for each failure
+   - Section 7 (Session Log): Add entry noting the verification failure
 
 ### Step 4: Linear Updates (if configured)
 
@@ -98,5 +94,5 @@ Check CLAUDE.md for Linear configuration. If enabled:
 
 If this is the last phase in the roadmap and it passes:
 
-1. Update `docs/PROJECT_STATUS.md` to reflect project completion
+1. Update `docs/PROJECT_ROADMAP.md` to reflect project completion (Section 2: Current Phase, Section 8: Phase History)
 2. Tell the user: "All phases complete and verified. The project roadmap is fully implemented."

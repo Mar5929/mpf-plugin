@@ -30,7 +30,7 @@ Read these files in order:
 1. `{project_root}/docs/requirements/PRD.md` for product context
 2. `{project_root}/docs/requirements/phases/phase-{NN}-{name}/overview.md` for phase goal, requirements covered, and success criteria
 3. `{project_root}/docs/requirements/requirements.md` (if it exists) for atomic requirement details
-4. `{project_root}/docs/roadmap.md` for phase ordering context
+4. `{project_root}/docs/PROJECT_ROADMAP.md` Section 3 (Phase Roadmap) for phase ordering context
 5. `{project_root}/docs/technical-specs/code-atlas.md` (if it exists) for current codebase state
 6. `{project_root}/docs/technical-specs/TECHNICAL_SPEC.md` (if it exists) for architecture decisions
 7. `{project_root}/docs/technical-specs/DATA_MODEL.md` (if it exists) for data model

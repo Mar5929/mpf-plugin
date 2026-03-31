@@ -46,14 +46,14 @@ Tell the user: "Found {N} items. I'll decompose these {inline / using the planne
 
 ### Step 3: Choose Destination
 
-Read `docs/roadmap.md` (if it exists) to understand the current phase landscape.
+Read Section 3 (Phase Roadmap) of `docs/PROJECT_ROADMAP.md` (if it exists) to understand the current phase landscape.
 
 Present options:
 
 1. **New phase** (default): "Create phase {next_number} for these items and append to the roadmap."
 2. **Existing phase**: "Add tasks to an existing phase. Which phase?" (list available phases with their names)
 
-If `docs/roadmap.md` does not exist, create it with the new phase as Phase 1. Note: "No roadmap found. Creating roadmap with Phase 1."
+If `docs/PROJECT_ROADMAP.md` does not exist or Section 3 is empty, create the phase as Phase 1. Note: "No roadmap found. Creating Phase 1."
 
 Wait for the user's choice before proceeding.
 
@@ -164,10 +164,10 @@ If Linear is configured:
 
 ### Step 8: Update Project Status
 
-- **New phase:** Append the phase to `docs/roadmap.md` (add row to phase summary table and a phase detail section). Update `docs/PROJECT_STATUS.md` session log.
-- **Existing phase:** Update `docs/PROJECT_STATUS.md` session log noting tasks were added to phase {N}.
+- **New phase:** Append the phase to `docs/PROJECT_ROADMAP.md` Section 3 (Phase Roadmap) and add a session log entry to Section 7.
+- **Existing phase:** Add a session log entry to `docs/PROJECT_ROADMAP.md` Section 7 noting tasks were added to phase {N}.
 
-If `docs/PROJECT_STATUS.md` does not exist, skip the status update.
+If `docs/PROJECT_ROADMAP.md` does not exist, skip the status update.
 
 ### Step 9: Output Summary
 
@@ -196,4 +196,4 @@ Next steps:
 - **Empty input:** If the user provides a file or text with no actionable items, say: "I couldn't find any discrete TODOs to decompose. Try rephrasing as a list of specific changes or features."
 - **Duplicate TODOs:** If a TODO matches an existing requirement in `docs/requirements/requirements.md`, flag it: "TODO-002 overlaps with REQ-015 ({description}). Use the existing requirement instead? (y/n)"
 - **Single TODO:** Valid. Creates a single task file. Skip the checker (one task has nothing to cross-validate).
-- **No roadmap:** If `docs/roadmap.md` does not exist, create it with the new phase as Phase 1 rather than failing.
+- **No roadmap:** If `docs/PROJECT_ROADMAP.md` does not exist or has no Section 3 content, create it with the new phase as Phase 1 rather than failing.

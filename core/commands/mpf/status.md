@@ -1,5 +1,5 @@
 # Command: mpf:status
-# Description: Display the current project status dashboard. Reads docs/PROJECT_STATUS.md, roadmap, Linear ticket counts, git branch status, and sync health. Run any time to check project state.
+# Description: Display the current project status dashboard. Reads docs/PROJECT_ROADMAP.md, Linear ticket counts, git branch status, and sync health. Run any time to check project state.
 # Tools: [file_read, text_search, file_search, shell, linear_api]
 
 # mpf:status
@@ -8,9 +8,7 @@ Display a formatted project status dashboard by reading the current project stat
 
 ## Steps
 
-1. **Read project status.** Read `docs/PROJECT_STATUS.md` to get the current phase, active work items, blockers, and session history.
-
-2. **Read roadmap.** Read `docs/roadmap.md` to get the full phase plan with completion status.
+1. **Read project roadmap.** Read `docs/PROJECT_ROADMAP.md` to get the project overview, current phase, phase roadmap, active work items, blockers, and session history.
 
 3. **Check Linear configuration.** Read `CLAUDE.md` and check whether the project uses external tracking with Linear. Note the result for conditional sections below.
 
@@ -84,10 +82,10 @@ Last sync: 2026-03-24  |  Clean (no discrepancies)
 If no sync report exists, display: "No sync report found. Run `mpf:sync-linear` to check Linear alignment."
 
 ### Active Tasks
-Show the count of active tasks and list them briefly (from PROJECT_STATUS.md Section 4).
+Show the count of active tasks and list them briefly (from PROJECT_ROADMAP.md Section 5: Active Work Items).
 
 ### Blockers
-If any blockers exist (from PROJECT_STATUS.md Section 5), list them with their description and age. If none, display "No active blockers."
+If any blockers exist (from PROJECT_ROADMAP.md Section 6: Blockers & Waiting), list them with their description and age. If none, display "No active blockers."
 
 ### Last Session Summary
 Show the most recent entry from the Session Log (date, summary, docs updated).
@@ -102,7 +100,7 @@ Based on the current state, suggest what the user should do next. Examples:
 
 ## Error Handling
 
-- If `docs/PROJECT_STATUS.md` does not exist, inform the user: "No PROJECT_STATUS.md found. Run `mpf:init` to set up the project first."
-- If `docs/roadmap.md` does not exist, skip the phase summary table and note that no roadmap has been created yet.
+- If `docs/PROJECT_ROADMAP.md` does not exist, inform the user: "No PROJECT_ROADMAP.md found. Run `mpf:init` to set up the project first."
+- If Section 3 (Phase Roadmap) is empty, skip the phase summary table and note that no roadmap has been created yet.
 - If `linear_api` query fails, skip the Linear Ticket Status section gracefully and note it in Suggested Next Action.
 - If `git` is not available, skip the Git Status section.

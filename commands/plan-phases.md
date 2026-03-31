@@ -1,6 +1,6 @@
 ---
 name: mpf:plan-phases
-description: Break PRD requirements into implementation phases and generate the project roadmap. Produces docs/roadmap.md and phase overview files under docs/requirements/phases/. Creates Linear milestones if external tracking is configured. Run after mpf:discover, before mpf:plan-tasks.
+description: Break PRD requirements into implementation phases and generate the project roadmap. Updates Section 3 (Phase Roadmap) of docs/PROJECT_ROADMAP.md and generates phase overview files under docs/requirements/phases/. Creates Linear milestones if external tracking is configured. Run after mpf:discover, before mpf:plan-tasks.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__claude_ai_Linear__*
 ---
 
@@ -22,7 +22,7 @@ If `docs/requirements/PRD.md` does not exist or is a placeholder, tell the user:
 
 ## Template Reference
 
-Read the roadmap.md and Phase Overview templates from `skills/mpf/references/document-templates.md` before generating documents.
+Read the PROJECT_ROADMAP.md and Phase Overview templates from `skills/mpf/references/document-templates.md` before generating documents.
 
 ## Phase Decomposition
 
@@ -70,9 +70,9 @@ Wait for user confirmation before proceeding to file generation.
 
 After user approval, create:
 
-#### roadmap.md
+#### PROJECT_ROADMAP.md Section 3: Phase Roadmap
 
-Write `docs/roadmap.md` following the template. Include the phase summary table and a detail section for each phase.
+Update Section 3 (Phase Roadmap) of `docs/PROJECT_ROADMAP.md` with the phase summary table and a detail section for each phase. Follow the template structure.
 
 #### Phase Overview Files
 
@@ -112,10 +112,9 @@ Use team Rihm (`dfe15bc4-6dd0-4bde-8609-6620efc3140d`) and assignee Michael Rihm
 
 ### Step 6: Update Project Status
 
-Update `docs/PROJECT_STATUS.md`:
-- Set current phase to "Phase 1: {name}" (or whatever the first phase is)
-- Add a session log entry noting the roadmap was created with N phases
-- Update the phase summary section
+Update `docs/PROJECT_ROADMAP.md`:
+- Section 2 (Current Phase): Set to "Phase 1: {name}" (or whatever the first phase is)
+- Section 7 (Session Log): Add entry noting the roadmap was created with N phases
 
 ## After Completion
 
@@ -129,5 +128,5 @@ Tell the user:
 
 - **Single-phase project:** If all requirements fit in one phase, that's fine. Create a single phase with all requirements.
 - **Circular dependencies:** If requirements have circular dependencies, flag them to the user and ask how to resolve (usually by splitting a requirement or combining phases).
-- **Existing roadmap:** If `docs/roadmap.md` already exists with content, ask the user whether to replace it or merge with the existing plan. Do not silently overwrite.
+- **Existing roadmap:** If Section 3 of `docs/PROJECT_ROADMAP.md` already has phase content, ask the user whether to replace it or merge with the existing plan. Do not silently overwrite.
 - **Too many phases (>10):** Warn the user that many phases can be hard to track. Suggest grouping related phases or increasing scope per phase.

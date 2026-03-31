@@ -16,7 +16,7 @@ Example: `mpf:plan-tasks 1`
 
 ## Prerequisites
 
-1. Read `docs/roadmap.md` to confirm the requested phase exists.
+1. Read Section 3 (Phase Roadmap) of `docs/PROJECT_ROADMAP.md` to confirm the requested phase exists.
 2. Read `docs/requirements/phases/phase-{NN}-{name}/overview.md` to confirm the phase has requirements and success criteria defined.
 3. If neither exists, tell the user: "Phase {N} not found. Run `mpf:plan-phases` first."
 
@@ -24,7 +24,7 @@ Example: `mpf:plan-tasks 1`
 
 ### Step 1: Resolve Phase Info
 
-From `docs/roadmap.md`, extract:
+From `docs/PROJECT_ROADMAP.md` Section 3, extract:
 - Phase number and name (for directory naming)
 - Phase status (should be "Not Started" or "Planned")
 
@@ -76,9 +76,9 @@ agent_spawn(
 
 ### Step 6: Update Project Status
 
-Update `docs/PROJECT_STATUS.md`:
-- Note that Phase {N} has been planned with {count} tasks across {wave_count} waves
-- Add a session log entry
+Update `docs/PROJECT_ROADMAP.md`:
+- Section 5 (Active Work Items): Note that Phase {N} has been planned with {count} tasks across {wave_count} waves
+- Section 7 (Session Log): Add a session log entry
 
 ## Output
 

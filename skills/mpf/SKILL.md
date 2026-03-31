@@ -18,17 +18,17 @@ Before starting the interview, check the project root for existing scaffolding:
 
 1. Check for `CLAUDE.md` at the project root (this is the primary indicator)
 2. Check for `.claude/rules/` directory
-3. Check for `docs/PROJECT_STATUS.md`
+3. Check for `docs/PROJECT_ROADMAP.md`
 4. Check for `docs/technical-specs/` directory
 5. Check for `docs/requirements/` directory
 
 **If `CLAUDE.md` does not exist at the project root: Init mode.** Proceed to Phase 1 as normal. The presence of a `docs/` directory alone (e.g., from `mpf:map-codebase`) does NOT indicate existing scaffolding.
 
-**If `CLAUDE.md` exists: Evolve mode.** Read the existing CLAUDE.md and PROJECT_STATUS.md (if present) to understand current state, then present the evolve menu:
+**If `CLAUDE.md` exists: Evolve mode.** Read the existing CLAUDE.md and PROJECT_ROADMAP.md (if present) to understand current state, then present the evolve menu:
 
 > "I see this project already has scaffolding. Here's what I found:
 >
-> **Current tier:** [Light/Standard/Full, or "Unknown" if no PROJECT_STATUS.md]
+> **Current tier:** [Light/Standard/Full, or "Unknown" if no PROJECT_ROADMAP.md]
 > **Existing docs:** [list of docs/ files found]
 > **Existing rules:** [list of .claude/rules/ files found]
 > **Missing from [current/next] tier:** [list of docs and rules that could be added]
@@ -37,21 +37,21 @@ Before starting the interview, check the project root for existing scaffolding:
 > 1. **Upgrade tier**: move from [current] to [target] (adds [N] docs, expands CLAUDE.md)
 > 2. **Add specific document(s)**: add individual docs without changing tier
 > 3. **Change tracking approach**: switch between in-repo backlog and external tracker
-> 4. **Refresh dashboard**: update PROJECT_STATUS.md with current project state
+> 4. **Refresh dashboard**: update PROJECT_ROADMAP.md with current project state
 > 5. **Full re-interview**: start over as if this were a new project (preserves existing files, generates only what's missing or changed)"
 
 ### Evolve: Upgrade Tier
 
 When upgrading tiers:
 1. Diff current docs against target tier's doc list. Explicit diffs by upgrade path:
-   - **Light to Standard adds:** `docs/technical-specs/code-atlas.md`, `docs/CHANGELOG.md`, `docs/decisions.md`, `docs/technical-specs/TECHNICAL_SPEC.md`, `.claude/rules/document-updates.md`, `.claude/rules/session-protocol.md`, `.claude/rules/coding-standards.md`. CLAUDE.md sections added: 4 (Update Protocol), 8 (Tracking), 9 (Git Protocol), 10 (Clarification Protocol). PROJECT_STATUS.md expanded to full 7-section format.
+   - **Light to Standard adds:** `docs/technical-specs/code-atlas.md`, `docs/CHANGELOG.md`, `docs/decisions.md`, `docs/technical-specs/TECHNICAL_SPEC.md`, `.claude/rules/document-updates.md`, `.claude/rules/session-protocol.md`, `.claude/rules/coding-standards.md`. CLAUDE.md sections added: 4 (Update Protocol), 8 (Tracking), 9 (Git Protocol), 10 (Clarification Protocol). PROJECT_ROADMAP.md expanded to full 8-section format.
    - **Light to Full adds:** Everything in Light-to-Standard, plus: `docs/technical-specs/DATA_MODEL.md`, `GETTING_STARTED.md`, tracker-specific docs (`docs/traceability-matrix.md` or `docs/requirements/requirements.md` + `docs/BACKLOG.md`), `.claude/rules/traceability.md`. CLAUDE.md sections added: 4, 6 (Tech Stack), 8, 9, 10, 11 (Context Window), 13 (References).
    - **Standard to Full adds:** `docs/technical-specs/DATA_MODEL.md`, `GETTING_STARTED.md`, tracker-specific docs, `.claude/rules/traceability.md`. CLAUDE.md sections added: 6 (Tech Stack), 11 (Context Window), 13 (References).
 2. Show exactly which files will be created and which CLAUDE.md sections will be added
 3. Run a **focused mini-interview** covering only the rounds relevant to the new tier that weren't covered by the current tier (e.g., Light to Standard means asking R2, R3, and R4 only)
 4. Present a creation summary (same as Phase 3) showing only the new/modified files
 5. Wait for approval before creating anything
-6. After creation, update PROJECT_STATUS.md tier metadata and session log
+6. After creation, update PROJECT_ROADMAP.md tier metadata and session log
 
 ### Evolve: Add Specific Document
 
@@ -60,7 +60,7 @@ When upgrading tiers:
 3. Generate the document using templates from `references/document-templates.md`
 4. Update CLAUDE.md Section 3 (Workspace Structure) and Section 4 (Update Protocol) to include the new doc
 5. Update or create the relevant `.claude/rules/` file
-6. Update PROJECT_STATUS.md responsibility matrix with the new doc's ownership row
+6. Update PROJECT_ROADMAP.md responsibility matrix (Section 4) with the new doc's ownership row
 
 ### Evolve: Change Tracking Approach
 
@@ -72,15 +72,15 @@ This is a significant change. Walk through it carefully:
 5. Generate the new tracking docs (e.g., docs/traceability-matrix.md) and archive the old ones (move to `archive/`)
 6. Update CLAUDE.md sections 4, 8, and 9 to reflect the new approach
 7. Update relevant `.claude/rules/` files
-8. Update PROJECT_STATUS.md
+8. Update PROJECT_ROADMAP.md
 9. **Validate the switch:** After switching tracking approach, validate that no artifacts from the previous tracking approach remain active. Check that only one set of tracking files exists (either `docs/BACKLOG.md` + `docs/requirements/requirements.md` for in-repo, OR `docs/traceability-matrix.md` for external). Flag any gaps where requirements were not migrated to the new system.
 
 ### Evolve: Refresh Dashboard
 
 1. Read all existing docs and the current codebase state
 2. If external tracker is configured, query it for current ticket status
-3. Rebuild PROJECT_STATUS.md sections 1, 3, 4 from current state
-4. Preserve sections 2, 5, 6 (responsibility matrix, session log, phase history)
+3. Rebuild PROJECT_ROADMAP.md sections 1, 2, 5 from current state
+4. Preserve sections 4, 7, 8 (responsibility matrix, session log, phase history)
 
 ### Evolve: Full Re-Interview
 
@@ -116,7 +116,7 @@ Start by identifying the project type and scaffolding tier. The type determines 
 |---|---|---|---|
 | **Interview rounds** | R1 + R7 (2 rounds) | R1, R2, R3, R4, R7, R8 (6 rounds, skip R5 and R6) | All 8 rounds |
 | **CLAUDE.md sections** | 1, 2, 3, 5, 7, 12 (6 sections) | 1-5, 7, 8, 9, 10, 12 (10 sections) | All 13 sections |
-| **Always generated** | CLAUDE.md, README.md, docs/PROJECT_STATUS.md (simplified: sections 1, 2, 5 only), .claude/rules/golden-rules.md, .claude/rules/git-protocol.md | Everything in Light + docs/technical-specs/code-atlas.md, docs/CHANGELOG.md, docs/decisions.md, docs/technical-specs/TECHNICAL_SPEC.md, .claude/rules/document-updates.md, .claude/rules/session-protocol.md | Everything in Standard + full PROJECT_STATUS.md, docs/technical-specs/DATA_MODEL.md, GETTING_STARTED.md, and tracker-specific docs (docs/traceability-matrix.md or docs/requirements/requirements.md + docs/BACKLOG.md) |
+| **Always generated** | CLAUDE.md, README.md, docs/PROJECT_ROADMAP.md (simplified: sections 1, 2, 3, 6 only), .claude/rules/golden-rules.md, .claude/rules/git-protocol.md | Everything in Light + full PROJECT_ROADMAP.md (all 8 sections), docs/technical-specs/code-atlas.md, docs/CHANGELOG.md, docs/decisions.md, docs/technical-specs/TECHNICAL_SPEC.md, .claude/rules/document-updates.md, .claude/rules/session-protocol.md | Everything in Standard + docs/technical-specs/DATA_MODEL.md, GETTING_STARTED.md, and tracker-specific docs (docs/traceability-matrix.md or docs/requirements/requirements.md + docs/BACKLOG.md) |
 | **Upgrade path** | Can upgrade to Standard or Full via evolve mode | Can upgrade to Full via evolve mode | N/A |
 
 After detecting the project type, state the auto-detected tier and allow the user to override:
@@ -430,23 +430,22 @@ For each missing skill:
 
 Generate with the **13-section structure** described in `references/document-templates.md` (Section: "CLAUDE.md Structure"). Tailor every section based on interview answers. Use HTML comment placeholders (`<!-- -->`) for values not yet known.
 
-### Always Created: `docs/PROJECT_STATUS.md`
+### Always Created: `docs/PROJECT_ROADMAP.md`
 
-Generate the project dashboard using the 7-section structure from `references/document-templates.md` (Section: "PROJECT_STATUS.md"). Populate Section 1 (Current Phase) based on the phase identified in Round 2. Populate Section 2 (Phase Summary) with the initial phase entry. Populate Section 3 (Responsibility Matrix) based on which documents and workflows the user enabled. Initialize Sections 4-5 (Active Work Items, Blockers & Waiting) as empty. Initialize Section 6 (Session Log) with a single entry for the init session. Initialize Section 7 (Phase History) as empty.
+Generate the consolidated project document using the 8-section structure from `references/document-templates.md` (Section: "PROJECT_ROADMAP.md"). For Light tier, generate only sections 1, 2, 3, and 6.
 
-For the responsibility matrix, map each enabled document and workflow to its default owner using the template in `references/document-templates.md`. Adapt based on interview answers: if the user said they want to approve all commits, change Git commits from "Claude (auto)" to "Claude (proposes)".
+- **Section 1 (Project Overview):** Populate with project name, description, problem statement, target users, tech stack, and key decisions from the interview.
+- **Section 2 (Current Phase):** Set based on the phase identified in Round 2.
+- **Section 3 (Phase Roadmap):** Initialize with placeholder structure to be filled by mpf:plan-phases. If phases are already defined, populate with phase summaries.
+- **Section 4 (Responsibility Matrix):** Populate based on which documents and workflows the user enabled. Map each enabled document and workflow to its default owner using the template. Adapt based on interview answers: if the user said they want to approve all commits, change Git commits from "Claude (auto)" to "Claude (proposes)".
+- **Section 5 (Active Work Items):** Initialize as empty.
+- **Section 6 (Blockers & Waiting):** Initialize as empty.
+- **Section 7 (Session Log):** Initialize with a single entry for the init session.
+- **Section 8 (Phase History):** Initialize as empty.
 
 When creating placeholder documentation files, mark them with an HTML comment at the top: `<!-- MPF placeholder: to be populated by mpf:discover -->`. This allows downstream commands to distinguish placeholders from populated content.
 
 If `docs/technical-specs/code-atlas.md` or `docs/technical-specs/high-level-architecture.md` already exist (e.g., from a prior `mpf:map-codebase` run), do not overwrite them. Skip creation of these files and note in the session log that existing mapper output was preserved.
-
-### Always Created: `docs/PROJECT.md`
-
-Generate a project overview document containing the project name, description, tech stack summary, and links to all other documentation files. This serves as the entry point for understanding the project.
-
-### Always Created: `docs/roadmap.md`
-
-Generate an initial roadmap document. If phases are already defined, populate with phase summaries. Otherwise, create the structure with placeholders to be filled by mpf:plan-phases.
 
 ### Always Created: `archive/`
 
@@ -507,11 +506,9 @@ The scaffolding creates the following directory structure:
 
 ```
 docs/
-├── PROJECT.md
-├── PROJECT_STATUS.md
+├── PROJECT_ROADMAP.md              (project overview + status dashboard + phase roadmap)
 ├── BACKLOG.md                      (if in-repo tracking)
 ├── decisions.md
-├── roadmap.md
 ├── CHANGELOG.md
 ├── traceability-matrix.md          (if external tracker)
 ├── technical-specs/

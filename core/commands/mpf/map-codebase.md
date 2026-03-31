@@ -55,5 +55,5 @@ After the lead completes, report its summary to the user.
 
 Then recommend the next step:
 
-- If `mpf:init` has not been run yet (no `docs/PROJECT.md`): "Codebase mapped. Run `mpf:init` to set up the project."
-- If `mpf:init` was already run (has `docs/PROJECT.md`): "Technical specs updated. The docs are ready for `mpf:discover` or `mpf:plan-phases`."
+- If `mpf:init` has not been run yet (no `docs/PROJECT_ROADMAP.md`): "Codebase mapped. Run `mpf:init` to set up the project."
+- If `mpf:init` was already run (has `docs/PROJECT_ROADMAP.md`): "Technical specs updated. The docs are ready for `mpf:discover` or `mpf:plan-phases`."

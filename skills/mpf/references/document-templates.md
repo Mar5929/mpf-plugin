@@ -18,7 +18,7 @@ This file defines the exact structure for every document the MPF skill can gener
 10. [README.md](#readmemd)
 11. [GETTING_STARTED.md](#getting_startedmd)
 12. [MIGRATION_REFERENCE.md](#migration_referencemd)
-13. [PROJECT_STATUS.md](#project_statusmd)
+13. [PROJECT_ROADMAP.md](#project_roadmapmd)
 14. [DATA_LINEAGE.md](#data_lineagemd)
 15. [high-level-architecture.md](#high-level-architecturemd)
 16. [architecture/{subsystem}.md](#architecturesubsystemmd)
@@ -26,8 +26,6 @@ This file defines the exact structure for every document the MPF skill can gener
 18. [PRD.md](#prdmd)
 19. [Phase Overview](#phase-overview)
 20. [Task File](#task-file)
-21. [roadmap.md](#roadmapmd)
-22. [PROJECT.md](#projectmd)
 
 ---
 
@@ -80,11 +78,9 @@ Generate with the following **13-section structure**, tailored based on intervie
 
 ```
 docs/
-  PROJECT.md                          # What the project is
-  PROJECT_STATUS.md                   # Living project dashboard
+  PROJECT_ROADMAP.md                  # Project overview, status dashboard, and phase roadmap
   CHANGELOG.md                        # Change history
   decisions.md                        # Architecture Decision Records
-  roadmap.md                          # Phase overview and order
   requirements/
     requirements.md                   # Functional and non-functional requirements
     PRD.md                            # Product Requirements Document
@@ -127,9 +123,9 @@ docs/
   | Code added/modified | Update `docs/technical-specs/code-atlas.md` + relevant `docs/technical-specs/code-modules/` file |
   | Function/class added/changed | Update relevant `docs/technical-specs/code-modules/` file |
   | Request to modify backlog | Update `docs/BACKLOG.md` |
-  | End of session | Append session log entry to `docs/PROJECT_STATUS.md` |
-  | Phase transition | Update current phase + phase history in `docs/PROJECT_STATUS.md` + update `docs/roadmap.md` status |
-  | Blocker identified | Add to blockers table in `docs/PROJECT_STATUS.md` |
+  | End of session | Append session log entry to `docs/PROJECT_ROADMAP.md` Section 7 |
+  | Phase transition | Update current phase (Section 2) + phase history (Section 8) + roadmap status (Section 3) in `docs/PROJECT_ROADMAP.md` |
+  | Blocker identified | Add to blockers table in `docs/PROJECT_ROADMAP.md` Section 6 |
   | Task completed | Mark done in task file + update phase `overview.md` |
 
 **If using external tracker + traceability matrix:**
@@ -145,10 +141,10 @@ docs/
   | Code added/modified | Update `docs/technical-specs/code-atlas.md` + relevant `docs/technical-specs/code-modules/` file |
   | Function/class added/changed | Update relevant `docs/technical-specs/code-modules/` file |
   | Requirements change | Update PRD (if applicable) + `docs/traceability-matrix.md` |
-  | End of session | Append session log entry to `docs/PROJECT_STATUS.md` |
-  | Phase transition | Update current phase + phase history in `docs/PROJECT_STATUS.md` + update `docs/roadmap.md` status |
-  | Phase completed | Update `docs/PROJECT_STATUS.md` progress + `docs/roadmap.md` status |
-  | Blocker identified | Add to blockers table in `docs/PROJECT_STATUS.md` |
+  | End of session | Append session log entry to `docs/PROJECT_ROADMAP.md` Section 7 |
+  | Phase transition | Update current phase (Section 2) + phase history (Section 8) + roadmap status (Section 3) in `docs/PROJECT_ROADMAP.md` |
+  | Phase completed | Update `docs/PROJECT_ROADMAP.md` Section 2 (progress) + Section 3 (roadmap status) |
+  | Blocker identified | Add to blockers table in `docs/PROJECT_ROADMAP.md` Section 6 |
   | Task completed | Mark done in task file + update phase `overview.md` |
 
 - Format rules: compact Markdown (tables and bullet lists preferred over prose), use IDs (`REQ-001`, `ADR-001`, `NFR-001`), ISO dates (`YYYY-MM-DD`)
@@ -175,7 +171,7 @@ docs/
 
 **If using in-repo tracking:**
   1. `CLAUDE.md` (this file)
-  2. `docs/PROJECT_STATUS.md` for current phase, active items, blockers, and session history
+  2. `docs/PROJECT_ROADMAP.md` for project overview, current phase, roadmap, active items, blockers, and session history
   3. `docs/technical-specs/code-atlas.md` for codebase context
   4. `docs/BACKLOG.md` for outstanding work items
   5. Skim `docs/requirements/requirements.md` if working on a feature
@@ -183,7 +179,7 @@ docs/
 
 **If using external tracker + traceability matrix:**
   1. `CLAUDE.md` (this file)
-  2. `docs/PROJECT_STATUS.md` for current phase, active items, blockers, and session history
+  2. `docs/PROJECT_ROADMAP.md` for project overview, current phase, roadmap, active items, blockers, and session history
   3. `docs/technical-specs/code-atlas.md` for codebase context
   4. `docs/traceability-matrix.md` to understand requirement-to-ticket mapping
   5. `docs/technical-specs/TECHNICAL_SPEC.md` if working on architecture or a new feature
@@ -623,23 +619,65 @@ npm test -- --grep "relevant test"
 
 ---
 
-## roadmap.md
+## PROJECT_ROADMAP.md
 
-**Purpose:** Phase overview and implementation order. Provides the high-level picture of how the project progresses from start to finish.
+**Purpose:** Consolidated project document combining project overview, live status dashboard, and phase roadmap. Single place to understand the project identity, current state, who owns what, phase plan, and session history. Claude updates this at the end of every session.
 
-**Location:** `docs/roadmap.md`
+**Always generated:** Yes, for all tiers. Light tier gets sections 1, 2, 3, 6 only (marked in table below).
+
+**Location:** `docs/PROJECT_ROADMAP.md`
+
+**Metadata header (include at the top of the generated file):**
+```
+**Scaffolding tool:** mpf
+**Scaffolding tier:** Light | Standard | Full
+**Upgrade available:** Yes/No
+```
+
+**Section availability by tier:**
+
+| Section | Light | Standard | Full |
+|---|---|---|---|
+| 1: Project Overview | Yes | Yes | Yes |
+| 2: Current Phase | Yes | Yes | Yes |
+| 3: Phase Roadmap | Yes | Yes | Yes |
+| 4: Responsibility Matrix | - | Yes | Yes |
+| 5: Active Work Items | - | Yes | Yes |
+| 6: Blockers & Waiting | Yes | Yes | Yes |
+| 7: Session Log | - | Yes | Yes |
+| 8: Phase History | - | Yes | Yes |
 
 **Structure:**
 
-### Project Roadmap
+### Section 1: Project Overview
+
+- **Project Name** and one-paragraph description
+- **Problem Statement:** what problem the project solves and for whom
+- **Target Users:** brief description of primary users
+- **Tech Stack:** summary table or bullet list of key technologies
+- **Key Decisions:** link to `docs/decisions.md` for the full ADR log; optionally list the 2-3 most important architectural decisions inline
+
+### Section 2: Current Phase
+
+- Phase name and number (e.g., "Phase 2: User Auth")
+- One-line description of what this phase covers
+- Phase start date
+- Target completion (if known)
+- Next phase preview (what comes after this)
+- Progress bar:
+  ```
+  Phase 2: User Auth  |  ████████░░░░░░░░  48%
+  ```
+
+### Section 3: Phase Roadmap
 
 #### Phase Summary
 
 | Phase | Name | Status | Progress |
 |---|---|---|---|
-| 1 | Foundation | Done | 100% |
-| 2 | User Auth | In Progress | 48% |
-| 3 | Core Features | Not Started | 0% |
+| 1 | Foundation | Done | ████████████████ 100% |
+| 2 | User Auth | In Progress | ████████░░░░░░░░ 48% |
+| 3 | Core Features | Not Started | ░░░░░░░░░░░░░░░░ 0% |
 
 #### Phase Details
 
@@ -659,35 +697,68 @@ One section per phase:
 **Estimated Scope:** {number of tasks} tasks across {number of waves} waves
 ```
 
----
+### Section 4: Responsibility Matrix
 
-## PROJECT.md
+Table with columns: `Area | Owner | Exceptions`
 
-**Purpose:** What the project is. Focused on project context for developers and Claude, not external-facing like README.
+Owner values:
+- **Claude (auto):** Claude does this automatically with no user input needed
+- **Claude (proposes):** Claude drafts or proposes, user reviews/approves
+- **User (decides):** User makes the decision, Claude executes if asked
+- **Shared:** Both contribute; Claude drafts, user reviews
 
-**Location:** `docs/PROJECT.md`
+Default matrix (adapt based on which docs/workflows are enabled):
 
-**Structure:**
+| Area | Owner | Exceptions |
+|---|---|---|
+| code-atlas.md | Claude (auto) | New top-level modules: naming approval needed |
+| CHANGELOG.md | Claude (auto) | - |
+| TECHNICAL_SPEC.md | Shared | Claude drafts sections, user reviews before finalizing |
+| DATA_MODEL.md | User (decides) | Claude proposes changes, user must confirm before any schema modification |
+| traceability-matrix.md | Claude (auto) | Phase reassignments: user approval needed | *(external tracker only)* |
+| BACKLOG.md | Claude (auto) | Priority changes: user approval needed | *(in-repo tracking only)* |
+| requirements.md | Shared | Claude updates status, user approves scope changes | *(in-repo tracking only)* |
+| decisions.md | Shared | Claude records decisions from conversation, user confirms status |
+| PRD / Requirements | User (decides) | Claude flags contradictions but does not modify |
+| Tracker ticket status | Claude (auto) | Follows ticket lifecycle protocol | *(external tracker only)* |
+| Git commits | Claude (auto) | Follows git protocol; force pushes: never |
+| Git branching | Claude (auto) | Branch deletion: user approval needed |
+| Dependency upgrades | User (decides) | Claude flags outdated deps, user approves upgrades |
+| Security/auth changes | User (decides) | Claude always asks first |
 
-### {Project Name}
-- One-paragraph project description
+Only include rows for enabled workflows. Rows marked *(external tracker only)* should only appear if the project uses an external tracker (e.g., Linear). Rows marked *(in-repo tracking only)* should only appear if the project uses in-repo tracking.
 
-### Problem Statement
-- What problem the project solves and for whom
+### Section 5: Active Work Items
 
-### Target Users
-- Brief description of primary users
+Table with columns: `ID | Title | Status | Assignee | Blockers`
 
-### Tech Stack
-- Summary table or bullet list of key technologies
+- Pull from external tracker or BACKLOG.md depending on tracking approach
+- Show only active and blocked items (not backlog/done)
+- Include a count: "3 active, 1 blocked, 12 in backlog"
 
-### Key Decisions
-- Link to `docs/decisions.md` for the full ADR log
-- Optionally list the 2-3 most important architectural decisions inline
+### Section 6: Blockers & Waiting
 
-### Current State
-- Link to `docs/PROJECT_STATUS.md` for the live dashboard
-- One-line summary of current phase and progress
+Table with columns: `Item | Blocked By | Since | Action Needed`
+
+- External blockers (waiting on a person, API access, decision)
+- Internal blockers (depends on another ticket, needs design decision)
+- Include who needs to act (user, external stakeholder, Claude)
+
+### Section 7: Session Log
+
+Table with columns: `Date | Session Summary | Docs Updated | Next Up`
+
+- Claude appends a row at the end of every session
+- Keep the last 10 sessions; move older entries to a "Previous Sessions" collapsed section or archive
+- "Docs Updated" column lists which living docs were modified (e.g., "code-atlas, CHANGELOG, LINEAR:RIH-54 to Done")
+- "Next Up" column is Claude's suggestion for what to work on next session
+
+### Section 8: Phase History
+
+Table with columns: `Phase | Focus | Started | Completed | Key Outcomes`
+
+- Completed phases with a one-line summary of what was accomplished
+- Current phase row has Completed = "In Progress"
 
 ---
 
@@ -753,100 +824,6 @@ One section per phase:
 
 ---
 
-## PROJECT_STATUS.md
-
-**Purpose:** Living project dashboard. Single place to understand current state, who owns what, and what happened recently. Claude updates this at the end of every session. The user can also update it manually.
-
-**Always generated:** Yes, for all tiers. Light tier gets a simplified version (sections 1, 2, and 5 only).
-
-**Metadata header (include at the top of the generated file):**
-```
-**Scaffolding tool:** mpf
-**Scaffolding tier:** Light | Standard | Full
-**Upgrade available:** Yes/No
-```
-
-**Structure:**
-
-### Section 1: Current Phase
-- Phase name and number (e.g., "Phase 2: User Auth")
-- One-line description of what this phase covers
-- Phase start date
-- Target completion (if known)
-- Next phase preview (what comes after this)
-- Progress bar:
-  ```
-  Phase 2: User Auth  |  ████████░░░░░░░░  48%
-  ```
-
-### Section 2: Phase Summary
-
-| Phase | Name | Status | Progress |
-|---|---|---|---|
-| 1 | Foundation | Done | ████████████████ 100% |
-| 2 | User Auth | In Progress | ████████░░░░░░░░ 48% |
-| 3 | Core Features | Not Started | ░░░░░░░░░░░░░░░░ 0% |
-
-### Section 3: Responsibility Matrix
-Table with columns: `Area | Owner | Exceptions`
-
-Owner values:
-- **Claude (auto):** Claude does this automatically with no user input needed
-- **Claude (proposes):** Claude drafts or proposes, user reviews/approves
-- **User (decides):** User makes the decision, Claude executes if asked
-- **Shared:** Both contribute; Claude drafts, user reviews
-
-Default matrix (adapt based on which docs/workflows are enabled):
-
-| Area | Owner | Exceptions |
-|---|---|---|
-| code-atlas.md | Claude (auto) | New top-level modules: naming approval needed |
-| CHANGELOG.md | Claude (auto) | - |
-| TECHNICAL_SPEC.md | Shared | Claude drafts sections, user reviews before finalizing |
-| DATA_MODEL.md | User (decides) | Claude proposes changes, user must confirm before any schema modification |
-| traceability-matrix.md | Claude (auto) | Phase reassignments: user approval needed | *(external tracker only)* |
-| BACKLOG.md | Claude (auto) | Priority changes: user approval needed | *(in-repo tracking only)* |
-| requirements.md | Shared | Claude updates status, user approves scope changes | *(in-repo tracking only)* |
-| decisions.md | Shared | Claude records decisions from conversation, user confirms status |
-| PRD / Requirements | User (decides) | Claude flags contradictions but does not modify |
-| Tracker ticket status | Claude (auto) | Follows ticket lifecycle protocol | *(external tracker only)* |
-| Git commits | Claude (auto) | Follows git protocol; force pushes: never |
-| Git branching | Claude (auto) | Branch deletion: user approval needed |
-| Dependency upgrades | User (decides) | Claude flags outdated deps, user approves upgrades |
-| Security/auth changes | User (decides) | Claude always asks first |
-
-Only include rows for enabled workflows. Rows marked *(external tracker only)* should only appear if the project uses an external tracker (e.g., Linear). Rows marked *(in-repo tracking only)* should only appear if the project uses in-repo tracking. If no decisions.md, omit that row.
-
-### Section 4: Active Work Items
-Table with columns: `ID | Title | Status | Assignee | Blockers`
-
-- Pull from external tracker or BACKLOG.md depending on tracking approach
-- Show only active and blocked items (not backlog/done)
-- Include a count: "3 active, 1 blocked, 12 in backlog"
-
-### Section 5: Blockers & Waiting
-Table with columns: `Item | Blocked By | Since | Action Needed`
-
-- External blockers (waiting on a person, API access, decision)
-- Internal blockers (depends on another ticket, needs design decision)
-- Include who needs to act (user, external stakeholder, Claude)
-
-### Section 6: Session Log
-Table with columns: `Date | Session Summary | Docs Updated | Next Up`
-
-- Claude appends a row at the end of every session
-- Keep the last 10 sessions; move older entries to a "Previous Sessions" collapsed section or archive
-- "Docs Updated" column lists which living docs were modified (e.g., "code-atlas, CHANGELOG, LINEAR:RIH-54 to Done")
-- "Next Up" column is Claude's suggestion for what to work on next session
-
-### Section 7: Phase History
-Table with columns: `Phase | Focus | Started | Completed | Key Outcomes`
-
-- Completed phases with a one-line summary of what was accomplished
-- Current phase row has Completed = "In Progress"
-
----
-
 ## .claude/rules/ Directory
 
 **Purpose:** Project-specific rules that auto-load into every Claude Code conversation. These contain behavioral constraints Claude must always follow, without relying on CLAUDE.md being explicitly read. CLAUDE.md remains the comprehensive human-readable reference; rules files ensure enforcement.
@@ -880,7 +857,7 @@ Before I proceed, I need to confirm:
 
 After every 10th turn in a session, re-read:
 1. This file (golden-rules.md) to refresh behavioral constraints
-2. `docs/PROJECT_STATUS.md` Section 4 (Active Work Items) to stay oriented
+2. `docs/PROJECT_ROADMAP.md` Section 5 (Active Work Items) to stay oriented
 
 This is a lightweight refresh, not a full re-read of all docs.
 
@@ -990,7 +967,7 @@ If any box is unchecked, either complete the update or explicitly flag it as rem
 | New file created | Update docs/technical-specs/code-atlas.md + relevant code-modules/ file |
 | Function/class added/changed | Update relevant docs/technical-specs/code-modules/ file |
 | Architecture decision made | Add entry to docs/decisions.md |
-| Phase completed | Update docs/PROJECT_STATUS.md progress + docs/roadmap.md status |
+| Phase completed | Update docs/PROJECT_ROADMAP.md Section 2 (progress) + Section 3 (roadmap status) |
 | Requirements change | Update docs/traceability-matrix.md (external tracker) or docs/requirements/requirements.md (in-repo) |
 | Task completed | Mark done in task file + update phase overview.md |
 ```
@@ -1071,7 +1048,7 @@ When creating an implementation plan for a phase:
 At the start of every new session:
 
 1. Read `CLAUDE.md` for project configuration
-2. Read `docs/PROJECT_STATUS.md` for current state
+2. Read `docs/PROJECT_ROADMAP.md` for current state
 3. Read `docs/technical-specs/code-atlas.md` for codebase context
 4. If external tracker is configured, check for any ticket status changes since last session
 5. Deliver the session-start briefing (format below)
@@ -1082,7 +1059,7 @@ At the start of every new session:
 Print this at the start of every session:
 
 **[Project Name]: Session Briefing**
-- **Phase:** [current phase from PROJECT_STATUS.md Section 1]
+- **Phase:** [current phase from PROJECT_ROADMAP.md Section 2]
 - **Last session:** [date]: [one-line summary from most recent session log entry]
 - **Active items:** [count] active, [count] blocked
 - **Blockers:** [list any items from Section 5, or "None"]
@@ -1097,25 +1074,25 @@ Then ask: "What would you like to work on?"
 
 When the user indicates they're done (says "done", "that's it for now", "stopping here", "wrapping up", or similar):
 
-1. Append a row to `docs/PROJECT_STATUS.md` Section 6 (Session Log) with:
+1. Append a row to `docs/PROJECT_ROADMAP.md` Section 7 (Session Log) with:
    - Today's date
    - One-line summary of what was accomplished
    - Which docs were updated
    - Suggested next item for the following session
-2. Update Section 4 (Active Work Items) if any items changed status
-3. Update Section 5 (Blockers) if any were added or resolved
+2. Update Section 5 (Active Work Items) if any items changed status
+3. Update Section 6 (Blockers) if any were added or resolved
 4. Confirm: "Dashboard updated. Next session I'll suggest starting with [item]."
 
-### Fallback: If PROJECT_STATUS.md Is Missing or Corrupt
+### Fallback: If PROJECT_ROADMAP.md Is Missing or Corrupt
 
-If `docs/PROJECT_STATUS.md` does not exist, cannot be read, or appears empty/corrupt:
+If `docs/PROJECT_ROADMAP.md` does not exist, cannot be read, or appears empty/corrupt:
 
 1. Do NOT proceed without orientation. Say: "I can't find or read the project dashboard. Let me reconstruct the current state."
 2. Read `CLAUDE.md` for project configuration
 3. Read `docs/technical-specs/code-atlas.md` for what exists in the codebase
 4. Check the external tracker (if configured) for current ticket status
 5. Check `git log --oneline -10` for recent commit history
-6. Reconstruct a minimal PROJECT_STATUS.md from the above sources
+6. Reconstruct a minimal PROJECT_ROADMAP.md from the above sources
 7. Present the reconstructed state to the user for confirmation before proceeding
 8. Ask: "Does this look right? What would you like to work on?"
 

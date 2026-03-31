@@ -16,7 +16,7 @@ Example: `mpf:execute 1`
 
 ## Prerequisites
 
-1. Read `docs/roadmap.md` to confirm the phase exists.
+1. Read Section 3 (Phase Roadmap) of `docs/PROJECT_ROADMAP.md` to confirm the phase exists.
 2. Check that task files exist in `docs/requirements/phases/phase-{NN}-{name}/tasks/`.
 3. If no task files exist, tell the user: "No tasks found for Phase {N}. Run `mpf:plan-tasks {N}` first."
 4. Read `CLAUDE.md` for version control configuration and Linear settings.
@@ -178,9 +178,9 @@ If inline verification is disabled, skip this step and proceed directly to the n
 
 ### Step 4: Progress Tracking
 
-After each wave completes, update `docs/PROJECT_STATUS.md`:
-- Update the active tasks section
-- Update the phase progress percentage (completed tasks / total tasks)
+After each wave completes, update `docs/PROJECT_ROADMAP.md`:
+- Section 5 (Active Work Items): Update the active tasks section
+- Section 2 (Current Phase): Update the phase progress percentage (completed tasks / total tasks)
 
 ### Step 5: Completion
 
@@ -200,7 +200,7 @@ Phase {N} Execution Complete
 Passed: {count}/{total}
 ```
 
-2. Update `docs/PROJECT_STATUS.md` with execution results.
+2. Update `docs/PROJECT_ROADMAP.md` with execution results (Section 5: Active Work Items, Section 7: Session Log).
 
 3. If all tasks passed: Recommend "Run `mpf:verify {N}` to validate the phase before merging."
 

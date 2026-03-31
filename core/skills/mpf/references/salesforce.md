@@ -72,7 +72,7 @@ project-root/
 │   │   └── code-atlas.md             # Codebase reference
 │   ├── decisions.md                   # Architecture decision records
 │   ├── traceability-matrix.md         # Requirement-to-ticket mapping
-│   ├── PROJECT_STATUS.md              # Project dashboard
+│   ├── PROJECT_ROADMAP.md             # Project overview, status dashboard, and phase roadmap
 │   └── CHANGELOG.md                   # Change history
 │
 ├── deliverables/                      # Client-facing documents

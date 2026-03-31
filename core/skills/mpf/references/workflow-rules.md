@@ -6,11 +6,11 @@ These rules apply after scaffolding is created, scoped to whichever workflows th
 
 ## Dashboard Maintenance Rules (always apply)
 
-1. **Session log.** At the end of every session (or when the user says they're done for now), append a row to the Session Log in `docs/PROJECT_STATUS.md` with: today's date, a one-line summary of what was accomplished, which docs were updated, and a suggestion for next session.
-2. **Phase transitions.** When the project moves to a new phase (e.g., Discovery to Implementation, or Sprint 1 to Sprint 2), update Section 1 (Current Phase) and add a completed row to Section 7 (Phase History). Confirm phase transitions with the user before updating.
-3. **Blocker tracking.** When a blocker is identified during work (waiting on external input, blocked dependency, needs decision), add it to Section 5 (Blockers & Waiting). When a blocker is resolved, remove it and note the resolution in the session log.
-4. **Active items sync.** Keep Section 4 (Active Work Items) in sync with the tracker or `docs/BACKLOG.md`. When items are started, completed, or blocked, update this section in the same response.
-5. **Responsibility matrix updates.** If a new document or workflow is added to the project (via evolve mode or manually), add the corresponding row to the responsibility matrix. If ownership changes are agreed upon during conversation, update the matrix immediately.
+1. **Session log.** At the end of every session (or when the user says they're done for now), append a row to the Session Log in `docs/PROJECT_ROADMAP.md` Section 7 with: today's date, a one-line summary of what was accomplished, which docs were updated, and a suggestion for next session.
+2. **Phase transitions.** When the project moves to a new phase (e.g., Discovery to Implementation, or Sprint 1 to Sprint 2), update Section 2 (Current Phase) and add a completed row to Section 8 (Phase History) in `docs/PROJECT_ROADMAP.md`. Confirm phase transitions with the user before updating.
+3. **Blocker tracking.** When a blocker is identified during work (waiting on external input, blocked dependency, needs decision), add it to Section 6 (Blockers & Waiting) in `docs/PROJECT_ROADMAP.md`. When a blocker is resolved, remove it and note the resolution in the session log.
+4. **Active items sync.** Keep Section 5 (Active Work Items) in `docs/PROJECT_ROADMAP.md` in sync with the tracker or `docs/BACKLOG.md`. When items are started, completed, or blocked, update this section in the same response.
+5. **Responsibility matrix updates.** If a new document or workflow is added to the project (via evolve mode or manually), add the corresponding row to the responsibility matrix (Section 4 of `docs/PROJECT_ROADMAP.md`). If ownership changes are agreed upon during conversation, update the matrix immediately.
 
 ---
 
@@ -26,7 +26,7 @@ These rules apply after scaffolding is created, scoped to whichever workflows th
 8. **Prioritized update order.** When a single action requires updating multiple docs, follow this priority order. If you cannot complete all updates in one response, complete as many as possible in priority order, then explicitly state which updates remain.
    - Priority 1 (must complete): `docs/technical-specs/code-atlas.md`, tracker ticket status
    - Priority 2 (should complete): `docs/traceability-matrix.md` or `docs/BACKLOG.md`, CHANGELOG.md
-   - Priority 3 (complete if possible): `docs/decisions.md`, `docs/technical-specs/TECHNICAL_SPEC.md`, `docs/PROJECT_STATUS.md`
+   - Priority 3 (complete if possible): `docs/decisions.md`, `docs/technical-specs/TECHNICAL_SPEC.md`, `docs/PROJECT_ROADMAP.md`
 9. **Incomplete update disclosure.** If you complete a code change but cannot update all required docs in the same response, you MUST explicitly say: "I still need to update: [list of docs]. Want me to do that now?" Never silently skip a doc update.
 10. **Show your work for doc updates.** When updating a living document, show the relevant diff or the new content you're adding. For small updates (1-5 lines), include the actual content in your response. For larger updates, show a summary of what changed. This makes it verifiable and reduces hallucinated updates.
 11. **Rules-CLAUDE.md consistency.** Whenever you update a section of CLAUDE.md that has a corresponding `.claude/rules/` file, update both in the same response. If you notice a conflict between a rules file and CLAUDE.md, flag it to the user and ask which is correct before proceeding.
@@ -95,7 +95,7 @@ These rules apply when `mpf:execute` runs with team-based execution (the default
 ## Living Document Hook Rules
 
 - PostToolUse hook on file_write/file_edit reminds Claude to check doc updates
-- Priority order for doc updates: code-atlas -> tracker status -> traceability/backlog -> changelog -> decisions/spec -> PROJECT_STATUS
+- Priority order for doc updates: code-atlas -> tracker status -> traceability/backlog -> changelog -> decisions/spec -> PROJECT_ROADMAP
 - Update `code-modules/` files when module internals change
 - Update `architecture/` files when subsystem boundaries change
 

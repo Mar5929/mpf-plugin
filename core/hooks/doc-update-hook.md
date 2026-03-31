@@ -35,7 +35,7 @@ When the hook fires (file path is present and none of the skip conditions match)
 2. **Reminder**: prompts the agent to check whether these living documents need updating:
    - `docs/technical-specs/code-atlas.md`
    - `code-modules/` directory contents
-   - `PROJECT_STATUS.md`
+   - `PROJECT_ROADMAP.md`
 
 The agent then applies its doc-update rules (defined in `.claude/rules/mpf-doc-updates.md`) to decide whether any of those documents require changes.
 
