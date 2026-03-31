@@ -1,12 +1,34 @@
 ---
 name: mpf:plan-phases
-description: Break PRD requirements into implementation phases and generate the project roadmap. Updates Section 3 (Phase Roadmap) of docs/PROJECT_ROADMAP.md and generates phase overview files under docs/requirements/phases/. Creates Linear milestones if external tracking is configured. Run after mpf:discover, before mpf:plan-tasks.
+description: Break PRD requirements into implementation phases and generate the project roadmap. Updates Section 3 (Phase Roadmap) of docs/PROJECT_ROADMAP.md and generates phase overview files under docs/requirements/phases/. Creates Linear milestones if external tracking is configured. Supports --new-only flag to add phases for unphased requirements without touching existing phases. Run after mpf:discover, before mpf:plan-tasks.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__claude_ai_Linear__*
 ---
 
 # mpf:plan-phases
 
 Analyze the PRD and requirements to produce a phased implementation roadmap.
+
+## Usage
+
+```
+mpf:plan-phases              # Full roadmap generation (default)
+mpf:plan-phases --new-only   # Only create phases for unphased requirements; preserve existing roadmap
+```
+
+### --new-only Mode
+
+When `--new-only` is passed, the command operates in additive mode:
+
+1. Read `docs/requirements/requirements.md` and identify requirements that have **no phase assignment** (no "Phase: N" field, or phase field is empty/TBD).
+2. Read `docs/PROJECT_ROADMAP.md` Section 3 to determine the current highest phase number.
+3. Only plan new phases for the unphased requirements. New phases are numbered starting from the next available number (e.g., if Phase 5 is the last existing phase, new phases start at Phase 6).
+4. Preserve all existing phase content in PROJECT_ROADMAP.md Section 3. Append the new phases after existing ones.
+5. Do not reassign, reorder, or modify any existing phases or their requirements.
+6. Existing phase overview files under `docs/requirements/phases/` are left untouched.
+
+If no unphased requirements are found, tell the user: "All requirements already have phase assignments. Nothing to plan. Use `mpf:import` to add new requirements first."
+
+In `--new-only` mode, skip all audit-aware filtering logic (Done/Partial/Not Started). The assumption is that newly imported requirements are unaudited or have already been audited separately via `mpf:audit --requirements`.
 
 ## Prerequisites
 
@@ -169,5 +191,7 @@ Tell the user:
 
 - **Single-phase project:** If all requirements fit in one phase, that's fine. Create a single phase with all requirements.
 - **Circular dependencies:** If requirements have circular dependencies, flag them to the user and ask how to resolve (usually by splitting a requirement or combining phases).
-- **Existing roadmap:** If Section 3 of `docs/PROJECT_ROADMAP.md` already has phase content, ask the user whether to replace it or merge with the existing plan. Do not silently overwrite.
+- **Existing roadmap (default mode):** If Section 3 of `docs/PROJECT_ROADMAP.md` already has phase content, ask the user whether to replace it or merge with the existing plan. Suggest using `--new-only` if they only want to add phases for new requirements. Do not silently overwrite.
+- **Existing roadmap (--new-only mode):** Existing phases are never modified. New phases append after the last existing phase. Dependencies from new phases on existing phases are allowed and should be noted in the new phase overviews.
 - **Too many phases (>10):** Warn the user that many phases can be hard to track. Suggest grouping related phases or increasing scope per phase.
+- **New requirements depend on each other:** In `--new-only` mode, the dependency ordering rules still apply within the new phases. If a new requirement depends on an existing (already-phased) requirement, note the cross-phase dependency but do not move the existing requirement.

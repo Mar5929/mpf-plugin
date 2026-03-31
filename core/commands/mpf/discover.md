@@ -1,10 +1,17 @@
 # Command: mpf:discover
-# Description: Create the Product Requirements Document (PRD) through a structured interview. Produces docs/requirements/PRD.md, updates docs/requirements/requirements.md (if in-repo tracking), and populates technical-specs/ with architecture and data model decisions. Run after mpf:init, before mpf:plan-phases.
+# Description: Create or extend the Product Requirements Document (PRD) through a structured interview. Produces docs/requirements/PRD.md, updates docs/requirements/requirements.md (if in-repo tracking), and populates technical-specs/ with architecture and data model decisions. Supports --extend flag for adding new scope to an existing PRD. Run after mpf:init, before mpf:plan-phases.
 # Tools: [file_read, file_write, file_edit, shell, text_search, file_search]
 
 # mpf:discover
 
 Guide the user through structured product discovery to produce a complete PRD and supporting technical documents.
+
+## Usage
+
+```
+mpf:discover            # Full discovery interview (default)
+mpf:discover --extend   # Add new requirements to an existing PRD
+```
 
 ## Prerequisites
 
@@ -12,6 +19,8 @@ Before starting, read these files to understand the project context:
 
 1. `CLAUDE.md` at the project root (project overview, tier, tracking approach, tech stack)
 2. `docs/PROJECT_ROADMAP.md` (current phase, project overview, and roadmap state)
+3. `docs/requirements/PRD.md` (if exists; required for `--extend` mode)
+4. `docs/requirements/requirements.md` (if exists; used by `--extend` to determine next REQ ID)
 
 If `CLAUDE.md` does not exist, tell the user: "No CLAUDE.md found. Run `mpf:init` first to set up the project."
 
@@ -19,7 +28,54 @@ If `CLAUDE.md` does not exist, tell the user: "No CLAUDE.md found. Run `mpf:init
 
 Read the PRD.md template from `skills/mpf/references/document-templates.md` (section "PRD.md") before generating the document. Follow that structure exactly.
 
-## Interview Process
+## Extend Mode (--extend)
+
+When `--extend` is passed, the command operates in incremental mode. This is for adding new scope to an existing project, not starting from scratch.
+
+### Extend Prerequisites
+
+1. `docs/requirements/PRD.md` must exist with substantive content. If not, tell the user: "No existing PRD found. Run `mpf:discover` (without --extend) for initial discovery."
+2. Read the existing PRD fully to understand current scope.
+3. Read `docs/requirements/requirements.md` to get the highest current REQ ID.
+
+### Extend Interview (3 rounds instead of 6)
+
+The extend interview is shorter and focused on new scope only. Do not re-ask questions about existing features, vision, or architecture unless the new requirements affect them.
+
+**Round E-1: New Scope Overview**
+- What new capabilities or features do you need to add?
+- What prompted this new scope? (new business need, user feedback, technical requirement)
+- Do any of these replace or modify existing requirements, or are they purely additive?
+
+**Round E-2: New User Stories & Acceptance Criteria**
+- For each new feature: walk through the user workflow, acceptance criteria, and priority (P0/P1/P2).
+- Ask: "Does this depend on any existing requirements or features?"
+- Ask: "Are there any new non-functional requirements (performance, security, etc.) that come with this scope?"
+
+**Round E-3: Boundaries & Conflicts**
+- Does this new scope change any existing out-of-scope decisions?
+- Are there conflicts or overlaps with existing requirements?
+- Any new technical constraints or external dependencies?
+
+### Extend Document Generation
+
+After the extend interview:
+
+1. **PRD.md:** Append new sections to the existing PRD. Add a version/revision note at the top (e.g., "## Revision: {date} - Added {feature area}"). Do not rewrite existing sections. If new scope modifies an existing section, add a subsection noting the change rather than rewriting the original.
+
+2. **requirements.md:** Append new requirements starting from the next available REQ ID. Do not renumber or modify existing requirements. For requirements that modify existing ones, add a "Supersedes: REQ-xxx" or "Extends: REQ-xxx" note.
+
+3. **traceability-matrix.md:** If using external tracking, append new entries. Do not modify existing entries.
+
+4. **Technical specs:** Only update if the new scope introduces architectural changes. Append or merge; never overwrite existing content.
+
+5. **PROJECT_ROADMAP.md:** Add a session log entry noting the extend operation and new requirement count.
+
+After extend, recommend: "Run `mpf:plan-phases --new-only` to create phases for the new requirements without touching existing phases."
+
+---
+
+## Full Interview Process (Default Mode)
 
 Conduct the interview in rounds. Each round collects a category of information. Present questions conversationally, not as a wall of text. Ask 2-4 questions per round, wait for the user's response, then proceed.
 
@@ -123,7 +179,10 @@ Update `docs/PROJECT_ROADMAP.md`:
 Tell the user:
 - Summarize what was created (list the files written/updated)
 - Show the requirement count and priority breakdown (e.g., "12 requirements: 4 P0, 5 P1, 2 P2, 1 P3")
-- Recommend: "Run `mpf:plan-phases` to break these requirements into implementation phases."
+
+**Default mode:** Recommend: "Run `mpf:plan-phases` to break these requirements into implementation phases."
+
+**Extend mode:** Recommend: "Run `mpf:audit --requirements {new REQ IDs}` to check if any are already partially implemented, then `mpf:plan-phases --new-only` to create phases for the new requirements."
 
 ## Adaptation Rules
 
@@ -131,6 +190,8 @@ Tell the user:
 - **Complex projects (> 20 requirements):** Group features by domain area in round 2. Consider splitting into multiple PRD sections.
 - **Brownfield projects:** If `docs/technical-specs/code-atlas.md` exists (from mpf:map-codebase), reference it during round 6 to ground architecture discussions in the existing codebase.
 - **User provides a PRD:** If the user already has a PRD or equivalent document, skip the interview. Read their document, reformat it into the MPF PRD template, extract requirements, and confirm with the user before writing.
+- **Extend mode with few additions (< 3 requirements):** Compress E-1 and E-2 into a single round. Skip E-3 if the user confirms no conflicts.
+- **Extend mode with architectural impact:** If new requirements introduce new system components or data entities, add a focused architecture round (similar to Round 6) to update technical specs.
 
 ## Roadmap Update
 

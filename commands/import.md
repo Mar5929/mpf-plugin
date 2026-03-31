@@ -1,14 +1,60 @@
 ---
 name: mpf:import
-description: Import requirements from external sources (Linear tickets, markdown files, Notion pages, inline text) into MPF's requirements.md format. Supports --sources flag for direct source specification. Usable standalone mid-project or as part of the onboarding flow.
+description: Import requirements from external sources (Linear tickets, markdown files, Notion pages, inline text) or through interactive conversation into MPF's requirements.md format. Supports --sources flag for direct source specification and --interactive flag for conversational requirement gathering. Usable standalone mid-project or as part of the onboarding flow.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__claude_ai_Linear__*, notion_api
 ---
 
 # mpf:import
 
-Import requirements from external sources into MPF's `docs/requirements/requirements.md` format. Supports brownfield onboarding (importing from an existing project's artifacts) and incremental imports (adding new requirements to an existing MPF project).
+Import requirements from external sources into MPF's `docs/requirements/requirements.md` format. Supports brownfield onboarding (importing from an existing project's artifacts), incremental imports (adding new requirements to an existing MPF project), and interactive conversational gathering.
+
+## Usage
+
+```
+mpf:import                                    # Auto-discover sources in the project
+mpf:import --sources "docs/spec.md, linear:RIH"  # Import from specific sources
+mpf:import --interactive                      # Describe requirements conversationally
+```
+
+## Interactive Mode (--interactive)
+
+When `--interactive` is passed, skip source discovery entirely. Instead, gather requirements through a focused conversation:
+
+### Step I-1: Context Setup
+
+1. Read `docs/requirements/requirements.md` (if it exists) to determine the next available REQ ID and understand existing requirements.
+2. Read `docs/requirements/PRD.md` (if it exists) to understand the product context.
+3. Tell the user: "Describe your new requirements. You can list them all at once, or describe them one at a time. I'll help structure them into REQ format with acceptance criteria."
+
+### Step I-2: Requirement Gathering
+
+For each requirement the user describes:
+
+1. Extract the core requirement (what needs to be built or changed).
+2. Ask clarifying questions if the description is vague:
+   - "What does success look like for this?" (acceptance criteria)
+   - "What priority: P0 (must have), P1 (should have), or P2 (nice to have)?"
+   - "Does this depend on any existing requirements?"
+3. Draft the requirement in MPF format (REQ-xxx with title, priority, description, acceptance criteria).
+4. Show the draft to the user for confirmation before moving to the next.
+
+Keep the conversation focused and efficient. Do not run a full 6-round discovery interview; this is lighter-weight. Ask 1-2 clarifying questions per requirement, not more.
+
+After the user indicates they're done (e.g., "that's all", "done", or no more items), proceed to Step 3 (User Review) with the collected requirements.
+
+### Step I-3: PRD Update (Optional)
+
+If `docs/requirements/PRD.md` exists, ask: "Should I add these requirements to the PRD as well, or just to requirements.md?"
+
+If yes, append a new section to the PRD for each requirement (or group them into a single "Additional Requirements" section).
+
+After completing interactive gathering, proceed to Step 3 (User Review) and Step 4 (Write Output) as normal.
+
+---
 
 ## Step 1: Source Discovery
+
+If `--interactive` is passed, skip this step entirely (handled above).
 
 If the `--sources` flag is provided, use those sources directly and skip discovery.
 
