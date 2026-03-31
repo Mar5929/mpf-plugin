@@ -1,6 +1,6 @@
 ---
 name: mpf-planner
-model: reasoning
+model: opus
 tools:
   - Read
   - Write

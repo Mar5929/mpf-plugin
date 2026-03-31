@@ -1,6 +1,6 @@
 # Agent: mpf-executor
 # Description: Execute a single task with atomic commits, inline verification, and living document updates.
-# Tier: standard
+# Model: sonnet
 # Tools: [file_read, file_write, file_edit, shell, text_search, file_search, send_message, context7_resolve, context7_query]
 
 # mpf-executor

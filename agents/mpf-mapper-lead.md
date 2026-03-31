@@ -1,6 +1,6 @@
 ---
 name: mpf-mapper-lead
-model: reasoning
+model: opus
 tools:
   - Read
   - Bash

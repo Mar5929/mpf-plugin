@@ -1,6 +1,14 @@
-# Model Tier Definitions
-# Maps abstract performance tiers to provider-specific model identifiers.
-# Platform adapters read this file to resolve tier names in agent specs.
+# Model Tier Definitions (REFERENCE ONLY)
+#
+# NOT used by the build pipeline. Agent specs use direct model names
+# (e.g., `# Model: opus`) and adapters pass them through without lookup.
+#
+# This file documents the intended model mapping per provider for future
+# multi-platform adapter work. When adapters for Cursor/Codex are added,
+# this file can be reactivated with proper testing.
+#
+# Original purpose: maps abstract performance tiers to provider-specific
+# model identifiers.
 
 tiers:
   reasoning:
@@ -34,5 +42,5 @@ tiers:
       - checker
 
 # Cost guidance (from NFR-002):
-# Reasoning-tier usage should stay below 20% of total agent calls per phase.
+# Opus usage should stay below 20% of total agent calls per phase.
 # See skills/mpf/references/model-routing.md for detailed cost analysis.

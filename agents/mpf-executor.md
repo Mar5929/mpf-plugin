@@ -1,6 +1,6 @@
 ---
 name: mpf-executor
-model: standard
+model: sonnet
 tools:
   - Read
   - Write

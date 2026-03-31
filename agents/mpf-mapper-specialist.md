@@ -1,6 +1,6 @@
 ---
 name: mpf-mapper-specialist
-model: standard
+model: sonnet
 tools:
   - Read
   - Bash

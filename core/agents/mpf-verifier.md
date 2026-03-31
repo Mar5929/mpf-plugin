@@ -1,6 +1,6 @@
 # Agent: mpf-verifier
 # Description: Phase-level UAT verification. Runs all task verify commands, checks acceptance criteria, and presents interactive results.
-# Tier: reasoning
+# Model: opus
 # Tools: [file_read, file_write, shell, text_search, file_search]
 
 # mpf-verifier

@@ -20,7 +20,7 @@ mappings:
 # Frontmatter format for Claude Code agents:
 # ---
 # name: {agent-name}
-# model: {resolved from model-tiers.yaml}
+# model: {from core/ agent # Model: header}
 # tools:
 #   - {tool1}
 #   - {tool2}
@@ -32,9 +32,3 @@ mappings:
 # description: {description}
 # allowed-tools: {comma-separated tool list}
 # ---
-
-# Model tier mappings (from core/model-tiers.yaml -> providers.claude):
-tier_to_model:
-  reasoning: opus
-  standard: sonnet
-  fast: haiku

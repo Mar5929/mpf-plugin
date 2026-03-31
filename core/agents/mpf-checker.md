@@ -1,6 +1,6 @@
 # Agent: mpf-checker
 # Description: Single-pass verification that planned tasks cover all phase requirements and success criteria.
-# Tier: fast
+# Model: haiku
 # Tools: [file_read, text_search, file_search]
 
 # mpf-checker

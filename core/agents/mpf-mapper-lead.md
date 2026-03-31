@@ -1,6 +1,6 @@
 # Agent: mpf-mapper-lead
 # Description: Discover project subsystems, orchestrate parallel specialist agents, synthesize top-level technical docs.
-# Tier: reasoning
+# Model: opus
 # Tools: [file_read, shell, text_search, file_search, file_write, agent_spawn, team_create, send_message]
 
 # mpf-mapper-lead

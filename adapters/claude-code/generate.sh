@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # generate.sh - Transform core/ platform-agnostic specs into Claude Code plugin format.
-# Reads core/ agents, commands, skills, and hooks, applies tool-name and tier-to-model
+# Reads core/ agents, commands, skills, and hooks, applies tool-name
 # mappings, and writes the result to dist/claude-code/.
 #
 # Designed to minimize subprocess spawns for MSYS2/Git Bash compatibility on Windows.
@@ -17,26 +17,25 @@ OUTPUT_DIR="$REPO_ROOT"
 # ==============================================================================
 
 declare -A TOOL_NAMES
-declare -A TIER_MODELS
 
 # Precompiled sed script files (built once, applied many times).
 SED_SCRIPT_FILE=""       # Tool substitutions only
 SED_SCRIPT_FILE_FULL=""  # Tool + tier substitutions
 
 # ==============================================================================
-# parse_tool_map - populate TOOL_NAMES and TIER_MODELS from tool-map.yaml
+# parse_tool_map - populate TOOL_NAMES from tool-map.yaml
 # ==============================================================================
 
 parse_tool_map() {
   local in_mappings=0
-  local in_tiers=0
 
   while IFS= read -r line; do
     if [[ "$line" =~ ^mappings: ]]; then
-      in_mappings=1; in_tiers=0; continue
+      in_mappings=1; continue
     fi
-    if [[ "$line" =~ ^tier_to_model: ]]; then
-      in_tiers=1; in_mappings=0; continue
+    # Stop parsing tool mappings when we hit another top-level key
+    if (( in_mappings )) && [[ "$line" =~ ^[a-z] ]]; then
+      in_mappings=0; continue
     fi
     [[ "$line" =~ ^[[:space:]]*# ]] && continue
     [[ -z "${line// /}" ]] && continue
@@ -46,15 +45,9 @@ parse_tool_map() {
         TOOL_NAMES["${BASH_REMATCH[1]}"]="${BASH_REMATCH[2]}"
       fi
     fi
-
-    if (( in_tiers )); then
-      if [[ "$line" =~ ^[[:space:]]*([a-z]+):[[:space:]]*(.*) ]]; then
-        TIER_MODELS["${BASH_REMATCH[1]}"]="${BASH_REMATCH[2]}"
-      fi
-    fi
   done < "$TOOL_MAP"
 
-  echo "[parse_tool_map] Loaded ${#TOOL_NAMES[@]} tool mappings, ${#TIER_MODELS[@]} tier mappings."
+  echo "[parse_tool_map] Loaded ${#TOOL_NAMES[@]} tool mappings."
 }
 
 # ==============================================================================
@@ -127,12 +120,15 @@ transform_agents() {
     local filename="${src##*/}"
 
     # Extract metadata using bash read loop (no subprocess per field)
-    local agent_name="" tier="" tools_raw=""
+    local agent_name="" model="" tools_raw="" has_deprecated_tier=0
     while IFS= read -r line; do
       if [[ "$line" =~ ^#\ Agent:\ (.*) ]]; then
         agent_name="${BASH_REMATCH[1]}"
+      elif [[ "$line" =~ ^#\ Model:\ (.*) ]]; then
+        model="${BASH_REMATCH[1]}"
       elif [[ "$line" =~ ^#\ Tier:\ (.*) ]]; then
-        tier="${BASH_REMATCH[1]}"
+        has_deprecated_tier=1
+        echo "  [WARN] $filename uses deprecated '# Tier:' header. Change to '# Model: <model-name>'." >&2
       elif [[ "$line" =~ ^#\ Tools:\ \[(.*)\] ]]; then
         tools_raw="${BASH_REMATCH[1]}"
       elif [[ -z "$line" ]]; then
@@ -140,7 +136,10 @@ transform_agents() {
       fi
     done < "$src"
 
-    local model="${TIER_MODELS[$tier]:-$tier}"
+    if [[ -z "$model" ]]; then
+      echo "  [ERROR] $filename: no '# Model:' header found. Skipping." >&2
+      continue
+    fi
 
     # Build tools YAML list
     local tools_yaml=""
@@ -158,7 +157,7 @@ transform_agents() {
       echo "tools:"
       printf "%s" "$tools_yaml"
       echo "---"
-      sed '/^# Agent:/d; /^# Tier:/d; /^# Tools:/d' "$src" | sed -f "$SED_SCRIPT_FILE"
+      sed '/^# Agent:/d; /^# Model:/d; /^# Tier:/d; /^# Tools:/d' "$src" | sed -f "$SED_SCRIPT_FILE"
     } > "$out_dir/$filename"
 
     count=$((count + 1))

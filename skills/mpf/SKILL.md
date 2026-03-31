@@ -359,9 +359,9 @@ This round configures MPF-specific behaviors that control how the framework oper
   - **End-of-session batch**: update all docs at end of each work session (fewer interruptions, risk of drift)
   - Default: hook-triggered
 
-- **Model routing:** Which model tier should each agent use? Default assignments are documented in `skills/mpf/references/model-routing.md` (Reasoning for planner/verifier/mapper-lead, Standard for executor/mapper-specialist, Fast for checker). Options:
+- **Model routing:** Which model should each agent use? Default assignments are documented in `skills/mpf/references/model-routing.md` (opus for planner/verifier/mapper-lead, sonnet for executor/mapper-specialist, haiku for checker). Options:
   - **Default (recommended)**: use the assignments from the routing table
-  - **Custom**: specify per-agent overrides (e.g., downgrade planner to standard for budget projects, upgrade executor to reasoning for critical phases)
+  - **Custom**: specify per-agent overrides (e.g., downgrade planner to sonnet for budget projects, upgrade executor to opus for critical phases)
   - If custom, store the overrides in CLAUDE.md under a "Model Routing Overrides" section.
   - Default: Default
 

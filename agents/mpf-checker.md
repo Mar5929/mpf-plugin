@@ -1,6 +1,6 @@
 ---
 name: mpf-checker
-model: fast
+model: haiku
 tools:
   - Read
   - Grep
