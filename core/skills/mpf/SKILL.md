@@ -114,7 +114,7 @@ Start by identifying the project type and scaffolding tier. The type determines 
 |---|---|---|---|
 | **Interview rounds** | R1 + R7 (2 rounds) | R1, R2, R3, R4, R7, R8 (6 rounds, skip R5 and R6) | All 8 rounds |
 | **CLAUDE.md sections** | 1, 2, 3, 5, 7, 12 (6 sections) | 1-5, 7, 8, 9, 10, 12 (10 sections) | All 13 sections |
-| **Always generated** | CLAUDE.md, README.md, docs/PROJECT_ROADMAP.md (simplified: sections 1, 2, 3, 6 only), .claude/rules/golden-rules.md, .claude/rules/git-protocol.md | Everything in Light + full PROJECT_ROADMAP.md (all 8 sections), docs/technical-specs/code-atlas.md, docs/CHANGELOG.md, docs/decisions.md, docs/technical-specs/TECHNICAL_SPEC.md, .claude/rules/document-updates.md, .claude/rules/session-protocol.md | Everything in Standard + docs/technical-specs/DATA_MODEL.md, GETTING_STARTED.md, and tracker-specific docs (docs/traceability-matrix.md or docs/requirements/requirements.md + docs/BACKLOG.md) |
+| **Always generated** | CLAUDE.md, README.md, docs/PROJECT_ROADMAP.md (simplified: sections 1, 2, 3, 6 only), docs/MPF_GUIDE.md, .claude/rules/golden-rules.md, .claude/rules/git-protocol.md | Everything in Light + full PROJECT_ROADMAP.md (all 8 sections), docs/technical-specs/code-atlas.md, docs/CHANGELOG.md, docs/decisions.md, docs/technical-specs/TECHNICAL_SPEC.md, .claude/rules/document-updates.md, .claude/rules/session-protocol.md | Everything in Standard + docs/technical-specs/DATA_MODEL.md, GETTING_STARTED.md, and tracker-specific docs (docs/traceability-matrix.md or docs/requirements/requirements.md + docs/BACKLOG.md) |
 | **Upgrade path** | Can upgrade to Standard or Full via evolve mode | Can upgrade to Full via evolve mode | N/A |
 
 After detecting the project type, state the auto-detected tier and allow the user to override:
@@ -377,6 +377,7 @@ Before creating any files, present a summary:
    - docs/requirements/PRD.md (placeholder, populated by mpf:discover)
    - docs/requirements/requirements.md (if in-repo tracking)
    - docs/requirements/phases/ (populated by mpf:plan-phases)
+   - docs/MPF_GUIDE.md (MPF usage guide and command reference)
 2. **Enabled workflows checklist:**
    - [ ] Version Control (specifics: commit format, branching strategy, push policy, PR creation, conflict resolution)
    - [ ] External Tracker Integration (tool name, project/team details)
@@ -496,6 +497,15 @@ Also create `.claude/rules/mpf-doc-updates.md` using the template from `referenc
 
 If the user chose batch doc updates instead of hook-triggered, skip the hook installation but still create the `mpf-doc-updates.md` rule file.
 
+### Always Created: `docs/MPF_GUIDE.md`
+
+Generate the MPF usage guide using the template from `references/document-templates.md` (Section: "MPF_GUIDE.md"). Adapt content based on:
+
+- **Tier:** Light tier shows only greenfield and ad-hoc workflows. Standard/Full tiers show all workflows.
+- **Tracking approach:** If external tracker, include `mpf:sync-linear` in workflows. If in-repo, omit sync-linear references.
+- **Project type:** Brownfield workflow only shown for Standard/Full tiers.
+- **Document Map:** Only list documents that are enabled for this project.
+
 ### Conditionally Created: `docs/` files
 
 Only create files the user opted into. Each file follows the template structure in `references/document-templates.md`.
@@ -505,6 +515,7 @@ The scaffolding creates the following directory structure:
 ```
 docs/
 ├── PROJECT_ROADMAP.md              (project overview + status dashboard + phase roadmap)
+├── MPF_GUIDE.md                    (MPF usage guide and command reference)
 ├── BACKLOG.md                      (if in-repo tracking)
 ├── decisions.md
 ├── CHANGELOG.md
@@ -581,4 +592,4 @@ After all files are created:
 - **Data model changes always require confirmation.** Across all project types: database schema, Salesforce object model, or any data structure change.
 - **After scaffolding, recommend mpf:discover.** If the project is in Discovery phase, the next step is always to run mpf:discover to create the PRD and flesh out requirements.
 - **After PRD, recommend mpf:plan-phases.** Once the PRD exists, recommend mpf:plan-phases to break the work into implementation phases.
-- **MPF command workflow.** The full MPF lifecycle follows this sequence: mpf:init (this skill) > mpf:discover > mpf:plan-phases > mpf:plan-tasks > mpf:execute > mpf:verify. Each command builds on the outputs of the previous one. For ad-hoc TODOs that don't need the full PRD pipeline, use mpf:decompose to break them into executable task files directly.
+- **MPF command workflow.** The full MPF lifecycle follows this sequence: mpf:init (this skill) > mpf:discover > mpf:plan-phases > mpf:plan-tasks > mpf:execute > mpf:verify. Each command builds on the outputs of the previous one. For ad-hoc TODOs that don't need the full PRD pipeline, use mpf:decompose to break them into executable task files directly. See `docs/MPF_GUIDE.md` for a complete command reference and workflow guide.
