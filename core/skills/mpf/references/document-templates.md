@@ -27,6 +27,7 @@ This file defines the exact structure for every document the MPF skill can gener
 19. [Phase Overview](#phase-overview)
 20. [Task File](#task-file)
 21. [MPF_GUIDE.md](#mpf_guidemd)
+22. [REQUIREMENT_HIERARCHY.md](#requirement_hierarchymd)
 
 ---
 
@@ -86,6 +87,7 @@ docs/
   requirements/
     requirements.md                   # Functional and non-functional requirements
     PRD.md                            # Product Requirements Document
+    REQUIREMENT_HIERARCHY.md          # Requirement traceability tree
     phases/
       phase-01-{name}/
         overview.md                   # Phase definition and success criteria
@@ -1211,3 +1213,60 @@ _(Adapt this table based on which documents are enabled for the project.)_
 - For quick one-off tasks, `mpf:decompose` skips the full PRD pipeline
 - Keep `docs/PROJECT_ROADMAP.md` open as your project dashboard
 - Session protocol (if enabled) gives Claude reading-order instructions at session start
+
+---
+
+## REQUIREMENT_HIERARCHY.md
+
+**Purpose:** Shows the full requirement traceability tree: PRD to requirements to phases to tasks to Linear tickets. Provides a single view of project decomposition and coverage.
+
+**Conditionally generated:** Yes, for Standard and Full tiers with external tracking. Created by `mpf:plan-phases`, updated by `mpf:plan-tasks`.
+
+**Location:** `docs/requirements/REQUIREMENT_HIERARCHY.md`
+
+**Structure:**
+
+### Overview
+
+Summary statistics:
+- **Requirements:** {N} total ({done} done, {partial} partial, {remaining} remaining)
+- **Phases:** {M} planned
+- **Tasks:** {P} total across all phases
+- **Linear Tickets:** {Q} tracked
+
+### Hierarchy Tree
+
+Per-requirement blocks:
+
+```
+REQ-001: {title}
+  Priority: {P0/P1/P2/P3}
+  Phase: {N} ({phase-name})
+  Linear Tickets: {RIH-xxx, RIH-yyy}
+  Tasks:
+    - task-01 [Wave 1]: {title} (RIH-xxx)
+    - task-02 [Wave 1]: {title} (RIH-xxx)
+    - task-03 [Wave 2]: {title} (RIH-yyy) -> depends on task-01
+```
+
+### Dependency Graph
+
+Phase-level dependencies showing which phases must complete before others.
+
+Per-phase task dependency chains:
+```
+Phase 1:
+  Wave 1: task-01, task-02, task-03 (parallel)
+  Wave 2: task-04 (depends on task-01), task-05 (depends on task-02)
+  Wave 3: task-06 (depends on task-04, task-05)
+```
+
+### Coverage Matrix
+
+| Requirement | Phase | Tasks | Tickets | Status |
+|---|---|---|---|---|
+| REQ-001 | 1 | 3 | RIH-101, RIH-102 | Planned |
+| REQ-002 | 1 | 2 | RIH-103 | Planned |
+| REQ-003 | - | - | - | **GAP: Unplanned** |
+
+Gap rows highlight requirements with no phase assignment or no tasks.

@@ -38,6 +38,11 @@ Read the task file template from `skills/mpf/references/document-templates.md` (
 - Each task should be completable in a single focused session (roughly 1 commit).
 - A task creates or modifies 1-5 files. If a task touches more than 5 files, split it.
 - Each task has a clear "done" state that can be verified with a test command or observable check.
+- Each task implements ONE logical unit. If "and" connects two distinct behaviors, split into separate tasks.
+- Prefer 1-3 files per task. The 5-file limit is a hard cap, not a target.
+- The Action section must include: specific file paths, function names or signatures, input/output types, and pattern references from CLAUDE.md or existing code.
+- If a requirement has multiple testable acceptance criteria spanning different system areas, create one task per distinct behavior.
+- Separate these into distinct tasks: migration creation from code that uses the migration, route/endpoint creation from service logic, service logic from test coverage.
 
 ### What Makes a Good Task
 
@@ -68,6 +73,28 @@ Rules:
 - Every requirement listed in the phase overview must be covered by at least one task.
 - Every success criterion in the phase overview must be testable by at least one task's verify section.
 - If a requirement needs multiple tasks, note which tasks contribute to it.
+
+### Decomposition Depth
+
+A single requirement often breaks into many tasks. Resist the urge to create one large task per requirement.
+
+**Example:** REQ-005 "Users can reset their password via email"
+
+Bad: 1 task "Implement password reset"
+
+Good: 7 tasks across 4 waves
+
+| Task | Title | Wave | Files |
+|---|---|---|---|
+| task-01 | Create password reset token migration | 1 | 1 file |
+| task-02 | Add email service configuration | 1 | 2 files |
+| task-03 | Implement token generation and storage service | 2 | 2 files |
+| task-04 | Create password reset request endpoint | 2 | 2 files |
+| task-05 | Implement reset email sending with template | 3 | 2 files |
+| task-06 | Create password update endpoint with token validation | 3 | 2 files |
+| task-07 | Add integration tests for full reset flow | 4 | 1 file |
+
+Each task is independently verifiable, touches few files, and has a clear done state.
 
 ## Output
 
@@ -126,6 +153,17 @@ All phase requirements covered: YES/NO
 All success criteria testable: YES/NO
 Library references traceable to tech stack: YES/NO
 ```
+
+If any tasks have dependencies, also output a structured dependency chain:
+
+```
+Dependency Chain:
+  task-04 -> [task-01, task-02]
+  task-05 -> [task-03]
+  task-06 -> [task-04, task-05]
+```
+
+This is parsed by the orchestrating command to create Linear blocked-by relations.
 
 If coverage is incomplete, flag the gap explicitly. Do not silently skip requirements.
 Library references in tasks should be traceable to the project's tech stack (CLAUDE.md or package manifests). Flag any library reference that cannot be traced.

@@ -66,7 +66,44 @@ agent_spawn(
 )
 ```
 
-### Step 5: Handle Checker Results
+### Step 5: Coarse-Task Check
+
+After the checker finishes, scan the generated task files for potential under-specification:
+
+1. Read each task file in the `tasks/` directory
+2. Flag any task where:
+   - The Action section is fewer than 5 lines (may be under-specified)
+   - The Files section lists more than 3 files (may need splitting)
+   - The Verify section is empty or has only a placeholder
+3. If flags are found, present them to the user:
+   ```
+   Coarse-task warnings:
+   - task-03: Action section is only 3 lines (may need more detail)
+   - task-07: Touches 4 files (consider splitting)
+   ```
+4. Ask: "Want me to refine these tasks, or proceed as-is?"
+
+### Step 6: Link Linear Dependencies (if configured)
+
+If Linear is not configured, skip this step.
+
+If Linear is enabled:
+
+1. Read all task files to extract dependency info (Wave number and "Depends On" fields)
+2. Build a task-to-ticket map from Step 2 ticket creation
+3. For each task with "Depends On" entries:
+   - Look up the ticket ID for the current task and each dependency task
+   - Call `save_issue(id: current_ticket_id, blockedBy: [dependency_ticket_ids])` to create the blocked-by relation
+4. For cross-phase dependencies:
+   - Link Phase N Wave 1 tickets as blockedBy the final wave tickets from Phase N-1 (if Phase N-1 tickets exist)
+5. Report all relations created:
+   ```
+   Linear dependency links created:
+   - RIH-105 blocked by RIH-101, RIH-102
+   - RIH-106 blocked by RIH-103
+   ```
+
+### Step 7: Handle Checker Results
 
 - **If PASS:** Tell the user the plan is ready. Show the task count, wave count, and requirement coverage summary. Recommend: "Run `mpf:execute {N}` to begin implementation."
 - **If FAIL:** Present the checker's issues to the user. Ask how they want to proceed:
@@ -74,11 +111,12 @@ agent_spawn(
   - "Proceed anyway": Accept the plan as-is with noted gaps.
   - "Manual edit": Let the user edit the task files directly, then re-run the checker.
 
-### Step 6: Update Project Status
+### Step 8: Update Project Status
 
 Update `docs/PROJECT_ROADMAP.md`:
 - Section 5 (Active Work Items): Note that Phase {N} has been planned with {count} tasks across {wave_count} waves
 - Section 7 (Session Log): Add a session log entry
+- If `docs/requirements/REQUIREMENT_HIERARCHY.md` exists, update it with the task breakdown: populate the Tasks column in the Hierarchy Tree and Coverage Matrix for this phase's requirements.
 
 ## Output
 
